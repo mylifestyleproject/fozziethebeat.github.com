@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: scala | Wordsi by Fozzie The Beat]]></title>
+  <link href="http://fozziethebeat.github.com/fozziethebeat/blog/categories/scala/atom.xml" rel="self"/>
+  <link href="http://fozziethebeat.github.com/fozziethebeat/"/>
+  <updated>2012-04-02T16:00:54-07:00</updated>
+  <id>http://fozziethebeat.github.com/fozziethebeat/</id>
+  <author>
+    <name><![CDATA[Keith Stevens]]></name>
+    <email><![CDATA[fozziethebeat@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Morphological Analysis made easy with Scala]]></title>
+    <link href="http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala/"/>
+    <updated>2012-02-29T19:49:00-08:00</updated>
+    <id>http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala</id>
+    <content type="html"><![CDATA[<p>Ever since I got involved with distributional semantics, i've been perplexed
+about how to handle morphed words, which happens to be just about every noun and
+verb in English.  What is a morphed word in English you ask?  It's pretty much
+any word that's been changed to reflect things like past tense, plurality,
+ownership, and all those things.  They're conjugated verbs and more!  But they
+always pose a massive problem in distributional semantics.</p>
+
+<p>Think about it for a second, what's the big difference between "cat" and "cats"?
+Not too much, the second is simply saying there are multiple occurrences of a
+"cat".  But what do people typically do for distributional semantics?  One of
+two bad options: leave the two words as separate things and thus split the
+information gained about "cat" across two words or stem every word and throw
+away something important like the multitude of "cat".  Both seem totally wrong
+and unsatisfactory.</p>
+
+<p>So on and off I've searched for a good tool to do morphological analysis for
+English.  Ideally, the analyzer could recognize the word "cats" and split into
+two things: <code>cat</code> and <code>&lt;p&gt;</code> that way you can retain all your information about a
+<code>cat</code> and still know that there were a multitude of them when you see "cats".
+And for verbs?  You should see the same thing, <code>ran</code> could then become something
+like <code>run</code> and <code>&lt;past&gt;</code>" so that again, you still know everything about running and that
+it happened in the past.  But until today, I've never found a tool that does
+this both quickly and easily in a usable language.</p>
+
+<p>That all changes today.  Today I found the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lltool-box for Java</a>.  It creates
+a large finite state machine for recognizing morphed words and figuring out the
+root word, i.e. "run" in "ran" and "cat" in "cats", and how the word was
+morphed, i.e. "run" for "ran" and "cat" for "cats".  All you have to do is get a
+listing of how words are morphed, load it up until the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>
+system and analyze away your sentences.</p>
+
+<p>So let's take a spin on how to do this.  First, you read the wiki instructions
+for <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>, download it, and compile it.  Compiling is easy:</p>
+
+<p><code>
+mvn deploy -DskipTests
+</code></p>
+
+<p>The <code>-DskipTests</code> part seems needed since their unit tests don't pass.  But
+after that, you can start using the code in your favorite jvm based language.
+my personal fave is Scala, so let's run with that.  So what next?  Now you
+create a <a href="http://en.wikipedia.org/wiki/Finite_state_transducer">Finite State Transducer</a> using a dictionary file and tell it to
+analyze words:</p>
+
+<p>``` scala Setting up the Finite State Transducer https://gist.github.com/1772752 Source Gist</p>
+
+<pre><code>// Create the Finite State Transducer processor.
+val fstp = new FSTProcessor()
+
+// Load the finite state transducer with the compiled dictionary file.  
+fstp.load(openInFileStream(args(0)))
+
+// Setup the trandsducer to do morphological analysis and make sure it's valid.
+fstp.initAnalysis
+</code></pre>
+
+<p>```</p>
+
+<p>Now that you have a transducer ready to analyze words, you just feed it stuff like this:</p>
+
+<p>``` scala Loading the transducer with input and output https://gist.github.com/1772752 Source Gist</p>
+
+<pre><code>val in = new StringReader("cats, dogs and blubber all running quickly!")
+val out = new StringWriter()
+// Do the analysis.
+fstp.analysis(in, out)
+</code></pre>
+
+<p>```</p>
+
+<p>You gotta create a reader and writer for their transducer interface.  It's
+funky, but it still leaves you with a pretty flexible interface.  So now what?
+What does the output look like?  If you feed it "cats, dogs and blubber all
+running quickly!", the output is pretty ugly at first:</p>
+
+<p>``` html This will never look pretty</p>
+
+<pre><code>^cats/cat&lt;n&gt;&lt;pl&gt;$^,/,&lt;cm&gt;$
+^dogs/dog&lt;n&gt;&lt;pl&gt;$
+^and/and&lt;cnjcoo&gt;$
+^blubber/*blubber$
+^all/all&lt;adj&gt;/all&lt;adv&gt;/all&lt;predet&gt;&lt;sp&gt;/all&lt;det&gt;&lt;qnt&gt;&lt;pl&gt;/all&lt;det&gt;&lt;qnt&gt;&lt;sp&gt;/all&lt;prn&gt;&lt;qnt&gt;&lt;mf&gt;&lt;sp&gt;$
+^running/run&lt;vblex&gt;&lt;ger&gt;/run&lt;vblex&gt;&lt;pprs&gt;/run&lt;vblex&gt;&lt;subs&gt;/running&lt;adj&gt;/running&lt;n&gt;&lt;sg&gt;$
+^quickly/quickly&lt;adv&gt;$
+</code></pre>
+
+<p>```</p>
+
+<p>Beastly no? So i figure that it's best to write some regular expressions to
+handle all of this.  You'll need a couple: one to split up words, one to match
+analysed words, one for unrecognized words, and one to split up the tags.  In
+scala you can do this pretty easily like this:</p>
+
+<p>``` scala Regular Expressions for handling output from Lttoolbox-java https://gist.github.com/1772752 Source Gist</p>
+
+<pre><code>// 1: Recognize a fully analyzed word so that they can be tokenized.  In the
+// above test case, "cats," will not be separated by white space so we require
+// this more complicated splitting method.
+val parseRegex = """\^.*?\$""".r
+// 2: Recognize a word with morphological tags.
+val morphredRegex = """\^(.+?)/(.+?)(&lt;[0-9a-z&lt;&gt;]+&gt;).*\$"""
+// 3: Recognize a word that could not be recognized.  The transducer prepends
+// &amp;quot;*&amp;quot; to unrecognized tokens, so we match and eliminate it.
+val unknownRegex = """\^(.+)/\*(.+?)\$"""
+// 4: A regular expression for matching morphological tags.  This is simpler
+// than writing a splitting rule.
+val featureRegex = """&lt;.*?&gt;"""
+</code></pre>
+
+<p>```</p>
+
+<p>Then all you need to do is run through the analyzed sentence and split it up
+into separate tokens, some for root words and some for morphed features.  You
+can do that like this:</p>
+
+<p>``` scala Parsing that business Lttoolbox-java https://gist.github.com/1772752 Source Gist</p>
+
+<pre><code>val tokens = parseRegex.findAllIn(out.toString).map(parseMatch =&amp;gt; 
+// Match the current analyzed word as being morphed or unknown.  For morphed
+// words, create a list of the lemma and the tags.  For unknown words just
+// create a list of the lemma.
+parseMatch.toString match {
+    case morphredRegex(surface, lemma, tags) =&amp;gt;
+        lemma :: featureRegex.findAllIn(tags).toList
+    case unknownRegex(surface, lemma) =&amp;gt;
+        List(lemma) 
+}).reduceLeft(_++_).filter(!rejectFeatures.contains(_))
+</code></pre>
+
+<p>```</p>
+
+<p>This bit of code's pretty sweet.  You first iterate over each analyzed word with
+the first matcher.  Then you match each word with the two word level regular
+expressions: one for fully analyzed words and one for unrecognized words.  After
+that it's easy smeesy, you just split the tags up with the last regular
+expression and turn it all into a list.  The last two bits at the end turn the
+whole thing into a single list and lets you filter out tags or tokens you don't
+want.</p>
+
+<p>So with that, you can now do simple and fast morphological analysis in Java,
+Scala, or even Clojure (but who'd do something silly like that?)!-</p>
+]]></content>
+  </entry>
+  
+</feed>

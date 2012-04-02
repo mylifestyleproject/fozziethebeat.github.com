@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>
+            http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala/
+        </loc>
+        <lastmod>2012-03-04T20:06:41-08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fozziethebeat.github.com/fozziethebeat/blog/2012/03/04/moral-dilemmas/</loc>
+        <lastmod>2012-03-04T20:16:19-08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://fozziethebeat.github.com/fozziethebeat/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/
+        </loc>
+        <lastmod>2012-03-24T22:17:32-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fozziethebeat.github.com/fozziethebeat/</loc>
+        <lastmod>2012-03-24T22:17:32-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fozziethebeat.github.com/fozziethebeat/blog/archives/</loc>
+        <lastmod>2012-03-24T22:17:32-07:00</lastmod>
+    </url>
+</urlset>

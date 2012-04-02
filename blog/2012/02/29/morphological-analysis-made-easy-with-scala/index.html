@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Morphological Analysis made easy with Scala - Wordsi by Fozzie The Beat</title>
+  <meta name="author" content="Keith Stevens">
+
+  
+  <meta name="description" content="Ever since I got involved with distributional semantics, i&#8217;ve been perplexed
+about how to handle morphed words, which happens to be just about &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Wordsi by Fozzie The Beat" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Voces' rel='stylesheet' type='text/css'>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Wordsi by Fozzie The Beat</a></h1>
+  
+    <h2>A blog about computational semantics, life, and anything else.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fozziethebeat.github.com/fozziethebeat" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Morphological Analysis Made Easy With Scala</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T19:49:00-08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Ever since I got involved with distributional semantics, i&#8217;ve been perplexed
+about how to handle morphed words, which happens to be just about every noun and
+verb in English.  What is a morphed word in English you ask?  It&#8217;s pretty much
+any word that&#8217;s been changed to reflect things like past tense, plurality,
+ownership, and all those things.  They&#8217;re conjugated verbs and more!  But they
+always pose a massive problem in distributional semantics.</p>
+
+<p>Think about it for a second, what&#8217;s the big difference between &#8220;cat&#8221; and &#8220;cats&#8221;?
+Not too much, the second is simply saying there are multiple occurrences of a
+&#8220;cat&#8221;.  But what do people typically do for distributional semantics?  One of
+two bad options: leave the two words as separate things and thus split the
+information gained about &#8220;cat&#8221; across two words or stem every word and throw
+away something important like the multitude of &#8220;cat&#8221;.  Both seem totally wrong
+and unsatisfactory.</p>
+
+<p>So on and off I&#8217;ve searched for a good tool to do morphological analysis for
+English.  Ideally, the analyzer could recognize the word &#8220;cats&#8221; and split into
+two things: <code>cat</code> and <code>&lt;p&gt;</code> that way you can retain all your information about a
+<code>cat</code> and still know that there were a multitude of them when you see &#8220;cats&#8221;.
+And for verbs?  You should see the same thing, <code>ran</code> could then become something
+like <code>run</code> and <code>&lt;past&gt;</code>&#8221; so that again, you still know everything about running and that
+it happened in the past.  But until today, I&#8217;ve never found a tool that does
+this both quickly and easily in a usable language.</p>
+
+<p>That all changes today.  Today I found the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lltool-box for Java</a>.  It creates
+a large finite state machine for recognizing morphed words and figuring out the
+root word, i.e. &#8220;run&#8221; in &#8220;ran&#8221; and &#8220;cat&#8221; in &#8220;cats&#8221;, and how the word was
+morphed, i.e. &#8220;run&#8221; for &#8220;ran&#8221; and &#8220;cat&#8221; for &#8220;cats&#8221;.  All you have to do is get a
+listing of how words are morphed, load it up until the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>
+system and analyze away your sentences.</p>
+
+<p>So let&#8217;s take a spin on how to do this.  First, you read the wiki instructions
+for <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>, download it, and compile it.  Compiling is easy:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn deploy -DskipTests</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>-DskipTests</code> part seems needed since their unit tests don&#8217;t pass.  But
+after that, you can start using the code in your favorite jvm based language.
+my personal fave is Scala, so let&#8217;s run with that.  So what next?  Now you
+create a <a href="http://en.wikipedia.org/wiki/Finite_state_transducer">Finite State Transducer</a> using a dictionary file and tell it to
+analyze words:</p>
+
+<figure class='code'><figcaption><span>Setting up the Finite State Transducer </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// Create the Finite State Transducer processor.</span>
+</span><span class='line'><span class="k">val</span> <span class="n">fstp</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">FSTProcessor</span><span class="o">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Load the finite state transducer with the compiled dictionary file.  </span>
+</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">openInFileStream</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">)))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Setup the trandsducer to do morphological analysis and make sure it&#39;s valid.</span>
+</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">initAnalysis</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that you have a transducer ready to analyze words, you just feed it stuff like this:</p>
+
+<figure class='code'><figcaption><span>Loading the transducer with input and output </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringReader</span><span class="o">(</span><span class="s">&quot;cats, dogs and blubber all running quickly!&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="k">val</span> <span class="n">out</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringWriter</span><span class="o">()</span>
+</span><span class='line'><span class="c1">// Do the analysis.</span>
+</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">analysis</span><span class="o">(</span><span class="n">in</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You gotta create a reader and writer for their transducer interface.  It&#8217;s
+funky, but it still leaves you with a pretty flexible interface.  So now what?
+What does the output look like?  If you feed it &#8220;cats, dogs and blubber all
+running quickly!&#8221;, the output is pretty ugly at first:</p>
+
+<figure class='code'><figcaption><span>This will never look pretty</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>^cats/cat<span class="nt">&lt;n&gt;&lt;pl&gt;</span>$^,/,<span class="nt">&lt;cm&gt;</span>$
+</span><span class='line'>^dogs/dog<span class="nt">&lt;n&gt;&lt;pl&gt;</span>$
+</span><span class='line'>^and/and<span class="nt">&lt;cnjcoo&gt;</span>$
+</span><span class='line'>^blubber/*blubber$
+</span><span class='line'>^all/all<span class="nt">&lt;adj&gt;</span>/all<span class="nt">&lt;adv&gt;</span>/all<span class="nt">&lt;predet&gt;&lt;sp&gt;</span>/all<span class="nt">&lt;det&gt;&lt;qnt&gt;&lt;pl&gt;</span>/all<span class="nt">&lt;det&gt;&lt;qnt&gt;&lt;sp&gt;</span>/all<span class="nt">&lt;prn&gt;&lt;qnt&gt;&lt;mf&gt;&lt;sp&gt;</span>$
+</span><span class='line'>^running/run<span class="nt">&lt;vblex&gt;&lt;ger&gt;</span>/run<span class="nt">&lt;vblex&gt;&lt;pprs&gt;</span>/run<span class="nt">&lt;vblex&gt;&lt;subs&gt;</span>/running<span class="nt">&lt;adj&gt;</span>/running<span class="nt">&lt;n&gt;&lt;sg&gt;</span>$
+</span><span class='line'>^quickly/quickly<span class="nt">&lt;adv&gt;</span>$
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Beastly no? So i figure that it&#8217;s best to write some regular expressions to
+handle all of this.  You&#8217;ll need a couple: one to split up words, one to match
+analysed words, one for unrecognized words, and one to split up the tags.  In
+scala you can do this pretty easily like this:</p>
+
+<figure class='code'><figcaption><span>Regular Expressions for handling output from Lttoolbox-java </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// 1: Recognize a fully analyzed word so that they can be tokenized.  In the</span>
+</span><span class='line'><span class="c1">// above test case, &quot;cats,&quot; will not be separated by white space so we require</span>
+</span><span class='line'><span class="c1">// this more complicated splitting method.</span>
+</span><span class='line'><span class="k">val</span> <span class="n">parseRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^.*?\$&quot;&quot;&quot;</span><span class="o">.</span><span class="n">r</span>
+</span><span class='line'><span class="c1">// 2: Recognize a word with morphological tags.</span>
+</span><span class='line'><span class="k">val</span> <span class="n">morphredRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^(.+?)/(.+?)(&lt;[0-9a-z&lt;&gt;]+&gt;).*\$&quot;&quot;&quot;</span>
+</span><span class='line'><span class="c1">// 3: Recognize a word that could not be recognized.  The transducer prepends</span>
+</span><span class='line'><span class="c1">// &amp;quot;*&amp;quot; to unrecognized tokens, so we match and eliminate it.</span>
+</span><span class='line'><span class="k">val</span> <span class="n">unknownRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^(.+)/\*(.+?)\$&quot;&quot;&quot;</span>
+</span><span class='line'><span class="c1">// 4: A regular expression for matching morphological tags.  This is simpler</span>
+</span><span class='line'><span class="c1">// than writing a splitting rule.</span>
+</span><span class='line'><span class="k">val</span> <span class="n">featureRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;&lt;.*?&gt;&quot;&quot;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then all you need to do is run through the analyzed sentence and split it up
+into separate tokens, some for root words and some for morphed features.  You
+can do that like this:</p>
+
+<figure class='code'><figcaption><span>Parsing that business Lttoolbox-java </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">tokens</span> <span class="k">=</span> <span class="n">parseRegex</span><span class="o">.</span><span class="n">findAllIn</span><span class="o">(</span><span class="n">out</span><span class="o">.</span><span class="n">toString</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">parseMatch</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="c1">// Match the current analyzed word as being morphed or unknown.  For morphed</span>
+</span><span class='line'><span class="c1">// words, create a list of the lemma and the tags.  For unknown words just</span>
+</span><span class='line'><span class="c1">// create a list of the lemma.</span>
+</span><span class='line'><span class="n">parseMatch</span><span class="o">.</span><span class="n">toString</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">morphredRegex</span><span class="o">(</span><span class="n">surface</span><span class="o">,</span> <span class="n">lemma</span><span class="o">,</span> <span class="n">tags</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">lemma</span> <span class="o">::</span> <span class="n">featureRegex</span><span class="o">.</span><span class="n">findAllIn</span><span class="o">(</span><span class="n">tags</span><span class="o">).</span><span class="n">toList</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">unknownRegex</span><span class="o">(</span><span class="n">surface</span><span class="o">,</span> <span class="n">lemma</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>        <span class="nc">List</span><span class="o">(</span><span class="n">lemma</span><span class="o">)</span>
+</span><span class='line'><span class="o">}).</span><span class="n">reduceLeft</span><span class="o">(</span><span class="n">_++_</span><span class="o">).</span><span class="n">filter</span><span class="o">(!</span><span class="n">rejectFeatures</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">_</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This bit of code&#8217;s pretty sweet.  You first iterate over each analyzed word with
+the first matcher.  Then you match each word with the two word level regular
+expressions: one for fully analyzed words and one for unrecognized words.  After
+that it&#8217;s easy smeesy, you just split the tags up with the last regular
+expression and turn it all into a list.  The last two bits at the end turn the
+whole thing into a single list and lets you filter out tags or tokens you don&#8217;t
+want.</p>
+
+<p>So with that, you can now do simple and fast morphological analysis in Java,
+Scala, or even Clojure (but who&#8217;d do something silly like that?)!-</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Keith Stevens</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T19:49:00-08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/computational/'>computational</a>, <a class='category' href='/blog/categories/linguistics/'>linguistics</a>, <a class='category' href='/blog/categories/scala/'>scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala/" data-via="fozziethebeat" data-counturl="http://fozziethebeat.github.com/fozziethebeat/blog/2012/02/29/morphological-analysis-made-easy-with-scala/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/03/04/moral-dilemmas/" title="Next Post: Moral Dilemmas">Moral Dilemmas &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/computational'>Computational (1)</a></li><li><a href='/blog/categories/dilemmas'>Dilemmas (1)</a></li><li><a href='/blog/categories/linguistics'>Linguistics (1)</a></li><li><a href='/blog/categories/morality'>Morality (1)</a></li><li><a href='/blog/categories/scala'>Scala (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/">Making Agglomerative Clustering run in N^2 Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/03/04/moral-dilemmas/">Moral Dilemmas</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/29/morphological-analysis-made-easy-with-scala/">Morphological Analysis made easy with Scala</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Keith Stevens -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
