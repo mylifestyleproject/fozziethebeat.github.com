@@ -1,0 +1,70 @@
+[
+    {
+        "title" : "Event Detection in Blogs using Temporal Random Indexing",
+        "authors": [
+          "David Jurgens",
+          "Keith Stevens"
+        ],
+        "series": "Proceedings of the Workshop on Events in Emerging Text Types",
+        "year": 2009,
+        "url": "http://aclantho3.herokuapp.com/catalog/W09-4302",
+        "abstract": "Automatic event detection aims to identify novel, interesting topics as they are published online. While existing algorithms for event detection have focused on newswire releases, we examine how event detection can work on less structured corpora of blogs.  The proliferation of blogs and other forms of selfpublished media have given rise to an ever-growing corpus of news, commentary and opinion texts. Blogs offer a major advantage for event detection as their content may be rapidly updated. However, blogs texts also pose a signiﬁcant challenge in that the described events may be less easy to detect given the variety of topics, writing styles and possible author biases. We propose a new way of detecting events in this media by looking for changes in word semantics.  We ﬁrst outline a new algorithm that makes use of a temporally-annotated semantic space for tracking how words change semantics. Then we demonstrate how identiﬁed changes could be used to detect new events and their associated blog entries."
+    },
+    {
+        "title": "Capturing Nonlinear Structure in Word Spaces through Dimensionality Reduction",
+        "authors": [
+            "David Jurgens",
+            "Keith Stevens"
+        ],
+        "series": "Proceedings of the 2010 Workshop on GEometrical Models of Natural Language Semantics",
+        "year": 2010,
+        "url": "http://aclweb.org/anthology-new/W/W10/W10-2801.pdf",
+        "abstract": "Dimensionality reduction has been shown to improve processing and information extraction from high dimensional data. Word space algorithms typically employ linear reduction techniques that assume the space is Euclidean. We investigate the effects of extracting nonlinear structure in the word space using Locality Preserving Projections, a reduction algorithm that performs manifold learning. We apply this reduction to two common word space models and show improved performance over the original models on benchmarks."
+    },
+    {
+        "title": "HERMIT: Flexible Clustering for the SemEval-2 WSI Task",
+        "authors": [
+            "David Jurgens",
+            "Keith Stevens"
+        ],
+        "series": "Proceedings of the 5th International Workshop on Semantic Evaluation",
+        "year": 2010,
+        "url": "http://aclweb.org/anthology-new/S/S10/S10-1080.pdf",
+        "abstract": "A single word may have multiple unspeciﬁed meanings in a corpus. Word sense induction aims to discover these different meanings through word use, and knowledge-lean algorithms attempt this without using external lexical resources. We propose a new method for identifying the different senses that uses a ﬂexible clustering strategy to automatically determine the number of senses, rather than predeﬁning it. We demonstrate the effectiveness using the SemEval-2 WSI task, achieving competitive scores on both the V-Measure and Recall metrics, depending on the parameter conﬁguration."
+    },
+    {
+        "title": "The S-Space Package: An Open Source Package for Word Space Models",
+        "authors": [
+            "David Jurgens",
+            "Keith Stevens"
+        ],
+        "series": "Proceedings of the ACL 2010 System Demonstrations",
+        "year": 2010,
+        "url": "http://aclweb.org/anthology-new/P/P10/P10-4006.pdf",
+        "abstract": "We present the S-Space Package, an open  source framework for developing and evaluating word space algorithms. The package implements well-known word space algorithms, such as LSA, and provides a comprehensive set of matrix utilities and data structures for extending new or existing models. The package also includes word space benchmarks for evaluation. Both algorithms and libraries are designed for high concurrency and scalability. We demonstrate the efﬁciency of the reference implementations and also provide their results on six benchmarks."
+    },
+    {
+        "title": "Measuring the Impact of Sense Similarity on Word Sense Induction",
+        "authors": [
+            "David Jurgens",
+            "Keith Stevens"
+        ],
+        "series": "Proceedings of the First workshop on Unsupervised Learning in NLP",
+        "year": 2011,
+        "url": "http://aclweb.org/anthology-new/W/W11/W11-2214.pdf",
+        "abstract": "Word Sense Induction (WSI) is an unsupervised learning approach to discovering the different senses of a word from its contextual uses. A core challenge to WSI approaches is distinguishing between related and possibly similar senses of a word. Current WSI evaluation techniques have yet to analyze the speciﬁc impact of similarity on accuracy. Therefore, we present a new WSI evaluation that quantiﬁes the relationship between the relatedness of a word’s senses and the ability of a WSI algorithm to distinguish between them. Furthermore, we perform an analysis on sense confusions in SemEval-2 WSI task according to sense similarity. Both analyses for a representative selection of clustering-based WSI approaches reveals that performance is most sensitive to the clustering algorithm and not the lexical features used."
+    },
+    {
+        "title": "The C-Cat Wordnet Package: An Open Source Package for modifying and applying Wordnet",
+        "authors": [
+            "Keith Stevens",
+            "Terry Huang",
+            "David Buttler"
+        ],
+        "series": "Systems Demonstration of the Global Wordnet Conference 2012",
+        "year": 2012,
+        "abstract" : "We present the C-Cat Wordnet package, an open source library for using and modifying Wordnet. The package includes four key features: an API for modifying Synsets; implementations of standard similarity metrics, implementations of wellknown Word Sense Disambiguation algorithms, and an implementation of the Castanet algorithm. The library is easily extendible and usable in many runtime environments. We demonstrate it’s use on two standard Word Sense Disambiguation tasks and apply the Castanet algorithm to a corpus.",
+        "url": "https://e-reports-ext.llnl.gov/pdf/515429.pdf"
+    }
+]
+
