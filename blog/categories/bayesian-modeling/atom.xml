@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: bayesian modeling | Wordsi by Fozzie The Beat]]></title>
+  <link href="http://fozziethebeat.github.com/blog/categories/bayesian-modeling/atom.xml" rel="self"/>
+  <link href="http://fozziethebeat.github.com/"/>
+  <updated>2012-05-04T15:07:14-07:00</updated>
+  <id>http://fozziethebeat.github.com/</id>
+  <author>
+    <name><![CDATA[Keith Stevens]]></name>
+    <email><![CDATA[fozziethebeat@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Getting to the mixtures in Dirichlet Process Mixture Models]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/"/>
+    <updated>2012-05-04T13:01:00-07:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models</id>
+    <content type="html"><![CDATA[<p>The <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process</a> is pretty sweet as Edwin Chen and numerous others
+have <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">pointed out</a>.  When combined with a mixture of Bayesian models, it's
+really effective for finding an accurate number of models needed to represent
+your bundle of data, especially useful when you have no idea how many bundles of
+related words you may have.  Edwin Chen does a really great job of
+<a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">explaining</a> how the Dirichlet Process works, how to implement it, and how it
+can break down the McDonald's menu, but he leaves out details on how to combine
+it with mixture models, which is by far the coolest part.</p>
+
+<p>The short description for how to merge the Dirichlet Process with <a href="http://en.wikipedia.org/wiki/Mixture_model">Nonparametric
+Mixture Modeling</a> (and infer the model) looks like this:</p>
+
+<ol>
+<li>Define probability distributions for your mixture model</li>
+<li>Rewrite your distributions with Bayes rule so that parameters depend on data
+and hyper parameters</li>
+<li>Repeat step 2 for hyper parameters as desired (it's turtles all the way down, as Kevin
+Knight <a href="http://www.isi.edu/natural-language/people/bayes-with-tears.pdf">said</a>)</li>
+<li>For each data point
+
+<ol>
+<li>Forget about the current data point</li>
+<li>Compute the likelihood that each mixture made this data point</li>
+<li>Sampling a new label for this data point using these likelihoods</li>
+<li>Jot down this new label</li>
+<li>Remember this data point</li>
+</ol>
+</li>
+<li>After seeing all the data, re-estimate all your parameters based on the new
+assignments</li>
+<li>Repeat steps 4 and 5 ad nausea.</li>
+</ol>
+
+
+<p>In short, this is the <a href="http://en.wikipedia.org/wiki/Gibbs_sampling">Gibbs Sampling</a> approach.  If you already know what
+your distributions look like, and this paltry description made perfect sense,
+Hurray! Please go bake a cake for everyone that feels a little underwhelmed with
+this description.</p>
+
+<p>{% img center /images/cake.jpg Delicious cake for people still reading %}</p>
+
+<p>Now that someone is off baking us cake, let's dive down into what the
+distributions look like.  Taking a look at a number of papers describing
+variations of the Dirichlet Process Mixture Model, like <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.45.9111">The Infinite Gaussian Mixture Model</a>
+and <a href="http://www.cs.princeton.edu/~blei/papers/BleiJordan2004.pdf">Variational Inference for Dirichlet Process Mixture Models</a>, they first
+make things seem pretty straightforward.  To start, they generally throw down
+this simple equation:</p>
+
+<p>{% math %}
+p(y|\theta_1, \cdots, \theta_k, \pi_1, \cdots, \pi_k) = \sum_j<sup>k</sup> \pi_j p(y|\theta_j)
+{% endmath %}</p>
+
+<p>Simple, no?  If you want mixtures of <a href="http://www.umiacs.umd.edu/~resnik/pubs/gibbs.pdf">Gaussian</a> models, then {%m%} \theta_j{%em%} has a mean and a variance, we'll call these {%m%} \mu_j{%em%} and {%m%}\sigma_j<sup>2{%em%}.</sup>   The next step is then to rewrite this equation in a couple of ways so that
+you define the parameters, i.e. {% m %} \theta_j {% em %} in terms of the data
+and other parameters.  One example: {% m %} \mu_j {% em %} looks like this:</p>
+
+<p>{% math %}
+p(\mu_j|c,y,s_j, \lambda, r) \sim \mathcal{N}\left( \frac{\bar{y}n_js_j + \lambda
+r}{n_js_j + r},\frac{1}{n_js_j+r} \right)
+{% endmath %}</p>
+
+<p>Not <em>too</em> bad after reading through the definition for all the parameters; the
+first bundle describes the mean of the mixture and the second bundle describes
+the variance of the mixture.  You may have noticed that our means for each
+mixture come from a Gaussian distribution themselves (I did say it was turtles
+all the way down).  If you're using a nice math coding environment, like
+<a href="https://github.com/scalala/Scalala">Scalala</a> and <a href="http://www.scalanlp.org/">Scalanlp</a>, you can easily sample from this distribution like
+this</p>
+
+<p><code>scala
+val theta_j = new Gamma((y_mean*n_j*s_j + lambda*r)/(n_j*s_j+r), 1d/(n_j*s_j +r)).sample
+</code></p>
+
+<p>This goes on for most of the parameters for the model until you get to one of
+the core tear inducing rewrites.  This lovely gem describes the probably
+distribution function for one of the hyper parameters in the <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.45.9111">Infinite Gaussian Mixture Model</a>:</p>
+
+<p>{% math %}
+p(\alpha|k,n) \propto \frac{\alpha<sup>{k-3/2}</sup> exp(-1/(2\alpha))\Gamma(\alpha)}</p>
+
+<pre><code>                       {\Gamma(\alpha / k)}
+</code></pre>
+
+<p>{% endmath %}</p>
+
+<p><em>This is not easy to sample from</em> especially if you're new to sophisticated
+sampling methods.  And sadly, just about every academic publication describing
+these kinds of models gets to a point where they assume you know what they're
+talking about and can throw down <a href="http://en.wikipedia.org/wiki/Mixture_model">Monte Carlo Markov Chain</a> sampling
+procedures like they're rice at a wedding.</p>
+
+<p>{% img center /images/wedding-rice.jpg MCMC sampling methods for the newlyweds %}</p>
+
+<p>So what's a lowly non-statistician data modeller to do? Start with a well
+written description of a similar, but significantly simpler model.  In this
+case, <a href="http://www.umiacs.umd.edu/~resnik/pubs/gibbs.pdf">Gibbs Sampling for the Uninitiated</a>, which describes how to apply
+Gibbs to the Naive Bayes model.  I'll summarize this awesome paper in the next
+part of this series and then tweak it a little to make a <a href="http://en.wikipedia.org/wiki/Mixture_model#Gaussian_mixture_model">Finite Gaussian Mixture Model</a>.<br/>
+After that's said and done, I'll show how to extend the finite version into the
+Dirichlet Process Mixture Model (with some simplifications).</p>
+]]></content>
+  </entry>
+  
+</feed>
