@@ -538,10 +538,10 @@ above.</p>
 </span><span class='line'>        <span class="n">labelCounts</span><span class="o">(</span><span class="n">label</span><span class="o">)</span> <span class="o">-=</span> <span class="mi">1</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">val</span> <span class="n">prior</span> <span class="k">=</span> <span class="n">labelCounts</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="n">alpha</span><span class="o">.</span><span class="n">sum</span><span class="o">)</span>
-</span><span class='line'>        <span class="k">val</span> <span class="n">posterior</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">DenseVectorRow</span><span class="o">[</span><span class="kt">Double</span><span class="o">](</span><span class="n">thetas</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">theta</span> <span class="k">=&gt;</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">likelihood</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">DenseVectorRow</span><span class="o">[</span><span class="kt">Double</span><span class="o">](</span><span class="n">thetas</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">theta</span> <span class="k">=&gt;</span>
 </span><span class='line'>            <span class="o">(</span><span class="n">theta</span> <span class="o">:^</span> <span class="n">x_j</span><span class="o">).</span><span class="n">iterator</span><span class="o">.</span><span class="n">product</span><span class="o">).</span><span class="n">toArray</span><span class="o">)</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="k">val</span> <span class="n">probs</span> <span class="k">=</span> <span class="n">prior</span> <span class="o">:*</span> <span class="n">posterior</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">probs</span> <span class="k">=</span> <span class="n">prior</span> <span class="o">:*</span> <span class="n">likelihood</span>
 </span><span class='line'>        <span class="k">val</span> <span class="n">new_label</span><span class="k">=</span> <span class="k">new</span> <span class="nc">Multinomial</span><span class="o">(</span><span class="n">probs</span> <span class="o">/</span> <span class="n">probs</span><span class="o">.</span><span class="n">sum</span><span class="o">).</span><span class="n">sample</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">labelCounts</span><span class="o">(</span><span class="n">new_label</span><span class="o">)</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -555,7 +555,7 @@ above.</p>
 
 <p>The first three lines in the loop get the current label for <code>x_j</code> and then
 forget about it&#8217;s data.  <code>prior</code> represents the likelihood of selecting each
-component just based on it&#8217;s frequency, i.e. <script type="math/tex">p(spam)</script>.  <code>posterior</code>
+component just based on it&#8217;s frequency, i.e. <script type="math/tex">p(spam)</script>.  <code>likelihood</code>
 represents the likelihood of each component generating <code>x_j</code>, i.e. <script type="math/tex"> p(e|s)</script>.
 To finish off the sampling procedure, we sample a new label by turning these
 likelihoods into a multinomial distrubtion and sample from it.  With the new
