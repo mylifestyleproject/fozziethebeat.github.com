@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Moral Dilemmas - Wordsi by Fozzie The Beat</title>
+  <title>Sonatype and Scala: A relationship of trickery - Wordsi by Fozzie The Beat</title>
   <meta name="author" content="Keith Stevens">
 
   
-  <meta name="description" content="What is the nature of a moral dilemma? How moral can any dilemma be? Are some
-dilemmas inherently moral free or can any problem be cast into some &hellip;">
+  <meta name="description" content="Open source projects are amazing. They let you easily share the work you do
+with others so that they can iterate and improve upon your ideas, an &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ dilemmas inherently moral free or can any problem be cast into some &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas">
+  <link rel="canonical" href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -87,7 +87,7 @@ dilemmas inherently moral free or can any problem be cast into some &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Moral Dilemmas</h1>
+      <h1 class="entry-title">Sonatype and Scala: A Relationship of Trickery</h1>
     
     
       <p class="meta">
@@ -103,105 +103,78 @@ dilemmas inherently moral free or can any problem be cast into some &hellip;">
   
 
 
-<time datetime="2012-03-04T19:03:00-08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2012</time>
+<time datetime="2012-06-02T22:28:00-07:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>What is the nature of a moral dilemma?  How moral can any dilemma be?  Are some
-dilemmas inherently moral free or can any problem be cast into some level of a
-moral quandary? And if that&#8217;s true, how do you get to this quandary state and
-where do you go from there?</p>
+<div class="entry-content"><p>Open source projects are amazing.  They let you easily share the work you do
+with others so that they can iterate and improve upon your ideas, an especially
+invaluable quality when you later move on to other things.  <a href="http://maven.apache.org/">Maven</a> in a very
+similar fashion makes sharing open source (or even closed source) java projects
+super easy.  If you structure your codebase in a <a href="http://maven.apache.org/">Maven</a> way and register an
+account with <a href="https://oss.sonatype.org/">Sonatype</a>, you can get your project&#8217;s jars distributed
+worldwide so that anyone and everyone can used your stuff without having to
+download and compile your code.</p>
 
-<p>These questions have been bubbling around in my mind for the past couple months,
-ever since I read a <a href="http://www.nytimes.com/2011/09/13/opinion/if-it-feels-right.html">New York Times Op-Ed post</a> about moral dilemmas and a new
-book called <a href="http://www.amazon.com/Lost-Transition-Dark-Emerging-Adulthood/dp/0199828024">&#8220;Lost in Transition&#8221;</a>.  In the NYTimes post, the David Brooks notes
-that the authors of &#8220;Lost in Transition&#8221; found that modern high school students
-are unequipped to think about things in moral terms.  For instance, The authors
-posed some questions to students and said the following:</p>
+<p>For pure java projects, this process is utterly <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide">trivial</a>, just follow some
+instructions and it all works out beautifully.  But java is verbose and often
+prefer to use <a href="http://www.scala-lang.org/">Scala</a>, especially for small prototype systems.  But how do
+you deploy a mavenized scala project with <a href="https://oss.sonatype.org/">Sonatype</a>?  Well, it all pretty
+much works out except that you need to create a jar of <strong>javadocs</strong> before
+<a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-6.CentralSyncRequirement">Sonatype</a> will let you publish anything.  Not being java and all, scala does
+not do this out of the box, and maven won&#8217;t either.  But, there&#8217;s a cute hack
+you can do if you&#8217;re using maven 3.0.  Just add this snippet to your pom file
+and watch the deployment rock:</p>
 
-<blockquote><p>Not many of them have previously given much or any thought to many of the kinds of questions about morality that we asked.</p></blockquote>
-
-
-<p>I haven&#8217;t read the book in detail, so I can&#8217;t really comment on their full
-findings, proposals, or methodology, so I&#8217;m not about to comment on that now.
-Instead, I got to asking myself the many questions up above.  In particular, I
-wanted to know how I could pose daily activities as moral dilemmas.  I don&#8217;t
-often put things into directly moral terms, but I was a Teaching Assistant for
-a class focused on Ethics in Engineering, so I <em>should</em> be equipped to do some
-pretty solid moral analysis if I apply myself.</p>
-
-<p>So, I&#8217;d like to try and break down some seemingly non-moral problems in totally
-moral terms.  And to start, let&#8217;s go with <em>Doing the dishes</em>.</p>
-
-<p>Now, normally, you might look at the task of dishes and think that it&#8217;s just
-something you have to do.  Often it&#8217;s a little boring, or even a little
-unpleasant based on your cooking forays, but it&#8217;s not too often that people feel
-morally <em>conflicted</em> about when and whether or not they do their dishes.  But if
-you live with other people and share a common cooking space, I would argue that
-it is inherently a moral issue.  Namely, it&#8217;s an issue about acting with empathy.</p>
-
-<p>According to Wikipedia, the world&#8217;s coolest encyclopedia, <em>empathy</em> is defined
-as</p>
-
-<blockquote><p>the capacity to recognize and, to some extent, share feelings (such as<br/>    sadness or happiness) that are being experienced by another sentient or<br/>    semi-sentient being</p></blockquote>
-
-
-<p>So how does empathy relate <em>at all</em> to doing the dishes? Well, by living in an
-apartment shared with other people, your actions implicitly affect the
-livelihood and wellbeing of others.  So let&#8217;s break down the task of dishes into
-two aspects: your choice of actions and the possible affects it can have on
-others.   When it comes to doing dishes, there&#8217;s really two choices you can
-make:</p>
-
-<ol>
-<li>do the dishes</li>
-<li>don&#8217;t do the dishes</li>
-</ol>
-
-
-<p>And everyone in the house will likely have one of two reactions to dirty dishes:</p>
-
-<ol>
-<li>dirty dishes are not a problem</li>
-<li>dirty dishes are frustrating</li>
-</ol>
-
-
-<p>With regards to clean dishes, it&#8217;s fairly safe to assume that everyone enjoys
-and appreciates clean dishes, i&#8217;ve certainly not met anyone bothered by a clean
-plate or glass.  So how do these reactions connect to whether or not you
-should make those dishes sparkly clean?  Well, by leaving dirty dishes you&#8217;re
-doing one of two things:</p>
-
-<ol>
-<li>you&#8217;re assuming that everyone is ok with dirty dishes</li>
-<li>you don&#8217;t about how others feel about dirty dishes</li>
-</ol>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>      ...
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>net.alchim31.maven<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>scala-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>3.0.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>javadoc-jar<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>doc-jar<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>I would argue that both cases are a failure in empathy.  By assuming that others
-share your same reaction to doing the dishes, you&#8217;re failing to recognize that
-others in the house may feel otherwise (first half of our empathy definition).
-If for instance, a roommate has a horrible case of OCD and emotionally breakdown
-upon the sight of food encrusted dishes, failing to do the dishes may make this
-particular person deeply wounded.  And by simply ignoring how other&#8217;s feel about
-dishes (the second, sharing, half of empathy), even if you recognize that they
-may feel differently, you&#8217;re actively choosing not to share those feelings.</p>
-
-<p>What happens if you <em>do</em> clean the dishes and leave things sparkly, fresh, and
-lemon scented?  You&#8217;re still making an assumption about how other&#8217;s feel about
-dishes, but you&#8217;re making the most conservative assumption you can; most people
-prefer clean dishes so by cleaning you&#8217;re <em>less</em> likely to cause any emotional
-breakdowns, or in more normal cases, mild frustration.  Assuming that you like
-to be happy, doing the dishes is the only <em>empathy</em> filled action available, it
-makes the fewest and most conservative assumptions about what makes others happy.</p>
-
-<p>So that&#8217;s one way to break down the task of dishes into a moral dilemma.  So the
-next time you make a mess in the kitchen and ask yourself &#8220;should I clean
-those?&#8221;  You can make a handy debate about it.</p>
+<p>This uses the versitile <a href="http://davidb.github.com/scala-maven-plugin/">scala maven plugin</a> and runs the <code>doc-jar</code> goal to
+build scala docs every time you type <code>mvn package</code> or some command that depends
+on <code>mvn package</code>, this includes <code>mvn deploy</code>.  The id bit creates a
+<code>javadoc.jar</code> containing the scaladoc.  So with just that tidbit, you can deploy
+your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no issues at all.</p>
 </div>
 
 
@@ -224,12 +197,12 @@ those?&#8221;  You can make a handy debate about it.</p>
   
 
 
-<time datetime="2012-03-04T19:03:00-08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2012</time>
+<time datetime="2012-06-02T22:28:00-07:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dilemmas/'>dilemmas</a>, <a class='category' href='/blog/categories/morality/'>morality</a>
+    <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/open-source/'>open source</a>, <a class='category' href='/blog/categories/scala/'>scala</a>
   
 </span>
 
@@ -238,7 +211,7 @@ those?&#8221;  You can make a handy debate about it.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/" data-via="fozziethebeat" data-counturl="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/" data-via="fozziethebeat" data-counturl="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -251,10 +224,8 @@ those?&#8221;  You can make a handy debate about it.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/02/29/morphological-analysis-made-easy-with-scala/" title="Previous Post: Morphological Analysis made easy with Scala">&laquo; Morphological Analysis made easy with Scala</a>
+        <a class="basic-alignment left" href="/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/" title="Previous Post: Stepping into the Mixtures with Gibbs Sampling">&laquo; Stepping into the Mixtures with Gibbs Sampling</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/" title="Next Post: Making Agglomerative Clustering run in N^2 Time">Making Agglomerative Clustering run in N^2 Time &raquo;</a>
       
     </p>
   </footer>
@@ -320,8 +291,8 @@ those?&#8221;  You can make a handy debate about it.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/';
-        var disqus_url = 'http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/';
+        var disqus_identifier = 'http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/';
+        var disqus_url = 'http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/';
         var disqus_script = 'embed.js';
       
     (function () {

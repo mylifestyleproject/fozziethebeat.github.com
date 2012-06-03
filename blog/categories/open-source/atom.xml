@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: open source | Wordsi by Fozzie The Beat]]></title>
+  <link href="http://fozziethebeat.github.com/blog/categories/open-source/atom.xml" rel="self"/>
+  <link href="http://fozziethebeat.github.com/"/>
+  <updated>2012-06-02T22:47:53-07:00</updated>
+  <id>http://fozziethebeat.github.com/</id>
+  <author>
+    <name><![CDATA[Keith Stevens]]></name>
+    <email><![CDATA[fozziethebeat@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sonatype and Scala: A relationship of trickery]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/"/>
+    <updated>2012-06-02T22:28:00-07:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery</id>
+    <content type="html"><![CDATA[<p>Open source projects are amazing.  They let you easily share the work you do
+with others so that they can iterate and improve upon your ideas, an especially
+invaluable quality when you later move on to other things.  <a href="http://maven.apache.org/">Maven</a> in a very
+similar fashion makes sharing open source (or even closed source) java projects
+super easy.  If you structure your codebase in a <a href="http://maven.apache.org/">Maven</a> way and register an
+account with <a href="https://oss.sonatype.org/">Sonatype</a>, you can get your project's jars distributed
+worldwide so that anyone and everyone can used your stuff without having to
+download and compile your code.</p>
+
+<p>For pure java projects, this process is utterly <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide">trivial</a>, just follow some
+instructions and it all works out beautifully.  But java is verbose and often
+prefer to use <a href="http://www.scala-lang.org/">Scala</a>, especially for small prototype systems.  But how do
+you deploy a mavenized scala project with <a href="https://oss.sonatype.org/">Sonatype</a>?  Well, it all pretty
+much works out except that you need to create a jar of <strong>javadocs</strong> before
+<a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-6.CentralSyncRequirement">Sonatype</a> will let you publish anything.  Not being java and all, scala does
+not do this out of the box, and maven won't either.  But, there's a cute hack
+you can do if you're using maven 3.0.  Just add this snippet to your pom file
+and watch the deployment rock:</p>
+
+<p>``` xml
+  <build></p>
+
+<pre><code>&lt;plugins&gt;
+  ...
+  &lt;plugin&gt;
+    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0.2&lt;/version&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;id&gt;javadoc-jar&lt;/id&gt;
+        &lt;phase&gt;package&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;doc-jar&lt;/goal&gt;
+        &lt;/goals&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+&lt;/plugins&gt;
+</code></pre>
+
+<p>  </build>
+```</p>
+
+<p>This uses the versitile <a href="http://davidb.github.com/scala-maven-plugin/">scala maven plugin</a> and runs the <code>doc-jar</code> goal to
+build scala docs every time you type <code>mvn package</code> or some command that depends
+on <code>mvn package</code>, this includes <code>mvn deploy</code>.  The id bit creates a
+<code>javadoc.jar</code> containing the scaladoc.  So with just that tidbit, you can deploy
+your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no issues at all.</p>
+]]></content>
+  </entry>
+  
+</feed>

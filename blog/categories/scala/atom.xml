@@ -4,7 +4,7 @@
   <title><![CDATA[Category: scala | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-05-25T09:30:59-07:00</updated>
+  <updated>2012-06-02T22:47:53-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sonatype and Scala: A relationship of trickery]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/"/>
+    <updated>2012-06-02T22:28:00-07:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery</id>
+    <content type="html"><![CDATA[<p>Open source projects are amazing.  They let you easily share the work you do
+with others so that they can iterate and improve upon your ideas, an especially
+invaluable quality when you later move on to other things.  <a href="http://maven.apache.org/">Maven</a> in a very
+similar fashion makes sharing open source (or even closed source) java projects
+super easy.  If you structure your codebase in a <a href="http://maven.apache.org/">Maven</a> way and register an
+account with <a href="https://oss.sonatype.org/">Sonatype</a>, you can get your project's jars distributed
+worldwide so that anyone and everyone can used your stuff without having to
+download and compile your code.</p>
+
+<p>For pure java projects, this process is utterly <a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide">trivial</a>, just follow some
+instructions and it all works out beautifully.  But java is verbose and often
+prefer to use <a href="http://www.scala-lang.org/">Scala</a>, especially for small prototype systems.  But how do
+you deploy a mavenized scala project with <a href="https://oss.sonatype.org/">Sonatype</a>?  Well, it all pretty
+much works out except that you need to create a jar of <strong>javadocs</strong> before
+<a href="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-6.CentralSyncRequirement">Sonatype</a> will let you publish anything.  Not being java and all, scala does
+not do this out of the box, and maven won't either.  But, there's a cute hack
+you can do if you're using maven 3.0.  Just add this snippet to your pom file
+and watch the deployment rock:</p>
+
+<p>``` xml
+  <build></p>
+
+<pre><code>&lt;plugins&gt;
+  ...
+  &lt;plugin&gt;
+    &lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+    &lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0.2&lt;/version&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;id&gt;javadoc-jar&lt;/id&gt;
+        &lt;phase&gt;package&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;doc-jar&lt;/goal&gt;
+        &lt;/goals&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+&lt;/plugins&gt;
+</code></pre>
+
+<p>  </build>
+```</p>
+
+<p>This uses the versitile <a href="http://davidb.github.com/scala-maven-plugin/">scala maven plugin</a> and runs the <code>doc-jar</code> goal to
+build scala docs every time you type <code>mvn package</code> or some command that depends
+on <code>mvn package</code>, this includes <code>mvn deploy</code>.  The id bit creates a
+<code>javadoc.jar</code> containing the scaladoc.  So with just that tidbit, you can deploy
+your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no issues at all.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Stepping into the Mixtures with Gibbs Sampling]]></title>
@@ -473,7 +530,7 @@ you'd expect.</p>
 supervised Naive Bayes model.  It does a pretty reasonable job of splitting
 apart some groups of data, but there are clearly datasets it has some issues
 dealing with.  But what's not been said so far is that this model is actually
-not just Naive Bayes, it's a [Finite Mixture Model][] with Multionomial
+not just Naive Bayes, it's a <a href="http://en.wikipedia.org/wiki/Mixture_model">Finite Mixture Model</a> with Multionomial
 components.  The code, probabilities, and graphs i've layed out all work for
 more than two components.  So next, i'll show two cool ways to extend this
 model:</p>
@@ -1000,155 +1057,6 @@ But rather than doing that, <a href="http://onlinelibrary.wiley.com/doi/10.1002/
 that can be computed in <em>constant time</em>, for any of the existing agglomerative
 criteria methods.  Crazy right?  But just crazy enough to work correctly and be
 too fast to believe.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Morphological Analysis made easy with Scala]]></title>
-    <link href="http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala/"/>
-    <updated>2012-02-29T19:49:00-08:00</updated>
-    <id>http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala</id>
-    <content type="html"><![CDATA[<p>Ever since I got involved with distributional semantics, i've been perplexed
-about how to handle morphed words, which happens to be just about every noun and
-verb in English.  What is a morphed word in English you ask?  It's pretty much
-any word that's been changed to reflect things like past tense, plurality,
-ownership, and all those things.  They're conjugated verbs and more!  But they
-always pose a massive problem in distributional semantics.</p>
-
-<p>Think about it for a second, what's the big difference between "cat" and "cats"?
-Not too much, the second is simply saying there are multiple occurrences of a
-"cat".  But what do people typically do for distributional semantics?  One of
-two bad options: leave the two words as separate things and thus split the
-information gained about "cat" across two words or stem every word and throw
-away something important like the multitude of "cat".  Both seem totally wrong
-and unsatisfactory.</p>
-
-<p>So on and off I've searched for a good tool to do morphological analysis for
-English.  Ideally, the analyzer could recognize the word "cats" and split into
-two things: <code>cat</code> and <code>&lt;p&gt;</code> that way you can retain all your information about a
-<code>cat</code> and still know that there were a multitude of them when you see "cats".
-And for verbs?  You should see the same thing, <code>ran</code> could then become something
-like <code>run</code> and <code>&lt;past&gt;</code>" so that again, you still know everything about running and that
-it happened in the past.  But until today, I've never found a tool that does
-this both quickly and easily in a usable language.</p>
-
-<p>That all changes today.  Today I found the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lltool-box for Java</a>.  It creates
-a large finite state machine for recognizing morphed words and figuring out the
-root word, i.e. "run" in "ran" and "cat" in "cats", and how the word was
-morphed, i.e. "run" for "ran" and "cat" for "cats".  All you have to do is get a
-listing of how words are morphed, load it up until the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>
-system and analyze away your sentences.</p>
-
-<p>So let's take a spin on how to do this.  First, you read the wiki instructions
-for <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>, download it, and compile it.  Compiling is easy:</p>
-
-<p><code>
-mvn deploy -DskipTests
-</code></p>
-
-<p>The <code>-DskipTests</code> part seems needed since their unit tests don't pass.  But
-after that, you can start using the code in your favorite jvm based language.
-my personal fave is Scala, so let's run with that.  So what next?  Now you
-create a <a href="http://en.wikipedia.org/wiki/Finite_state_transducer">Finite State Transducer</a> using a dictionary file and tell it to
-analyze words:</p>
-
-<p>``` scala Setting up the Finite State Transducer https://gist.github.com/1772752 Source Gist</p>
-
-<pre><code>// Create the Finite State Transducer processor.
-val fstp = new FSTProcessor()
-
-// Load the finite state transducer with the compiled dictionary file.  
-fstp.load(openInFileStream(args(0)))
-
-// Setup the trandsducer to do morphological analysis and make sure it's valid.
-fstp.initAnalysis
-</code></pre>
-
-<p>```</p>
-
-<p>Now that you have a transducer ready to analyze words, you just feed it stuff like this:</p>
-
-<p>``` scala Loading the transducer with input and output https://gist.github.com/1772752 Source Gist</p>
-
-<pre><code>val in = new StringReader("cats, dogs and blubber all running quickly!")
-val out = new StringWriter()
-// Do the analysis.
-fstp.analysis(in, out)
-</code></pre>
-
-<p>```</p>
-
-<p>You gotta create a reader and writer for their transducer interface.  It's
-funky, but it still leaves you with a pretty flexible interface.  So now what?
-What does the output look like?  If you feed it "cats, dogs and blubber all
-running quickly!", the output is pretty ugly at first:</p>
-
-<p>``` html This will never look pretty</p>
-
-<pre><code>^cats/cat&lt;n&gt;&lt;pl&gt;$^,/,&lt;cm&gt;$
-^dogs/dog&lt;n&gt;&lt;pl&gt;$
-^and/and&lt;cnjcoo&gt;$
-^blubber/*blubber$
-^all/all&lt;adj&gt;/all&lt;adv&gt;/all&lt;predet&gt;&lt;sp&gt;/all&lt;det&gt;&lt;qnt&gt;&lt;pl&gt;/all&lt;det&gt;&lt;qnt&gt;&lt;sp&gt;/all&lt;prn&gt;&lt;qnt&gt;&lt;mf&gt;&lt;sp&gt;$
-^running/run&lt;vblex&gt;&lt;ger&gt;/run&lt;vblex&gt;&lt;pprs&gt;/run&lt;vblex&gt;&lt;subs&gt;/running&lt;adj&gt;/running&lt;n&gt;&lt;sg&gt;$
-^quickly/quickly&lt;adv&gt;$
-</code></pre>
-
-<p>```</p>
-
-<p>Beastly no? So i figure that it's best to write some regular expressions to
-handle all of this.  You'll need a couple: one to split up words, one to match
-analysed words, one for unrecognized words, and one to split up the tags.  In
-scala you can do this pretty easily like this:</p>
-
-<p>``` scala Regular Expressions for handling output from Lttoolbox-java https://gist.github.com/1772752 Source Gist</p>
-
-<pre><code>// 1: Recognize a fully analyzed word so that they can be tokenized.  In the
-// above test case, "cats," will not be separated by white space so we require
-// this more complicated splitting method.
-val parseRegex = """\^.*?\$""".r
-// 2: Recognize a word with morphological tags.
-val morphredRegex = """\^(.+?)/(.+?)(&lt;[0-9a-z&lt;&gt;]+&gt;).*\$"""
-// 3: Recognize a word that could not be recognized.  The transducer prepends
-// &amp;quot;*&amp;quot; to unrecognized tokens, so we match and eliminate it.
-val unknownRegex = """\^(.+)/\*(.+?)\$"""
-// 4: A regular expression for matching morphological tags.  This is simpler
-// than writing a splitting rule.
-val featureRegex = """&lt;.*?&gt;"""
-</code></pre>
-
-<p>```</p>
-
-<p>Then all you need to do is run through the analyzed sentence and split it up
-into separate tokens, some for root words and some for morphed features.  You
-can do that like this:</p>
-
-<p>``` scala Parsing that business Lttoolbox-java https://gist.github.com/1772752 Source Gist</p>
-
-<pre><code>val tokens = parseRegex.findAllIn(out.toString).map(parseMatch =&amp;gt; 
-// Match the current analyzed word as being morphed or unknown.  For morphed
-// words, create a list of the lemma and the tags.  For unknown words just
-// create a list of the lemma.
-parseMatch.toString match {
-    case morphredRegex(surface, lemma, tags) =&amp;gt;
-        lemma :: featureRegex.findAllIn(tags).toList
-    case unknownRegex(surface, lemma) =&amp;gt;
-        List(lemma) 
-}).reduceLeft(_++_).filter(!rejectFeatures.contains(_))
-</code></pre>
-
-<p>```</p>
-
-<p>This bit of code's pretty sweet.  You first iterate over each analyzed word with
-the first matcher.  Then you match each word with the two word level regular
-expressions: one for fully analyzed words and one for unrecognized words.  After
-that it's easy smeesy, you just split the tags up with the last regular
-expression and turn it all into a list.  The last two bits at the end turn the
-whole thing into a single list and lets you filter out tags or tokens you don't
-want.</p>
-
-<p>So with that, you can now do simple and fast morphological analysis in Java,
-Scala, or even Clojure (but who'd do something silly like that?)!-</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bayesian modeling | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/bayesian-modeling/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-05-25T09:30:59-07:00</updated>
+  <updated>2012-06-02T22:47:53-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -473,7 +473,7 @@ you'd expect.</p>
 supervised Naive Bayes model.  It does a pretty reasonable job of splitting
 apart some groups of data, but there are clearly datasets it has some issues
 dealing with.  But what's not been said so far is that this model is actually
-not just Naive Bayes, it's a [Finite Mixture Model][] with Multionomial
+not just Naive Bayes, it's a <a href="http://en.wikipedia.org/wiki/Mixture_model">Finite Mixture Model</a> with Multionomial
 components.  The code, probabilities, and graphs i've layed out all work for
 more than two components.  So next, i'll show two cool ways to extend this
 model:</p>
