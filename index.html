@@ -185,7 +185,7 @@ files where each file looks something like this:</p>
 <p>This leaves out a lot of details, but it covers the key items we will need: (1)
 the full text of the article and (2) all online_sections for the article.
 Extracting this can be kinda hairy.  The following snippet gives a gist of how
-to extract and format the neccesary data:</p>
+to extract and format the necessary data:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -270,7 +270,7 @@ properly filtered corpus.</p>
 
 <p>With all the pre-processing completed, we can now generate topics for the
 corpus.  We do this using two different methods (1) Latent Dirichlet Allocation
-and (2) Latent Semantic Analsysis.  Unless otherwise stated, we we performed
+and (2) Latent Semantic Analysis.  Unless otherwise stated, we we performed
 topic modeling using each method for 1 to 100 topics, and for 110 to 500 topics
 with steps of 10.</p>
 
@@ -369,7 +369,7 @@ multi-step process:</p>
 <ol>
 <li>Compute the list of all words appearing in any topic</li>
 <li>Compute the Pointwise Mutual Information scores between all listed words
-within an extrenal corpus (for the UCI metric)</li>
+within an external corpus (for the UCI metric)</li>
 <li>Compute document Co-Occurence scores for all listed words in the New York
 Times corpus (for the UMass metric)</li>
 <li>Start a server for each set of scores and query the server for the coherence
@@ -437,18 +437,18 @@ running <code>SenseCoherence</code> as above, it should report lines with this f
 topics and evaluated by the UCI measure.  For our experiments, we considered
 using 1.0 and 1E-12 for epsilon.</p>
 
-<h2>Comparing Word Wimilarities with Semantic Judgements</h2>
+<h2>Comparing Word Similarities with Semantic Judgements</h2>
 
 <p>We compared the reduced word representations against two standard sets of
 semantic similarity judgements as our second experiment.  We&#8217;re including the
 sets of semantic similarity judgements with this repository since they are both
-publiclly available.  The processing steps remains the same for both sets of
+publicly available.  The processing steps remains the same for both sets of
 judgements and each topic model.</p>
 
-<p>We use the <a href="http://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman Rank Correlation</a> between humand semantic judgements and
+<p>We use the <a href="http://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman Rank Correlation</a> between humans semantic judgements and
 the cosine similarity between latent word representations as the key metric.  A
 higher rank correlation, or any other correlation measure, indicates that the
-latent feature space better captures relations observed by humand judges.  The
+latent feature space better captures relations observed by humans judges.  The
 <a href="https://github.com/fozziethebeat/TopicModelComparison/blob/master/src/main/scala/edu/ucla/sspace/ComputeCorrelation.scala">ComputeCorrelation</a> class will perform these calculations for a single set of
 semantic judgments and a term by topic matrix.  We run this with</p>
 
@@ -457,8 +457,8 @@ semantic judgments and a term by topic matrix.  We run this with</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Which computes the correlation betwee a LDA based topic model using 10 topics
-and the Rubensten and Goodenough dataset and again reports some tag information
+<p>Which computes the correlation between a LDA based topic model using 10 topics
+and the Rubenstein and Goodenough dataset and again reports some tag information
 when printing the correlation value.  We do this for all topic models computed
 and the <code>data/wordSim65pairs.tab</code> and <code>data/combined.tab</code> semantic judgements
 files which correspond to the <a href="http://dl.acm.org/citation.cfm?id=365657">Rubenstein and Goodenough</a> dataset and the
@@ -515,7 +515,7 @@ project.  A writeup on how to use this will be forth coming.</p>
 
 <h2>Using the automated script</h2>
 
-<p>The writeup so far has desecrated the steps we used to compute each experiment
+<p>The writeup so far has described the steps we used to compute each experiment
 in more detail than provided in the original paper.  However, to make this even
 easier to replicate, we&#8217;ve provided a <a href="https://github.com/fozziethebeat/TopicModelComparison/blob/master/run.sh">run</a> script that automates the process
 as much as possible.  This section describes the minimum number of steps needed
