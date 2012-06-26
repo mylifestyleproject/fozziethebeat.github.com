@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Bayesian | Wordsi by Fozzie The Beat]]></title>
+  <link href="http://fozziethebeat.github.com/blog/categories/bayesian/atom.xml" rel="self"/>
+  <link href="http://fozziethebeat.github.com/"/>
+  <updated>2012-06-25T21:06:09-07:00</updated>
+  <id>http://fozziethebeat.github.com/</id>
+  <author>
+    <name><![CDATA[Keith Stevens]]></name>
+    <email><![CDATA[fozziethebeat@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Gamma Ramma]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma/"/>
+    <updated>2012-06-25T10:23:00-07:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma</id>
+    <content type="html"><![CDATA[<h3>Before getting to Cooler Mixture Models</h3>
+
+<p>Before going into the depths that is ways to improve the simple Multinomial
+Mixture Model that I discussed in the <a href="blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling">last post</a>, I want to give a little
+adventure story regarding the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution.  Why the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a>
+distribution?  Mainly because it is deeply tied to <a href="http://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> distributions
+and those will factor heavily into cool things you can do in mixture models.</p>
+
+<h3>This thing called my Conjugate Prior</h3>
+
+<p>So how is the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution related to a <a href="http://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> distribution?
+The short story is that a properly parameterized <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution can
+approximate the precision (or inverse variance) for a <a href="http://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> distribution
+(the proper wording for this relationship is that a <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution is a
+<a href="http://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a> for a <a href="http://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> distribution when you know the mean but
+don't know the precision).  This turns out to be super powerful when you have
+some idea of what the mean of your <a href="http://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> is but need to estimate the
+variance.  <strong>However</strong>, this distributions has some flavors that can really
+wreck havoc on your ability to learn these values if you use them in the wrong
+place, and similarly people are <em>really</em> terrible at pointing out which flavour
+you can and should use.  So here's an adventure on taste testing the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a>
+distribution.</p>
+
+<h3>Sampling from Gamma Distributions</h3>
+
+<p>Let's start with an example.  Let's say we have two one dimensional Gaussian
+distributions.  Each distribution is defined by two parameters: <script type="math/tex"> \mu
+</script> for the mean, or center point, and <script type="math/tex"> \sigma<sup>2</sup> </script> for the variance,
+or inverse precision.  So let's say our two distributions have these two
+parametrizations: <script type="math/tex"> \mu_1 = 5.0, \sigma<sup>2_1</sup> = 1.0</script> and <script type="math/tex"> \mu_2 = 10.0,\sigma<sup>2_2</sup> = 6.0</script>.  Here's a nice density
+plot of these two distributions together:</p>
+
+<p><img src="/images/two_univariate_gaussians.png" width="500" height="500"></p>
+
+<p>Now let's look at what the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution can do if we sample from it
+with the "proper" parameters (which I'll point out later on).</p>
+
+<p><img src="/images/gamma_breeze_samples.png" width="500" height="500"></p>
+
+<p>It looks like a good approximation of what we know the two variance values to be
+and the samples can be generated really easily with Scala's <a href="https://github.com/dlwh/breeze">breeze</a> library
+which you'll see in the next section.  But let's for funsies sake say that we
+don't like using <a href="https://github.com/dlwh/breeze">breeze</a> (say because we hate Scala and prefer to trust
+libraries written in <a href="http://java.sun.com/">Java</a>), we may then want to use some other
+implementation of this distribution, like say in <a href="http://commons.apache.org/math/">Apache Commons Math</a> or
+Java's <a href="http://acs.lbl.gov/software/colt/">Colt</a> library.  What happens if we take the parameters we passed into
+<a href="https://github.com/dlwh/breeze">breeze</a> and passed them to these libraries?  What comes out?  Let's See!</p>
+
+<p><img src="/images/gamma_comparison_samples.png" width="600" height="600"></p>
+
+<p>That looks kinda funky.  What's going on?  This exposes the difference between
+the two main flavors of this distribution: two related but poorly explained ways
+to parameterize the model!  Both flavours depend on a shape parameter
+that (aptly named) guides the shape of the distribution.  The difference in the
+flavours is the use of either a scale parameter, sometimes referred to as <script type="math/tex">
+\theta </script>, or a rate parameter, sometimes denoted as <script type="math/tex">\beta</script>.  Is
+there a relation between these two?  Totally! They are inverses of each other,
+i.e. <script type="math/tex"> \theta = 1/\beta </script>.</p>
+
+<h3>Finding the funky culprit</h3>
+
+<p>Now how do we know which of the above three implementations is doing the right
+thing?  One way is to use the <a href="http://en.wikipedia.org/wiki/Inverse-gamma_distribution">Inverse Gamma</a> distribution.  Samples from an
+<a href="http://en.wikipedia.org/wiki/Inverse-gamma_distribution">Inverse Gamma</a> distribution should (roughly) be the reciprocal of samples
+from a <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution with the same parameters.  But these packages
+don't really have an implementation of an <a href="http://en.wikipedia.org/wiki/Inverse-gamma_distribution">Inverse Gamma</a> distribution, so
+what else can we do to check?  Well, Colt looks to be doing two really <strong>wierd</strong>
+things that violate our intuitions about variances: (a) one set of variance
+estimates are completely missing and (b) the one that does exist gives negative
+variance values, and we know this to be impossible since the variance is defined
+to be an average of real values raised to the power of two.  And if we read the
+<a href="http://acs.lbl.gov/software/colt/">Colt</a> <a href="http://acs.lbl.gov/software/colt/api/index.html">javadoc</a> more carefully, we can figure out that they use the rate
+and not the scale, but it's never totally <strong>obvious</strong> in their documentation.
+So if we fix that in our parameterization, we get this agreeable set of plots:</p>
+
+<p><img src="/images/gamma_comparison_fixed_samples.png" width="600" height="600"></p>
+
+<p>That's <strong>much</strong> better looking.</p>
+
+<h3>Finding the magic parameters</h3>
+
+<p>Now let's dive deeper and see how I made all these (now fixed) samples:</p>
+
+<p>``` scala
+import breeze.stats.distributions.Gamma
+import org.apache.commons.math3.distribution.GammaDistribution
+import cern.jet.random.{Gamma=>CGamma}</p>
+
+<p>val data = ...
+val alpha = 1d + 5000
+val beta_1 = 1d + data(0).map(<em>-5.0).map(pow(</em>,2)).sum/2d
+val beta_2 = 1d + data(1).map(<em>-10.0).map(pow(</em>,2)).sum/2d
+val pw = new PrintWriter(args(1))
+val numsamples = args(2).toInt
+for ( ((a,b), i) &lt;- List((α, 1/β<em>1), (α, 1/β</em>2)).zipWithIndex) {</p>
+
+<pre><code>// Create a Gamma distribution using breeze 
+val gdist = new Gamma(a, b)
+// Create a Gamma distribution using Apache Commons Math
+val acgDist = new GammaDistribution(a, b)
+
+for (x &lt;- 0 until numsamples) {
+    pw.println("breeze %d %f".format(i, (1/gdist.sample)/10d))
+    pw.println("commons-math %d %f".format(i, (1/acgDist.sample)/10d))
+    // This is the easiet way to sample from Colt's gamma distribution.  Note that 
+    // i'm now turning the scale parameter back into the rate parameter.
+    pw.println("colt %d %f".format(i, (1/CGamma.staticNextDouble(a, 1/b))/10d))
+}
+</code></pre>
+
+<p>}
+pw.close
+```</p>
+
+<p>In this snippet, I've left out <code>data</code>, but it's simply a map for accessing the list of
+samples I drew earlier to make the Gaussian plot.  The key equations here are
+for computing what I'm calling <code>alpha</code> and <code>beta_*</code>.  Looking at a handy table
+of <a href="http://en.wikipedia.org/wiki/Conjugate_prior#Continuous_likelihood_distributions">conjugate priors for continuous likelihood distributions</a>, we find these
+two core equations used in the code:</p>
+
+<p><script type="math/tex; mode=display">
+\begin{array}{lll}
+\alpha &amp; = &amp; \alpha<em>{0} + \frac{n}{2} \
+\beta &amp; = &amp; \beta</em>{0} + \frac{\sum_i (x_i - mu)<sup>2</sup> }{2} \
+\end{array}
+</script></p>
+
+<p>Where <script type="math/tex">n</script> is the number of points in the group and <script type="math/tex">x_i</script>
+denotes points within coming from the same distribution.  Looking at that table
+of conjugate priors and the list created in the first for loop, you might wonder
+why i use the reciprocal of the <script type="math/tex">\beta</script> values, i.e. the scales.  This
+is because of the cute footnote in the conjugate prior table noting that
+<script type="math/tex">\beta</script> as computed above is in fact the rate.</p>
+
+<h3>An even more terrifying parametrization</h3>
+
+<p>Now if you thought what I've touched on is cool, a little funky, and possible
+frustrating in the minor differences, it's time to really complicate things.  A
+really smart man by the name of Carl von Rasmussen designed an <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.45.9111">Infinite Gaussian Mixture Model</a>
+that depends heavily on the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution for just the purpose I've
+described.  <em><strong>BUT</strong></em> he gives <strong>this</strong> parameterization:</p>
+
+<p><script type="math/tex; mode=display">
+\begin{array}{lll}
+\alpha &amp; = &amp; \alpha_{0} + n \
+\beta &amp; = &amp; \frac{\alpha{0}}{\beta_0*\alpha_0 + \sum (x_i - \mu)<sup>2}</sup>
+\end{array}
+</script></p>
+
+<p>Throw this into our sampling code and we get this <strong>rediculous</strong> plot:</p>
+
+<p><img src="/images/gamma_comparison_samples_ras.png" width="600" height="600"></p>
+
+<p>Which is <em>totally</em> wrong.  So what gives?  <em>Well</em>, at a much later date, Mr.
+Rasmussen points out that as he defines them, the two parameters are slightly
+mutated versions of the shape and scale as we've described them so far.  The
+real way to use his parameters is to mutate them by doing this:</p>
+
+<p><script type="math/tex; mode=display">
+\begin{array}{lll}
+\alpha<em>{legit} &amp; = &amp; \frac{\alpha</em>{rasmussen}}{2} \
+\beta<em>{legit} &amp; = &amp; \frac{2*\beta</em>{rasmussen}}{\alpha_{rasmussen}} \
+\end{array}
+</script></p>
+
+<h3>Summary!</h3>
+
+<p>So to summarize this adventure time blast, I have one key lesson: figure out
+which parameterization your software is using and which parameterization a
+model designer is using and make sure they match.  Otherwise you'll spend a
+terrible amount of time wondering why you <strong>just</strong> <em><strong>can't</strong></em> estimate those
+variances accurately.  I failed to do this a few weeks ago and was quite
+befuddled for a while, so don't be like me.</p>
+]]></content>
+  </entry>
+  
+</feed>
