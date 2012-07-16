@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ACL and EMNLP 2012 Debrief - Wordsi by Fozzie The Beat</title>
+  <meta name="author" content="Keith Stevens">
+
+  
+  <meta name="description" content="Attending two conference in Jeju, South Korea Today is the last day of two co-located top tier conferences for Natural
+Language Processing and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Wordsi by Fozzie The Beat" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Voces' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-315689840']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Wordsi by Fozzie The Beat</a></h1>
+  
+    <h2>A blog about computational semantics, life, and anything else.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fozziethebeat.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/papers.html">Research</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">ACL and EMNLP 2012 Debrief</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-13T18:08:00-07:00" pubdate data-updated="true">Jul 13<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>Attending two conference in Jeju, South Korea</h1>
+
+<p>Today is the last day of two co-located top tier conferences for Natural
+Language Processing and Computational Linguistics, ACL and EMNLP.  There&#8217;s been
+six full days of presentations, posters, and many conversations over coffee
+breaks, lunch, and dinner.  Being a lone researcher from two labs attending the conferences, i&#8217;ve done a lot of floating and mingling with different groups.  Here&#8217;s a debrief of some of the most interesting talks and posters I&#8217;ve seen, some good conversations i&#8217;ve had, and some thoughts on other parts of the conferences.</p>
+
+<h2>Talks and Posters</h2>
+
+<p>By a wide margin, the most intersting talks, in my opinion, were those that used
+clean and well structured (non-parametric) bayesian models to analyze text or
+speech.  Here&#8217;s a short run down of the ones I liked most.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1005.pdf"> A nonparametric Bayesian Approach to Accoustic Model Discovery</a></h3>
+
+<p>This paper tied together <a href="http://en.wikipedia.org/wiki/Hidden_Markov_model">Hidden Markov Models</a> and <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">Dirichlet Process Mixture
+Models</a> to automatically learn word phonemes in spoken data.  Everytime an
+utterance is observed, guess at some word boundaries and then for each segment
+in the word boundary, they select a HMM from a Dirichlet Process to model the
+phoneme.  Their performance was pretty good considering it was fully
+unsupervised and their model even learned finer distinctions between phonemes
+based on common speaker patterns that weren&#8217;t recorded in the test labels.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1009.pdf">SITS: A Hierarchical Non-parametric Model using Speaker Identity for Topic Segmentation in Multiparty Conversation</a></h3>
+
+<p>This model extends LDA to utilize speaker identities to automatically determine
+the topics each speaker prefers to use and the likelihood of a speaker changing
+a topic during a conversation.  For example, in a Vice-Presidential debate, they
+captured Sarah Palin&#8217;s tendancy to completely change the topic of the
+conversation when responding to a question.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1029.pdf">Word Sense Disambiguation Improves Information Retrieval</a></h3>
+
+<p>WSD has often been linked to IR with mixed results.  This late test attempt
+first performs WSD by learning word senses from aligned texts in Chinese and
+English, where word senses are determined by the presence of multiple
+translations of a word between the two languages and ways in which they can be
+translated.  Using this information they were able to improve a standard IR
+baseline on the TREC dataset.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1037.pdf">Learning to &#8220;Read Between the Lines&#8217; using Bayesian Logic Programming</a></h3>
+
+<p>This was my first exposure to Bayesian Logic Programming, which provide a nice
+and more scalable alternative to Markov Logic Networks.  Using a pipeline
+system, they do some information extraction and then use a BLP to infer logical
+connections that can then be used to infer unsaid facts from observed
+information.  For instance, If we know Barack Obama is President of the U.S.,
+and we know that presidents, or leaders in general, are members of their group,
+then the BLP should probabilisticly infer that Barack Obama is a member of the
+U.S. even if it&#8217;s never said.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1063.pdf">Computational Approaches to Sentence Completion</a></h3>
+
+<p>This evaluated Language Model and Distributional Models using a SAT styled
+sentence completion test.  They covered a lot of different approaches to this
+problem, includeing two ways of using LSA, a Recurrent Neural network, and
+standard N-Gram based Language Models.  The LSA models clearly did best which
+suggests something should be done to enhance the other models.  I&#8217;d like to see
+if the different models made different types of errors, for instance, did one
+handle world knowledge based questions better, like &#8220;the bike law was _ by
+congeress&#8221; where the blank should be &#8220;ratified&#8221;, and do others handle other
+types of questions better.  If this is the case, then perhaps we can learn
+these situations and build a model to decide when to use each approach on a
+test question.</p>
+
+<h3><a href="http://www.aclweb.org/anthology/P/P12/P12-1046.pdf">Bayesian Symbol-Refined Tree Substitution Grammars for Syntactic Parsing</a></h3>
+
+<p>This model used a really elegant and simple three level Pitman-Yor process to
+combine two sophisticated parsing models together, Symbol-Refined trees and Tree
+Substitution Grammars.  The first approach refines each node in syntax trees
+with finer categories and then second considers subtrees within a full tree.  By
+using the three level Pitman-Yor model, given a parsed example, the first level
+process models the full tree, the second level models symbol refinements, and
+the third models possible tree substituions.  Given the huge state space, they
+showed a simple but effect blocked sampling algorithm.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-2017.pdf">Using Rejuvenation to Improve Particle Filtering for Bayesian Word Segmentation</a></h3>
+
+<p>This model uses an unsupervised Sequential Markov Model to represent word
+segments. They improved upon a prior online approach by including Rejuvenation
+to the sequential model, which resamples a subset of prior examples after
+modeling a new sample.  By doing this, they model can fix past mistakes made
+when there was less knowledge about the dataset.  This is mostly cool because I
+fancy Sequential Monte Carlo methods.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/P/P12/P12-1075.pdf">Unsupervised Relation Discovery with Sense Disambiguation</a></h3>
+
+<p>This paper presented a really interested use of fully unsupervised Word Sense
+Induction methods.  They used a very cute variant of LDA where documents are a
+series of extracted dependency relation tuples using the same connecting
+relation.  The &#8220;words&#8221; were then feature vectors modeling each tuples words and
+the topics observed from the tuples source sentence and document.  The WSD model
+showed good improvement over relation clustering, but has some limitations.  The
+topics learned by LDA provide an initial clustering over the relations, then a
+second stage of HAC groups related topics.  Would a fully non-parametric model
+create a more accurate number of clusters automatically by only generated topics
+when they are truely separate?  Could this also be used to test different WSI
+approaches and give an indiciation of where they are lacking or what features
+are missing?</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1128.pdf">Joining Forces Payes Off: Multilingual Joint Word Sense Disambiguation</a></h3>
+
+<p>This Model utilizes BabelNet with a simple ensemble model to really boost
+knowledge based WSD.  For a given word in a context, they generate the possibile
+translations in multiple languages and then for every sense they compute a graph
+centrality score using BableNet using the candidate translations.  Each
+translation serves as an individual WSD model which are combined with a simple
+probablistic mixture model.  Given BabelNet, this looks really promising.  It
+might be good to try using this over NYT with my Topic Model evaluations and use
+it as a comparison between Knowledge Based WSD and fully unsupervised WSI.</p>
+
+<h3>The Appification of the Web and the Renaissance of Conversational User Interfaces</h3>
+
+<p><a href="http://www.patrickpantel.com/">Patrick Pantel</a> gave this amazing plenary talk and covered the coming issues
+and opportunities presented by the growing trend of users accessing the internet
+via siloed apps on mobile devices and the desire of users to perform tasks using
+a conversational approach.  He presented a lot of really good issues that need
+consideration and solving.  He also went into dept about a graphical model
+connecting user queries to user intentions and possible actions that can address
+those desires.  I&#8217;m really fascinated by what can be done with a given model
+once it&#8217;s been built.  For instance, if you have this kind of model and the
+user, which has some model of their general intentions or desired actions, then
+asks &#8220;what can i do that is interesting&#8221;, can you then project the dataset
+backwards into a view of possible actions and intentions that the user can then
+navigate through to explore possible things to do.  Concretely, if the model
+knows I like certain types of food at certain prices, can it take that knowledge
+and then organize surrounding restaurants in terms of what i like so i can pick
+and choose these things easily, especially when I don&#8217;t really know what I want
+initially?</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1080.pdf">Learning Constraints for Consistent Timeline Extraction</a></h3>
+
+<p>The motivating example behind this paper was the challenge of extracting
+semantically consistent facts regarding a single entity.  For example, given
+many mentions about James T. Kirk and many events with him as a participant, can
+you extract the logically consistent facts, such as that he was born after his
+father and was a space cadet before being a captain or instructor?  They do this
+with a joint supervised system that extracts facts and validates their
+consistency.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1101.pdf">Monte Carlo MCMC: Efficient Inference by Approximate Sampling</a></h3>
+
+<p>This paper was really exciting and elegant.  When doing a Metropolis Hastings
+update in a graphical model, it requires computing the acceptance rate in terms
+of factors that change based on the update.  However some of these factors can
+be expensive to compute, and there may be many many factors.  To improve
+efficiency, they simply use a subset of the factors in a probability
+factorization to compute the acceptance rate, using two possible methods for
+selecting that subset.  First, they consider a random subset of a uniform size,
+and alternatively, they sample more and more samples until the samples have an
+estimated mean with 95% confidence, allowing different proposals to use
+different sized subsets of factors and giving the inference more flexibility.
+In short, really simple, really smart, and really effective.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1065.pdf">Discovering Diverse and Salient Threads in Document Collections</a></h3>
+
+<p>News corpora cover many related artciles about a string of events.  This
+approach uses a simple graph analysis algorithm to extract chains of articles
+that cover a single topic spread accross many documents.  The main issues seem
+to be with scale and how to select how many and which threads to extract.  For
+instance, can you first impose a hierarchy of topics over the dataset and then
+select threads within that decomposition?  Is there some number of diverse
+threads that sufficiently describe the dataset?  And how would you learn a lot
+of different threads?</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1117.pdf">Constructing Task-Specific Taxonomies for Document Collection Browsing</a></h3>
+
+<p>This sounds really cool, but i didn&#8217;t have a chance to see the presentation and haven&#8217;t read it yet.</p>
+
+<h3><a href="http://aclweb.org/anthology-new/D/D12/D12-1110.pdf">Semantic Compositionality through Recursive Matrix-Vector Spaces</a></h3>
+
+<p><a href="http://ai.stanford.edu/~ang/">Andrew Ng</a> currently seems to have a man crush on neural networks.  He and a
+student show a neat improvement upon Recursive Neural Networks, which can do compositionality between phrases that have non-linear properties.  Take the phrase &#8220;absolutely sad&#8221;, it does some funny things composition wise, and existing RNN models can&#8217;t handle it.  They go a step beyond by projecting each component phrase&#8217;s vector representation by a matrix modeling the other word&#8217;s uses.  So in the example, sad modifies absolutely and visa versa, then the joint vector for both modified words gets pushed through a standard RNN.  It worked out pretty well, but requires training.  I&#8217;d love to see something here that doesn&#8217;t need training.</p>
+
+<h2>Conversations with other people</h2>
+
+<p>My talk about <a href="/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment/">Exploring Topic Coherence over many models</a> got some
+interesting responses that were really interesting.</p>
+
+<ol>
+<li>First, we didn&#8217;t really vary the feature weighting mechanism before doing LSA
+and PLSA, so this may be affecting the performance of those models with
+information that LDA doesn&#8217;t have, if we try other schemes, or no scheme,
+what happens?  does that mean we could improve LDA if we have a way of
+encoding that information?</li>
+<li>How doe the models compare when using corpora of different sizes?  We could
+use TASA as an example of a smaller corpus, or UKWac and Wikipedia as larger
+corpora.  Does LDA get better representations with less information or does
+SVD?  Can we then improve either method with those lessons.</li>
+<li>What about word senses?  Can we pos tag and word sense tag the corpus and
+then see improvement along multiple lines?  When doing the coherence
+evaluation, we would probably just have to use the raw tokens initially, but
+for the word similarity and document evaluations, we can use the sense tagged
+words.  Issues with this: How do we do sense tagging? SemCore is
+reasonably sized but WSD models kinda suck.  Are they sufficient to
+improve results?  What about WSI models?  If WSI models do something
+positive, this would be a good evaluation of those models without
+actually knowing what kind of senses or how many we need to learn.</li>
+</ol>
+
+
+<h2>The location</h2>
+
+<p>I wasn&#8217;t such a huge fan of the conferences being located on Jeju island.  There
+were things to do on the island, but they were all expensive, as was the food,
+in my opinion.  Furthermore, the banquet was mildly terrible.  We had it in this
+tiny restaurant next to the ocean, which had a nice view granted, but was too
+small for the attendees and it was a buffet, so a hundred computational
+linguists, which all heard about <a href="http://en.wikipedia.org/wiki/Chinese_restaurant_process">Chinese Restaurant Processes</a> got to wait in
+line to sample tasty Korean food.  As awesomely ironic as it was, it made
+getting food a terrible experience.  I&#8217;d have prefered the be in some major city
+or college town where things are cheap (note how the 2010 meeting of ACL was
+<strong>amazing</strong>).  Jeju is nice and all, especially if i had the time and money to
+explore the island more, but I had neither really, and I think nearly all
+students felt the same way.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Keith Stevens</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-13T18:08:00-07:00" pubdate data-updated="true">Jul 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/computational-linguistics/'>Computational Linguistics</a>, <a class='category' href='/blog/categories/conferences/'>Conferences</a>, <a class='category' href='/blog/categories/natural-language-processing/'>Natural Language Processing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/" data-via="fozziethebeat" data-counturl="http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/06/25/gamma-ramma/" title="Previous Post: Gamma Ramma">&laquo; Gamma Ramma</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/bayesian'>Bayesian (1)</a></li><li><a href='/blog/categories/bayesian-modeling'>Bayesian modeling (2)</a></li><li><a href='/blog/categories/clustering'>Clustering (3)</a></li><li><a href='/blog/categories/computational'>Computational (1)</a></li><li><a href='/blog/categories/computational-linguistics'>Computational linguistics (1)</a></li><li><a href='/blog/categories/conferences'>Conferences (1)</a></li><li><a href='/blog/categories/dilemmas'>Dilemmas (1)</a></li><li><a href='/blog/categories/experiments'>Experiments (1)</a></li><li><a href='/blog/categories/linguistics'>Linguistics (2)</a></li><li><a href='/blog/categories/maven'>Maven (1)</a></li><li><a href='/blog/categories/morality'>Morality (1)</a></li><li><a href='/blog/categories/natural-language-processing'>Natural language processing (1)</a></li><li><a href='/blog/categories/open-source'>Open source (1)</a></li><li><a href='/blog/categories/scala'>Scala (6)</a></li><li><a href='/blog/categories/statistics'>Statistics (1)</a></li><li><a href='/blog/categories/topic-models'>Topic models (1)</a></li></ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/13/acl-and-emnlp-2012-debrief/">ACL and EMNLP 2012 Debrief</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/06/25/gamma-ramma/">Gamma Ramma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment/">Topic Model Comparisons: how to replicate an experiment</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/">Sonatype and Scala: A relationship of trickery</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/">Stepping into the Mixtures with Gibbs Sampling</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Keith Stevens -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'fozziethebeat';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/';
+        var disqus_url = 'http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
