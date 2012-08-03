@@ -111,24 +111,24 @@ h1, h2 {
   width: 920px;
 }
 
-#flight-list {
+#summary-list {
   min-height: 1024px;
 }
 
-#flight-list .date,
-#flight-list .day {
+#summary-list .date,
+#summary-list .day {
   margin-bottom: .4em;
 }
 
-#flight-list .flight,
-#flight-list .summary {
+#summary-list .daysummary,
+#summary-list .summary {
   line-height: 1.5em;
   background: #eee;
   width: 1024;
   margin-bottom: 1px;
 }
 
-#flight-list .early {
+#summary-list .early {
   color: green;
 }
 
@@ -163,7 +163,7 @@ aside {
 <aside id="totals"><span id="active">-</span> of <span id="total">-</span> Tweets selected.</aside>
 
 <div id="lists">
-  <div id="flight-list" class="list"></div>
+  <div id="summary-list" class="list"></div>
 </div>
 
 <footer>
@@ -175,7 +175,11 @@ aside {
 
 </div>
 
-<a href="https://github.com/square/crossfilter"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+<a href="https://github.com/fozziethebeat/fozziethebeat.github.com/tree/master/tweetolympics">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+         alt="Fork me on GitHub">
+</a>
 
 <script src="/javascripts/crossfilter.v1.min.js"></script>
 <script src="/javascripts/d3.v2.min.js"></script>
@@ -388,7 +392,7 @@ chart.round = function(_) {
 return d3.rebind(chart, brush, "on");
 }
 
-d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(summaries) {
+d3.csv("/tweetolympics/tweet.gymnastics.particle.mean.all.splits.json", function(summaries) {
     // Add in types to the summaries.
     summaries.forEach(function(d, i) {
        d.index = i;
@@ -401,7 +405,7 @@ d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(s
     var nestByDate = d3.nest().key(function(d) { return d3.time.day(d.startTime); });
 
     // (It's CSV, but GitHub Pages only gzip's JSON at the moment.)
-    d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.groups.json", function(tweets) {
+    d3.csv("/tweetolympics/tweet.gymnastics.particle.mean.all.groups.json", function(tweets) {
         // Add in types to the tweets.
         tweets.forEach(function(d, i) {
             d.index = i;
@@ -413,13 +417,13 @@ d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(s
         var nestByGroup = d3.nest().key(function(d) { return d.group; });
 
         // Create the crossfilter for the relevant dimensions and groups.
-        var flight = crossfilter(tweets),
-            all = flight.groupAll(),
-            date = flight.dimension(function(d) { return d3.time.day(d.date); }),
+        var tweet = crossfilter(tweets),
+            all = tweet.groupAll(),
+            date = tweet.dimension(function(d) { return d3.time.day(d.date); }),
             dates = date.group(),
-            hour = flight.dimension(function(d) { return d.date.getHours() + d.date.getMinutes() / 60; }),
+            hour = tweet.dimension(function(d) { return d.date.getHours() + d.date.getMinutes() / 60; }),
             hours = hour.group(Math.floor),
-            cluster = flight.dimension(function(d) { return d.group; }),
+            cluster = tweet.dimension(function(d) { return d.group; }),
             clusters = cluster.group();
 
         var charts = [
@@ -465,7 +469,7 @@ d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(s
 
         // Render the initial lists.
         var list = d3.selectAll(".list")
-                     .data([flightList]);
+                     .data([summaryList]);
 
         // Print the total number of tweets.
         d3.selectAll("#total").text(formatNumber(all.value()));
@@ -483,7 +487,7 @@ d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(s
             renderAll();
         };
 
-        function flightList(div) {
+        function summaryList(div) {
             // Map each of the top clusters to their corresponding summaries.
             var clusterSummaries = clusters.top(40).map(function(d) {
                 return summaries[d.key-1];
@@ -508,22 +512,22 @@ d3.csv("/crossfilter/tweet.gymnastics.particle.mean.all.splits.json", function(s
 
               date.exit().remove();
 
-              var flight = date.order()
-                               .selectAll(".flight")
-                               .data(function(d) { return d.values; },
-                                     function(d) { return d.index; });
+              var summary = date.order()
+                                .selectAll(".summarylist")
+                                .data(function(d) { return d.values; },
+                                      function(d) { return d.index; });
 
-              var flightEnter = flight.enter()
-                                      .append("div")
-                                      .attr("class", "flight");
+              var summaryEnter = summary.enter()
+                                        .append("div")
+                                        .attr("class", "summarylist");
 
-              flightEnter.append("div")
-                         .attr("class", "summary")
-                         .text(function(d) { return d.Summary; });
+              summaryEnter.append("div")
+                          .attr("class", "summary")
+                          .text(function(d) { return d.Summary; });
 
-              flight.exit().remove();
+              summary.exit().remove();
 
-              flight.order();
+              summary.order();
             });
         }
 

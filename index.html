@@ -9,8 +9,8 @@
   <meta name="author" content="Keith Stevens">
 
   
-  <meta name="description" content="Attending two conference in Jeju, South Korea Today is the last day of two co-located top tier conferences for Natural
-Language Processing and &hellip;">
+  <meta name="description" content="I&#8217;m currently working on interesting on-line methods for summarizing streams of
+documents. The basic idea is that documents come hurtling into &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +84,429 @@ Language Processing and &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/03/building-visualizations-to-test-summarizations/">Building Visualizations to Test Summarizations</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-03T12:08:00+09:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;m currently working on interesting on-line methods for summarizing streams of
+documents.  The basic idea is that documents come hurtling into your inbox at a
+startling rate and you&#8217;d like a quick, easy, online method to summarize that
+they&#8217;re about.  A lot of approaches to text summarization use an offline
+approach, meaning that those methods inspect <em>all</em> the documents.  That&#8217;s not
+practical, especially if you want to, oh say, do this thing on all the tweets
+about the ongoing <a href="http://www.london2012.com/">2012 Olympics in London</a>.  So my goal is to work up a good
+enough algorithm for doing this process completely online.  Even though it sadly
+won&#8217;t be working well enough to actually run online while the Olympics is going
+on (I&#8217;m still working on said algorithm), it could be pretty cool.</p>
+
+<p>However, figuring out if you&#8217;re doing something right or wrong on many million
+tweets about 50 different sports is kind of challenging.  So while i&#8217;m gathering
+ton of data to process, and then processing it all, I figured I should design a
+night UI for exploring the results.  Being a terrible UI guy I thought I could
+never pull it off, but thanks to the magicians behind <a href="http://square.github.com/crossfilter/">Crossfilter</a> and
+<a href="http://d3js.org/">D3.js</a>, it turned out to be pretty easy.  The result of my UI wizardry is
+currently <a href="/tweetolympics/">here</a>.  And while there&#8217;s quite a lot more to add, such a way to
+select other sports or other summarization methods, it does the bulk of what I
+want:</p>
+
+<ol>
+<li>It builds histograms of tweet&#8217;s based on three dimensions: the date, the
+hour, and the &#8220;cluster&#8221; of the tweet.</li>
+<li>It lets you select sub-regions of these dimensions and automatically updates
+the histograms for other selection files.  So if you put a range on the day,
+you can see the histograms according to hour and cluster for that date range.</li>
+<li>Given a range, you can also see the most representative, or summary, tweets
+for the most frequent clusters in that range.  There&#8217;s still a little bit
+missing, I should really be ordering the summaries by their time, but
+that&#8217;ll come later.</li>
+</ol>
+
+
+<p>As complicated as all that initially sounds, I barely had to write any
+JavaScript on my own, which is truly fortunate since I barely know JavaScript.</p>
+
+<h2>The joy of making that UI.</h2>
+
+<p>Since I know next to nothing about JavaScript, <a href="http://d3js.org/">D3.js</a>, and <a href="http://square.github.com/crossfilter/">Crossfire</a>, I
+did a lot of hacking, console debugging, and total guessing to make this beast
+work.  So here&#8217;s a quick rundown on what these three things are doing together
+and how they synergize into my current app.  There&#8217;s still quite a bit I don&#8217;t
+know, so i&#8217;ll mostly focus on what I figured out in my hackings.</p>
+
+<h3>Loading that dataset</h3>
+
+<p>Cross filter arrays of key-valye javascript objects, which can be easily pulled
+out of <a href="http://en.wikipedia.org/wiki/Comma-separated_values">Comma Separated Files</a>.  However, those initial object arrays are
+totally untyped, so you need to do some processing to shuffle values out of raw
+strings into something more usable.  I&#8217;m currently using two styles of data: 1) one
+format that simple records the time of a tweet and it&#8217;s cluster identifier and
+2) one that records the cluster identifier, the time of the first tweet in that
+cluster, the time of the average tweet in that cluster, and the summary tweet.
+They&#8217;re pretty simple and look like this:</p>
+
+<figure class='code'><figcaption><span>Example data for the tweet groups</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>Date,Time,Group
+</span><span class='line'>07272344,1343400289,1
+</span><span class='line'>07272351,1343400698,2
+</span><span class='line'>07272351,1343400706,3
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and</p>
+
+<figure class='code'><figcaption><span>Example data for the tweet summaries</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>StartTime,MeanTime,Group,Summary
+</span><span class='line'>1343458794,1343400289,1,I cannot wait for the swimming diving and gymnastics #London2012
+</span><span class='line'>1343458793,1343400698,2,Hey @mdoolittle #olympics day today. I hope we&#39;ll have comments from you esp. 4 #gymnastics parts! ;) I&#39;m an EX-gymnast too(it shows!lol)
+</span><span class='line'>1343458791,1343400706,3,looking forward to the opening ceremony tonight just disappointed that SABC wont be showing much gymnastics #Olympics2012
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://d3js.org/">D3</a> makes this super easy to handle.  All you do is call <code>d3.csv(fileName, callback)</code>.  In my example, this turns out to be:</p>
+
+<figure class='code'><figcaption><span>How to process the summaries</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">csv</span><span class="p">(</span><span class="s2">&quot;/crossfilter/tweet.gymnastics.particle.mean.all.splits.json&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">summaries</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Add in types to the summaries.</span>
+</span><span class='line'>    <span class="nx">summaries</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nx">d</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+</span><span class='line'>       <span class="nx">d</span><span class="p">.</span><span class="nx">group</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Group</span><span class="p">);</span>
+</span><span class='line'>       <span class="nx">d</span><span class="p">.</span><span class="nx">startTime</span> <span class="o">=</span> <span class="nx">parseTime</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">StartTime</span><span class="p">);</span>
+</span><span class='line'>       <span class="nx">d</span><span class="p">.</span><span class="nx">meanTime</span> <span class="o">=</span> <span class="nx">parseTime</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">MeanTime</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and</p>
+
+<figure class='code'><figcaption><span>How to process the groups</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">csv</span><span class="p">(</span><span class="s2">&quot;/crossfilter/tweet.gymnastics.particle.mean.all.groups.json&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tweets</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Add in types to the tweets.</span>
+</span><span class='line'>    <span class="nx">tweets</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">d</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+</span><span class='line'>        <span class="nx">d</span><span class="p">.</span><span class="nx">group</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Group</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">d</span><span class="p">.</span><span class="nx">time</span> <span class="o">=</span> <span class="nx">parseDate</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nb">Date</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">d</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">parseTime</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Time</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Crossing the filters on that data</h3>
+
+<p>Once you&#8217;ve got data loaded, you gotta do something with it, no?
+<a href="http://square.github.com/crossfilter/">Crossfilter</a> lets you do some super powerful things with very little work.
+The primary job of cross filter is to take your array of objects and let you
+select different dimensions to act as keys in that array.  Initially your key is
+just the index of the array.  But after calling <code>dimension</code> on a crossfiltered
+object, you can select any variable in your object to be a key.  Since I wanted
+three charts, that means I need three keys: 1) a key on the day, 2) a key on the
+hour, and 3) a key on the cluster id.  I also want counts for the number of
+tweets in the bins corresponding to each dimension.  That sounds like a lot of
+work, but it&#8217;s as easy as this:</p>
+
+<figure class='code'><figcaption><span>Create dimensions for the charts.</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Create the crossfilter over the tweets.</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">tweet</span> <span class="o">=</span> <span class="nx">crossfilter</span><span class="p">(</span><span class="nx">tweets</span><span class="p">),</span>
+</span><span class='line'>    <span class="c1">// This groups all tweets together.</span>
+</span><span class='line'>    <span class="nx">all</span> <span class="o">=</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">groupAll</span><span class="p">(),</span>
+</span><span class='line'>    <span class="c1">// Select the day of the tweet as a dimension and compute the counts.</span>
+</span><span class='line'>    <span class="nx">date</span> <span class="o">=</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">dimension</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">day</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">);</span> <span class="p">}),</span>
+</span><span class='line'>    <span class="nx">dates</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">group</span><span class="p">(),</span>
+</span><span class='line'>    <span class="c1">// Select the hour of the tweet as a dimension and compute the counts.</span>
+</span><span class='line'>    <span class="nx">hour</span> <span class="o">=</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">dimension</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span><span class="p">;</span> <span class="p">}),</span>
+</span><span class='line'>    <span class="nx">hours</span> <span class="o">=</span> <span class="nx">hour</span><span class="p">.</span><span class="nx">group</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">),</span>
+</span><span class='line'>    <span class="c1">// Select the cluster id of the tweet as a dimension and compute the counts.</span>
+</span><span class='line'>    <span class="nx">cluster</span> <span class="o">=</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">dimension</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">group</span><span class="p">;</span> <span class="p">}),</span>
+</span><span class='line'>    <span class="nx">clusters</span> <span class="o">=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">group</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it! All you need is two lines to select a dimension for your chart and
+compute the data for the histogram.  Easy Breezy.</p>
+
+<h3>Charting those groups</h3>
+
+<p>Now that you&#8217;ve got some dimensions set up and some counts to go along with
+them, it&#8217;s time to plot those fine numbers.  For each chart you want, all you
+have to do is note what dimension you want to use, provide the summary counts,
+put some limits on the plots, then apply all that to some plotting object like a
+bar graph.  I&#8217;m just using bar charts, but <a href="http://nickqizhu.github.com/dc.js/">this other crossfilter example</a>
+gives some sweet alternatives you can re-use.</p>
+
+<figure class='code'><figcaption><span>Making the hourly chart</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// The first chart tracks the hours of each tweet.  It has the</span>
+</span><span class='line'><span class="c1">// standard 24 hour time range and uses a 24 hour clock.</span>
+</span><span class='line'><span class="nx">barChart</span><span class="p">().</span><span class="nx">dimension</span><span class="p">(</span><span class="nx">hour</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">group</span><span class="p">(</span><span class="nx">hours</span><span class="p">)</span>
+</span><span class='line'>          <span class="c1">// Setup the type of dimension you want and the range of values that</span>
+</span><span class='line'>          <span class="c1">// are valid.  Note that I&#39;m still a little fuzzy on this part.</span>
+</span><span class='line'>          <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
+</span><span class='line'>                     <span class="p">.</span><span class="nx">domain</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">])</span>
+</span><span class='line'>                     <span class="p">.</span><span class="nx">rangeRound</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">24</span><span class="p">])),</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Printing the tweet summaries</h3>
+
+<p>The fun part is printing all the summaries for the tweets that have been
+selected.  The original <a href="http://square.github.com/crossfilter/">Crossfilter</a> example was pretty simple, it just
+printout out the actual rows being selected in the histograms.  But I wanted to
+do something more complicated.  I wanted to figure out which clusters existed in
+the selection, get the summaries attached to each cluster (and only one copy
+of the summary per cluster), and then organize the summaries by date.  Not
+knowing javascript, that sounded kinda hard.  In my candy land language,
+[Scala][7], it&#8217;s pretty easy to do with some groupBys and maps, but does
+javascript have all this?  YES!  Turns out the <code>clusters</code> object` computed to
+print the histogram has nearly everything I want, the collection of cluster
+identifiers found in the current filter selection.  And since all arrays in
+JavaScript have a map operator, I can get the array of summaries I so desperately
+desired.</p>
+
+<figure class='code'><figcaption><span>Getting those summaries for the selected tweets</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Map each of the top clusters to their corresponding summaries.</span>
+</span><span class='line'><span class="c1">// Note that the entries in clusters use group identifiers starting at 1, so we</span>
+</span><span class='line'><span class="c1">// have to subtract by 1 to make them valid indices.</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">clusterSummaries</span> <span class="o">=</span> <span class="nx">clusters</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">40</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">summaries</span><span class="p">[</span><span class="nx">d</span><span class="p">.</span><span class="nx">key</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Next comes the cool part, creating a hierarchy on the cluster summaries based on
+the date.  These two lines together do that magic:</p>
+
+<figure class='code'><figcaption><span>Building a nice heirarchy on the tweets according to date</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">nestByDate</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">nest</span><span class="p">().</span><span class="nx">key</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">day</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">startTime</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'><span class="c1">// Group the summaries by their date.</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">tweetsByGroup</span> <span class="o">=</span> <span class="nx">nestByDate</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">clusterSummaries</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first line creates an object that will nest any array of items with a
+<code>startTime</code> attribute according to their day and the second line runs that
+nester over the cluster summaries to get a mapping from days to arrays of
+summaries occuring on each day.  Using that nested object, you can build a table
+of tweet summaries for each day by attaching the data object to the list div
+holding those tables:</p>
+
+<figure class='code'><figcaption><span>Attaching the nested data to the html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// For each day&#39;s summaries, add them as a table with the date as</span>
+</span><span class='line'><span class="c1">// the header.</span>
+</span><span class='line'><span class="nx">div</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// This binds the date nested group of tweet summaries to the `.date` element</span>
+</span><span class='line'>  <span class="c1">// of the `summary-list div.</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span><span class='line'>               <span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.date&quot;</span><span class="p">)</span>
+</span><span class='line'>               <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">tweetsByGroup</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// This appends a new `.date` and `.day` div for each item in the nested list</span>
+</span><span class='line'>  <span class="c1">// the summary&#39;s start time as the title for the list.</span>
+</span><span class='line'>  <span class="nx">date</span><span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">startTime</span><span class="p">);</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">date</span><span class="p">.</span><span class="nx">exit</span><span class="p">().</span><span class="nx">remove</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// This binds each entry in the nested list, i.e. the list of summaries for</span>
+</span><span class='line'>  <span class="c1">// each day, to the divs created above.  This way each div, titled with a</span>
+</span><span class='line'>  <span class="c1">// particular day, has the array of summaries found on that day.</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">order</span><span class="p">()</span>
+</span><span class='line'>                    <span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.summarylist&quot;</span><span class="p">)</span>
+</span><span class='line'>                    <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">;</span> <span class="p">},</span>
+</span><span class='line'>                         <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">index</span><span class="p">;</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// This creates a new `.summarylist` div to surround the summaries.</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">summaryEnter</span> <span class="o">=</span> <span class="nx">summary</span><span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
+</span><span class='line'>                            <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">)</span>
+</span><span class='line'>                            <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;summarylist&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// This creates a new &#39;.summary&#39; div for each summary to place in the list.</span>
+</span><span class='line'>  <span class="nx">summaryEnter</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Summary</span><span class="p">;</span> <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">summary</span><span class="p">.</span><span class="nx">exit</span><span class="p">().</span><span class="nx">remove</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">summary</span><span class="p">.</span><span class="nx">order</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that&#8217;s it!  Again, easy breazy.</p>
+
+<h3>Setting up the divs for the stuff you want</h3>
+
+<p>The last thing you need whenever you&#8217;re going to be mashing data into a
+website via <a href="http://d3js.org/">D3</a> is some divs to host that data.  For my application, I need
+just two types of divs: charts to hold the histograms and tables to hold the
+summaries.  These look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;charts&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;hour-chart&quot;</span> <span class="na">class=</span><span class="s">&quot;chart&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>Time of Day<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;cluster-chart&quot;</span> <span class="na">class=</span><span class="s">&quot;chart&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>Cluster<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;date-chart&quot;</span> <span class="na">class=</span><span class="s">&quot;chart&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>Date<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;lists&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;summary-list&quot;</span> <span class="na">class=</span><span class="s">&quot;list&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>They&#8217;re pretty dead simple.  One chart for each histogram I&#8217;m plotting and a
+general div for the lists.  The lists will get populated with more divs
+dynamically based on how many dates fall into a selected range.</p>
+
+<h2>Creating the data to put in this app</h2>
+
+<p>So how did I get all these tweets? And how did I split them up into different
+clusters?  That&#8217;s <em>secret</em> for now, but if my current research project is
+looking good, that&#8217;ll be come the topic of a new research paper, and if not,
+i&#8217;ll be the topic of a blog post describing what failed!  So stay tuned!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2568,209 +2991,9 @@ those?&#8221;  You can make a handy debate about it.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/29/morphological-analysis-made-easy-with-scala/">Morphological Analysis Made Easy With Scala</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-29T19:49:00+09:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ever since I got involved with distributional semantics, i&#8217;ve been perplexed
-about how to handle morphed words, which happens to be just about every noun and
-verb in English.  What is a morphed word in English you ask?  It&#8217;s pretty much
-any word that&#8217;s been changed to reflect things like past tense, plurality,
-ownership, and all those things.  They&#8217;re conjugated verbs and more!  But they
-always pose a massive problem in distributional semantics.</p>
-
-<p>Think about it for a second, what&#8217;s the big difference between &#8220;cat&#8221; and &#8220;cats&#8221;?
-Not too much, the second is simply saying there are multiple occurrences of a
-&#8220;cat&#8221;.  But what do people typically do for distributional semantics?  One of
-two bad options: leave the two words as separate things and thus split the
-information gained about &#8220;cat&#8221; across two words or stem every word and throw
-away something important like the multitude of &#8220;cat&#8221;.  Both seem totally wrong
-and unsatisfactory.</p>
-
-<p>So on and off I&#8217;ve searched for a good tool to do morphological analysis for
-English.  Ideally, the analyzer could recognize the word &#8220;cats&#8221; and split into
-two things: <code>cat</code> and <code>&lt;p&gt;</code> that way you can retain all your information about a
-<code>cat</code> and still know that there were a multitude of them when you see &#8220;cats&#8221;.
-And for verbs?  You should see the same thing, <code>ran</code> could then become something
-like <code>run</code> and <code>&lt;past&gt;</code>&#8221; so that again, you still know everything about running and that
-it happened in the past.  But until today, I&#8217;ve never found a tool that does
-this both quickly and easily in a usable language.</p>
-
-<p>That all changes today.  Today I found the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lltool-box for Java</a>.  It creates
-a large finite state machine for recognizing morphed words and figuring out the
-root word, i.e. &#8220;run&#8221; in &#8220;ran&#8221; and &#8220;cat&#8221; in &#8220;cats&#8221;, and how the word was
-morphed, i.e. &#8220;run&#8221; for &#8220;ran&#8221; and &#8220;cat&#8221; for &#8220;cats&#8221;.  All you have to do is get a
-listing of how words are morphed, load it up until the <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>
-system and analyze away your sentences.</p>
-
-<p>So let&#8217;s take a spin on how to do this.  First, you read the wiki instructions
-for <a href="http://wiki.apertium.org/wiki/Lttoolbox-java">Lttoolbox-java</a>, download it, and compile it.  Compiling is easy:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mvn deploy -DskipTests</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>-DskipTests</code> part seems needed since their unit tests don&#8217;t pass.  But
-after that, you can start using the code in your favorite jvm based language.
-my personal fave is Scala, so let&#8217;s run with that.  So what next?  Now you
-create a <a href="http://en.wikipedia.org/wiki/Finite_state_transducer">Finite State Transducer</a> using a dictionary file and tell it to
-analyze words:</p>
-
-<figure class='code'><figcaption><span>Setting up the Finite State Transducer </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// Create the Finite State Transducer processor.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">fstp</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">FSTProcessor</span><span class="o">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Load the finite state transducer with the compiled dictionary file.  </span>
-</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">openInFileStream</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">)))</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Setup the trandsducer to do morphological analysis and make sure it&#39;s valid.</span>
-</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">initAnalysis</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now that you have a transducer ready to analyze words, you just feed it stuff like this:</p>
-
-<figure class='code'><figcaption><span>Loading the transducer with input and output </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringReader</span><span class="o">(</span><span class="s">&quot;cats, dogs and blubber all running quickly!&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="k">val</span> <span class="n">out</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StringWriter</span><span class="o">()</span>
-</span><span class='line'><span class="c1">// Do the analysis.</span>
-</span><span class='line'><span class="n">fstp</span><span class="o">.</span><span class="n">analysis</span><span class="o">(</span><span class="n">in</span><span class="o">,</span> <span class="n">out</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You gotta create a reader and writer for their transducer interface.  It&#8217;s
-funky, but it still leaves you with a pretty flexible interface.  So now what?
-What does the output look like?  If you feed it &#8220;cats, dogs and blubber all
-running quickly!&#8221;, the output is pretty ugly at first:</p>
-
-<figure class='code'><figcaption><span>This will never look pretty</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>^cats/cat<span class="nt">&lt;n&gt;&lt;pl&gt;</span>$^,/,<span class="nt">&lt;cm&gt;</span>$
-</span><span class='line'>^dogs/dog<span class="nt">&lt;n&gt;&lt;pl&gt;</span>$
-</span><span class='line'>^and/and<span class="nt">&lt;cnjcoo&gt;</span>$
-</span><span class='line'>^blubber/*blubber$
-</span><span class='line'>^all/all<span class="nt">&lt;adj&gt;</span>/all<span class="nt">&lt;adv&gt;</span>/all<span class="nt">&lt;predet&gt;&lt;sp&gt;</span>/all<span class="nt">&lt;det&gt;&lt;qnt&gt;&lt;pl&gt;</span>/all<span class="nt">&lt;det&gt;&lt;qnt&gt;&lt;sp&gt;</span>/all<span class="nt">&lt;prn&gt;&lt;qnt&gt;&lt;mf&gt;&lt;sp&gt;</span>$
-</span><span class='line'>^running/run<span class="nt">&lt;vblex&gt;&lt;ger&gt;</span>/run<span class="nt">&lt;vblex&gt;&lt;pprs&gt;</span>/run<span class="nt">&lt;vblex&gt;&lt;subs&gt;</span>/running<span class="nt">&lt;adj&gt;</span>/running<span class="nt">&lt;n&gt;&lt;sg&gt;</span>$
-</span><span class='line'>^quickly/quickly<span class="nt">&lt;adv&gt;</span>$
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Beastly no? So i figure that it&#8217;s best to write some regular expressions to
-handle all of this.  You&#8217;ll need a couple: one to split up words, one to match
-analysed words, one for unrecognized words, and one to split up the tags.  In
-scala you can do this pretty easily like this:</p>
-
-<figure class='code'><figcaption><span>Regular Expressions for handling output from Lttoolbox-java </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// 1: Recognize a fully analyzed word so that they can be tokenized.  In the</span>
-</span><span class='line'><span class="c1">// above test case, &quot;cats,&quot; will not be separated by white space so we require</span>
-</span><span class='line'><span class="c1">// this more complicated splitting method.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">parseRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^.*?\$&quot;&quot;&quot;</span><span class="o">.</span><span class="n">r</span>
-</span><span class='line'><span class="c1">// 2: Recognize a word with morphological tags.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">morphredRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^(.+?)/(.+?)(&lt;[0-9a-z&lt;&gt;]+&gt;).*\$&quot;&quot;&quot;</span>
-</span><span class='line'><span class="c1">// 3: Recognize a word that could not be recognized.  The transducer prepends</span>
-</span><span class='line'><span class="c1">// &amp;quot;*&amp;quot; to unrecognized tokens, so we match and eliminate it.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">unknownRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;\^(.+)/\*(.+?)\$&quot;&quot;&quot;</span>
-</span><span class='line'><span class="c1">// 4: A regular expression for matching morphological tags.  This is simpler</span>
-</span><span class='line'><span class="c1">// than writing a splitting rule.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">featureRegex</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;&lt;.*?&gt;&quot;&quot;&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then all you need to do is run through the analyzed sentence and split it up
-into separate tokens, some for root words and some for morphed features.  You
-can do that like this:</p>
-
-<figure class='code'><figcaption><span>Parsing that business Lttoolbox-java </span><a href='https://gist.github.com/1772752'>Source Gist </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">tokens</span> <span class="k">=</span> <span class="n">parseRegex</span><span class="o">.</span><span class="n">findAllIn</span><span class="o">(</span><span class="n">out</span><span class="o">.</span><span class="n">toString</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">parseMatch</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
-</span><span class='line'><span class="c1">// Match the current analyzed word as being morphed or unknown.  For morphed</span>
-</span><span class='line'><span class="c1">// words, create a list of the lemma and the tags.  For unknown words just</span>
-</span><span class='line'><span class="c1">// create a list of the lemma.</span>
-</span><span class='line'><span class="n">parseMatch</span><span class="o">.</span><span class="n">toString</span> <span class="k">match</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">morphredRegex</span><span class="o">(</span><span class="n">surface</span><span class="o">,</span> <span class="n">lemma</span><span class="o">,</span> <span class="n">tags</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">lemma</span> <span class="o">::</span> <span class="n">featureRegex</span><span class="o">.</span><span class="n">findAllIn</span><span class="o">(</span><span class="n">tags</span><span class="o">).</span><span class="n">toList</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">unknownRegex</span><span class="o">(</span><span class="n">surface</span><span class="o">,</span> <span class="n">lemma</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span>
-</span><span class='line'>        <span class="nc">List</span><span class="o">(</span><span class="n">lemma</span><span class="o">)</span>
-</span><span class='line'><span class="o">}).</span><span class="n">reduceLeft</span><span class="o">(</span><span class="n">_++_</span><span class="o">).</span><span class="n">filter</span><span class="o">(!</span><span class="n">rejectFeatures</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">_</span><span class="o">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This bit of code&#8217;s pretty sweet.  You first iterate over each analyzed word with
-the first matcher.  Then you match each word with the two word level regular
-expressions: one for fully analyzed words and one for unrecognized words.  After
-that it&#8217;s easy smeesy, you just split the tags up with the last regular
-expression and turn it all into a list.  The last two bits at the end turn the
-whole thing into a single list and lets you filter out tags or tokens you don&#8217;t
-want.</p>
-
-<p>So with that, you can now do simple and fast morphological analysis in Java,
-Scala, or even Clojure (but who&#8217;d do something silly like that?)!-</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -2789,6 +3012,10 @@ Scala, or even Clojure (but who&#8217;d do something silly like that?)!-</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/03/building-visualizations-to-test-summarizations/">Building Visualizations to Test Summarizations</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/13/acl-and-emnlp-2012-debrief/">ACL and EMNLP 2012 Debrief</a>
       </li>
     
@@ -2804,15 +3031,11 @@ Scala, or even Clojure (but who&#8217;d do something silly like that?)!-</p>
         <a href="/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/">Sonatype and Scala: A relationship of trickery</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/">Stepping into the Mixtures with Gibbs Sampling</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/bayesian' style='font-size: 110.0%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 120.0%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 130.0%'>Clustering(3)</a> <a href='/blog/categories/computational' style='font-size: 110.0%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 110.0%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 110.0%'>Conferences(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 110.0%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 110.0%'>Experiments(1)</a> <a href='/blog/categories/linguistics' style='font-size: 120.0%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 110.0%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 110.0%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 110.0%'>Natural language processing(1)</a> <a href='/blog/categories/open-source' style='font-size: 110.0%'>Open source(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(6)</a> <a href='/blog/categories/statistics' style='font-size: 110.0%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 110.0%'>Topic models(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/bayesian' style='font-size: 110.0%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 120.0%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 140.0%'>Clustering(4)</a> <a href='/blog/categories/computational' style='font-size: 110.0%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 110.0%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 110.0%'>Conferences(1)</a> <a href='/blog/categories/d3' style='font-size: 110.0%'>D3(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 110.0%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 110.0%'>Experiments(1)</a> <a href='/blog/categories/linguistics' style='font-size: 120.0%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 110.0%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 110.0%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 110.0%'>Natural language processing(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 110.0%'>Natural language processing(1)</a> <a href='/blog/categories/open-source' style='font-size: 110.0%'>Open source(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(6)</a> <a href='/blog/categories/statistics' style='font-size: 110.0%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 110.0%'>Topic models(1)</a> </span>
 </section>
 
 <section>
