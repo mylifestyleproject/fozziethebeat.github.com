@@ -328,6 +328,8 @@ d3.csv("flights-3m.json", function(flights) {
       var date = d3.select(this).selectAll(".date")
           .data(flightsByDate, function(d) { return d.key; });
 
+      console.log("Refreshing a table");
+
       date.enter().append("div")
           .attr("class", "date")
         .append("div")
@@ -337,14 +339,15 @@ d3.csv("flights-3m.json", function(flights) {
       date.exit().remove();
 
       var flight = date.order().selectAll(".flight")
-          .data(function(d) { return d.values; }, function(d) { return d.index; });
+          .data(function(d) { return d.values; }, 
+                function(d) { return d.index; });
 
       var flightEnter = flight.enter().append("div")
           .attr("class", "flight");
 
       flightEnter.append("div")
           .attr("class", "time")
-          .text(function(d) { return d.index });
+          .text(function(d) { console.log(d.index); return d.index });
 
           /*
       flightEnter.append("div")
