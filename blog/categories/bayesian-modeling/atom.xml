@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bayesian modeling | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/bayesian-modeling/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-07-16T07:14:33-07:00</updated>
+  <updated>2012-08-03T11:16:59+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Stepping into the Mixtures with Gibbs Sampling]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/"/>
-    <updated>2012-05-17T16:07:00-07:00</updated>
+    <updated>2012-05-17T16:07:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling</id>
     <content type="html"><![CDATA[<script src="http://fozziethebeat.github.com/javascripts/raphael-min.js"></script>
 
@@ -29,7 +29,7 @@
 
 <h3>Refresher</h3>
 
-<p>{% img right /images/empty_pool.jpg 300 600 Empty Pools = Not fun for diving %}
+<p><img class="right" src="/images/empty_pool.jpg" width="300" height="600" title="Empty Pools = Not fun for diving" >
 As stated before <a href="blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/">here</a> and <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">elsewhere</a>, mixture models are pretty cool.
 But rather than diving head first into a complicated mixture model like the
 <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process Mixture Model</a> or the <a href="http://en.wikipedia.org/wiki/Hierarchical_Dirichlet_process">Hierarchical Dirichlet Process</a>,
@@ -43,7 +43,7 @@ short, sweet, and easy to understand.</p>
 
 <h3>The Toy of Machine Learning Methods</h3>
 
-<p>{% img left /images/Single_linked_list.png 400 200 Linked Lists = Tool for Learning %}
+<p><img class="left" src="/images/Single_linked_list.png" width="400" height="200" title="Linked Lists = Tool for Learning" >
 Simple but instructive data structures like a <a href="http://en.wikipedia.org/wiki/Linked_list">Linked List</a> work well as an
 instructive tool.  Good libraries provide solid and efficient implementations,
 but it's straightforward enough for beginners to implement in a variety of
@@ -122,7 +122,7 @@ most frequent descriptions:</p>
 </td>
 <td>
 
-{% math %}
+<script type="math/tex; mode=display">
 \begin{array}{lll}
 \phi & \sim & Dirichlet(\alpha) \\
 \theta_{s} & \sim & Dirichlet(\gamma_s) \\
@@ -130,7 +130,7 @@ most frequent descriptions:</p>
 K_{j} & \sim & Multinomial(\phi) \\
 X_j & \sim & Multinomial(\theta_{K_{j}}) 
 \end{array}
-{% endmath %}
+</script>
 
 </td>
 </table>
@@ -138,15 +138,15 @@ X_j & \sim & Multinomial(\theta_{K_{j}})
 
 <p>These two views of Naive Bayes describe the same model, but different ways
 of computing it.  For the model on the right, if we work backwards, it says that
-a data point {% m %} X_j {% em %} comes from some multinomial distribution {% m %} \theta_{K_j} {% em %}.  {% m %} K_j {% em %} is a latent variable that encode which
+a data point <script type="math/tex"> X_j </script> comes from some multinomial distribution <script type="math/tex"> \theta_{K_j} </script>.  <script type="math/tex"> K_j </script> is a latent variable that encode which
 group, i.e. spam or not spam, the data point came from, and that itself comes
-from a multinomial {% m %} \phi {% em %}.  The two {% m %} \theta_s, \theta_n {% em %} distributions describe our knowledge about spam and non-spam emails,
+from a multinomial <script type="math/tex"> \phi </script>.  The two <script type="math/tex"> \theta_s, \theta_n </script> distributions describe our knowledge about spam and non-spam emails,
 respectively.  And finally, all three multinomial distributions come from
 <a href="http://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet</a> distributions.  The added magic of the <a href="http://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet</a>
 distrubtion is that it <strong>generates</strong> multinomial distributions, this
 relationship is more formally known as a <a href="http://en.wikipedia.org/wiki/Conjugate_prior">Conjugate Prior</a>.  The plate
-diagram on the left says <strong>nearly</strong> the same story except it <em>collapses</em> out the {% m %} \phi {% em %} distribution and links {% m %} \alpha {% em %} directly to
-the compnent labels.  We could also in theory collapse the {% m %} \theta {% em%} distrubtions, but we'll not do that
+diagram on the left says <strong>nearly</strong> the same story except it <em>collapses</em> out the <script type="math/tex"> \phi </script> distribution and links <script type="math/tex"> \alpha </script> directly to
+the compnent labels.  We could also in theory collapse the <script type="math/tex"> \theta </script> distrubtions, but we'll not do that
 for the moment.</p>
 
 <h4>A Graphical Model</h4>
@@ -247,13 +247,13 @@ for the moment.</p>
 
 <p>This graphical view tells an alternative story.  Instead of probability
 distrubutions making other distributions and then finally making data points.
-this says that the class of a data point, {% m %} Y {% em %} generates the
-features of the data point, {% m %}, w_1, w_2, \cdots, w_v {% em %}.  This is
+this says that the class of a data point, <script type="math/tex"> Y </script> generates the
+features of the data point, <script type="math/tex">, w_1, w_2, \cdots, w_v </script>.  This is
 where the naive part comes from, each "feature", i.e. word in the email, is
 completely disconnected from the other words and only depends on the class of
 the email.</p>
 
-<p>{% img right /images/thomas_bayes.gif Thomas Bayes, not so Naive %}</p>
+<p><img class="right" src="/images/thomas_bayes.gif" title="Thomas Bayes, not so Naive" ></p>
 
 <h4>A Probability Distribution</h4>
 
@@ -261,13 +261,13 @@ the email.</p>
 probability distrubtion.  Let's write out the distribution for just the spam
 class:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(spam | email) \propto p(spam) \prod_{word \in email} p(word | spam)
-{% endmath %}</p>
+</script></p>
 
 <p>This looks pretty much the same for non-spam.  Simple, no? If we combine
 together the different views above with this written form, then we can think of
-the class {%m%}spam{%em%} as a <a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial</a> distribution over words and the
+the class <script type="math/tex">spam</script> as a <a href="http://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial</a> distribution over words and the
 probability of a word given the class spam is really just the probability of
 picking the word based on how many times it's shown up in spammy emails.
 Similarly, the probability of seeing spam is just the number of times you've
@@ -275,17 +275,17 @@ seen a delcious piece of spam, be it on your phone, at home, or in the frying
 pan.  Using that intuition and some Bayesian math, the above definition gets
 boild down to:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(s|e) \propto \frac{C_{s} + \alpha_s - 1}{N + \alpha_s + \alpha_n- 1}</p>
 
 <pre><code>            \prod_{w \in e} \theta_{s,w}^{C_{w,e}}
 </code></pre>
 
-<p>{% endmath %}</p>
+<p></script></p>
 
 <p>Let's get some definitions out of the way.</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 \begin{array}{lll}
 C_s &amp;=&amp; \text{number of times spam's been seen} \
 C<em>{w,e} &amp;=&amp; \text{number of times seeing word w in email e} \
@@ -293,28 +293,28 @@ N &amp;=&amp; \text{number of data points seen} \
 \alpha</em>{s,n} &amp;=&amp; \text{priors for each class} \
 \theta_{s,w} &amp;=&amp; \text{the wight given to word w in class spam} \
 \end{array}
-{% endmath %}</p>
+</script></p>
 
-<p>Let's tease this appart into two pieces, {% m %} p(spam) {% em %} and {%m%} p(email|spam) {%em%}.  The first part is:</p>
+<p>Let's tease this appart into two pieces, <script type="math/tex"> p(spam) </script> and <script type="math/tex"> p(email|spam) </script>.  The first part is:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(s) \propto \frac{C<em>{s} + \alpha_s - 1}{N + \alpha_s + \alpha_n- 1}
-{% endmath %}
+</script>
 This basically says that the probability of spam is the number of time's we've
 seen it, plus some smoothing factors so that both span and non-spam have some
 positive possibility of existing.  Amazingly! this is also equivalent to the
-</em>collapsed_ {%m%}\phi{%em%} distribution we mentioned in the bayesian
+</em>collapsed_ <script type="math/tex">\phi</script> distribution we mentioned in the bayesian
 description of Naive Bayes, by doing just a little bit of math and realizing
 that the Dirichlet is a conjugate prior of a multinomial, we get the above
 distribution for each class.</p>
 
 <p>Next,
-{% math %}
+<script type="math/tex; mode=display">
 p(email|s) = \prod<em>{w \in e} \theta</em>{s,w}<sup>{C_{w,e}}</sup>
-{% endmath %}</p>
+</script></p>
 
-<p>If {%m%}\theta_s{%em%} describes the probability of each word occuring in a
-spammy email, then {%m%}\theta_{w,s}<sup>{C_{w,e}}{%em%}</sup> becomes the likelihood of
+<p>If <script type="math/tex">\theta_s</script> describes the probability of each word occuring in a
+spammy email, then <script type="math/tex">\theta_{w,s}<sup>{C_{w,e}}</script></sup> becomes the likelihood of
 seeing that word as many times as observed in the email.  By computing the
 product of all these words, we <em>naively</em> get the probability of the full email.
 Slam the two distributions together and we get the full likelihood of the email
@@ -323,22 +323,22 @@ given the class spam.</p>
 <h3>Don't forget Gibbs!</h3>
 
 <p>Now that Naive Bayes makes some more sense in a variety of descriptive flavours
-{% img right /images/Josiah_Willard_Gibbs_-from_MMS-.jpg 300 600 The man who made sampling cool before HipHop%}
+<img class="right" src="/images/Josiah_Willard_Gibbs_-from_MMS-.jpg" width="300" height="600" title="The man who made sampling cool before HipHop" >
 and we've defined our distrubutions and hyper parameters, it's time to throw in
 gibbs sampling.  To quickly refresh our memories, the recipe for gibbs at this
 stage is:</p>
 
 <ol>
-<li>for each data point {%m%} X_j {%em%}
+<li>for each data point <script type="math/tex"> X_j </script>
 
 <ol>
-<li>Forget about {%m%} X_j {%em%}</li>
-<li>Compute the likelihood that each component, {%m%}\theta_*{%em%}, generated {%m%}X_j{%em%}</li>
-<li>Sample and jot down a new component, {%m%}K_j{%em%}, for {%m%}X_J{%em%}</li>
-<li>Remember {%m%} X_J {%em%}</li>
+<li>Forget about <script type="math/tex"> X_j </script></li>
+<li>Compute the likelihood that each component, <script type="math/tex">\theta_*</script>, generated <script type="math/tex">X_j</script></li>
+<li>Sample and jot down a new component, <script type="math/tex">K_j</script>, for <script type="math/tex">X_J</script></li>
+<li>Remember <script type="math/tex"> X_J </script></li>
 </ol>
 </li>
-<li>Restimate our component parameters, {%m%}\theta_{*} {%em%}</li>
+<li>Restimate our component parameters, <script type="math/tex">\theta_{*} </script></li>
 <li>Repeat</li>
 </ol>
 
@@ -348,13 +348,13 @@ that we're trying to decide what to do with a <strong>new data point</strong>.  
 sampling only really works because the distrubtions we're working with are
 <a href="http://en.wikipedia.org/wiki/Exchangeable_random_variables">exchangeable</a>, i.e. the ordering of our data doesn't matter.  So we can
 just pretend any data point is new by just forgetting it ever existed, Note,
-this is why {%m%}p(spam){%em%} has a {%m%}-1{%em%} in the denominator, that count
+this is why <script type="math/tex">p(spam)</script> has a <script type="math/tex">-1</script> in the denominator, that count
 has been "forgotten".  Other than that tidbit, we just pretend everything else
 is the same.</p>
 
 <h3>Writing out the code</h3>
 
-<p>{% img left /images/spam_sampling.jpg 150 150 Tasty Samples of Spam %}
+<p><img class="left" src="/images/spam_sampling.jpg" width="150" height="150" title="Tasty Samples of Spam" >
 With Gibbs sampling fresh in our minds, and our probability distributions clear,
 let's see what some real code looks like.  To do this, I'm going to use
 <a href="https://github.com/scalala/Scalala">Scalala</a> and <a href="http://www.scalanlp.org/">Scalanlp</a>, which take care of the linear algebra and
@@ -429,8 +429,8 @@ above.</p>
 
 <p>The first three lines in the loop get the current label for <code>x_j</code> and then
 forget about it's data.  <code>prior</code> represents the likelihood of selecting each
-component just based on it's frequency, i.e. {%m%}p(spam){%em%}.  <code>likelihood</code>
-represents the likelihood of each component generating <code>x_j</code>, i.e. {%m%} p(e|s){%em%}.
+component just based on it's frequency, i.e. <script type="math/tex">p(spam)</script>.  <code>likelihood</code>
+represents the likelihood of each component generating <code>x_j</code>, i.e. <script type="math/tex"> p(e|s)</script>.
 To finish off the sampling procedure, we sample a new label by turning these
 likelihoods into a multinomial distrubtion and sample from it.  With the new
 label we then add in the data for <code>x_j</code> to the that component's stats.  Once
@@ -447,7 +447,7 @@ looking dataset: globs of data points from three different Gaussian
 distributions, each with a different mean and variance.  And let's start off
 with just trying to find 2 groups, as we've been working along with so far.</p>
 
-<p>{% img right /images/test.nb.groups.png Splitting apart some simple groups %}</p>
+<p><img class="right" src="/images/test.nb.groups.png" title="Splitting apart some simple groups" ></p>
 
 <p>Looks pretty neat huh?  Even with a terrible and completely random starting
 point, our learner manages to split up the data in a sensible way by finding a
@@ -459,7 +459,7 @@ stayed there in a stable state.</p>
 
 <p>Now what happens if we try finding 3 components in the data set?</p>
 
-<p>{% img right /images/test.nb.3.groups.png Splitting apart some simple groups %}</p>
+<p><img class="right" src="/images/test.nb.3.groups.png" title="Splitting apart some simple groups" ></p>
 
 <p>Here we get a similar split, but not what we're looking for.  Our mixture model
 gets all befuddled with the group on the bottom left and tries to flailingly
@@ -485,14 +485,14 @@ you</strong> like a <em>magician</em>.</li>
 </ol>
 
 
-<p>{% img center /images/magician.jpg Magicians figure out their own parameters %}</p>
+<p><img class="center" src="/images/magician.jpg" title="Magicians figure out their own parameters" ></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Getting to the mixtures in Dirichlet Process Mixture Models]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/"/>
-    <updated>2012-05-04T13:01:00-07:00</updated>
+    <updated>2012-05-04T13:01:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models</id>
     <content type="html"><![CDATA[<p>The <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process</a> is pretty sweet as Edwin Chen and numerous others
 have <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">pointed out</a>.  When combined with a mixture of Bayesian models, it's
@@ -533,7 +533,7 @@ your distributions look like, and this paltry description made perfect sense,
 Hurray! Please go bake a cake for everyone that feels a little underwhelmed with
 this description.</p>
 
-<p>{% img center /images/cake.jpg Delicious cake for people still reading %}</p>
+<p><img class="center" src="/images/cake.jpg" title="Delicious cake for people still reading" ></p>
 
 <p>Now that someone is off baking us cake, let's dive down into what the
 distributions look like.  Taking a look at a number of papers describing
@@ -542,18 +542,18 @@ and <a href="http://www.cs.princeton.edu/~blei/papers/BleiJordan2004.pdf">Variat
 make things seem pretty straightforward.  To start, they generally throw down
 this simple equation:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(y|\theta_1, \cdots, \theta_k, \pi_1, \cdots, \pi_k) = \sum_j<sup>k</sup> \pi_j p(y|\theta_j)
-{% endmath %}</p>
+</script></p>
 
-<p>Simple, no?  If you want mixtures of <a href="http://www.umiacs.umd.edu/~resnik/pubs/gibbs.pdf">Gaussian</a> models, then {%m%} \theta_j{%em%} has a mean and a variance, we'll call these {%m%} \mu_j{%em%} and {%m%}\sigma_j<sup>2{%em%}.</sup>   The next step is then to rewrite this equation in a couple of ways so that
-you define the parameters, i.e. {% m %} \theta_j {% em %} in terms of the data
-and other parameters.  One example: {% m %} \mu_j {% em %} looks like this:</p>
+<p>Simple, no?  If you want mixtures of <a href="http://www.umiacs.umd.edu/~resnik/pubs/gibbs.pdf">Gaussian</a> models, then <script type="math/tex"> \theta_j</script> has a mean and a variance, we'll call these <script type="math/tex"> \mu_j</script> and <script type="math/tex">\sigma_j<sup>2</script>.</sup>   The next step is then to rewrite this equation in a couple of ways so that
+you define the parameters, i.e. <script type="math/tex"> \theta_j </script> in terms of the data
+and other parameters.  One example: <script type="math/tex"> \mu_j </script> looks like this:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(\mu_j|c,y,s_j, \lambda, r) \sim \mathcal{N}\left( \frac{\bar{y}n_js_j + \lambda
 r}{n_js_j + r},\frac{1}{n_js_j+r} \right)
-{% endmath %}</p>
+</script></p>
 
 <p>Not <em>too</em> bad after reading through the definition for all the parameters; the
 first bundle describes the mean of the mixture and the second bundle describes
@@ -571,13 +571,13 @@ val theta_j = new Gamma((y_mean*n_j*s_j + lambda*r)/(n_j*s_j+r), 1d/(n_j*s_j +r)
 the core tear inducing rewrites.  This lovely gem describes the probably
 distribution function for one of the hyper parameters in the <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.45.9111">Infinite Gaussian Mixture Model</a>:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 p(\alpha|k,n) \propto \frac{\alpha<sup>{k-3/2}</sup> exp(-1/(2\alpha))\Gamma(\alpha)}</p>
 
 <pre><code>                       {\Gamma(\alpha / k)}
 </code></pre>
 
-<p>{% endmath %}</p>
+<p></script></p>
 
 <p><em>This is not easy to sample from</em> especially if you're new to sophisticated
 sampling methods.  And sadly, just about every academic publication describing
@@ -585,7 +585,7 @@ these kinds of models gets to a point where they assume you know what they're
 talking about and can throw down <a href="http://en.wikipedia.org/wiki/Mixture_model">Monte Carlo Markov Chain</a> sampling
 procedures like they're rice at a wedding.</p>
 
-<p>{% img center /images/wedding-rice.jpg MCMC sampling methods for the newlyweds %}</p>
+<p><img class="center" src="/images/wedding-rice.jpg" title="MCMC sampling methods for the newlyweds" ></p>
 
 <p>So what's a lowly non-statistician data modeller to do? Start with a well
 written description of a similar, but significantly simpler model.  In this

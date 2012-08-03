@@ -4,7 +4,7 @@
   <title><![CDATA[Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-07-16T07:14:01-07:00</updated>
+  <updated>2012-08-03T11:16:59+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[ACL and EMNLP 2012 Debrief]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/"/>
-    <updated>2012-07-13T18:08:00-07:00</updated>
+    <updated>2012-07-13T18:08:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief</id>
     <content type="html"><![CDATA[<h1>Attending two conference in Jeju, South Korea</h1>
 
@@ -239,7 +239,7 @@ students felt the same way.</p>
   <entry>
     <title type="html"><![CDATA[Gamma Ramma]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma/"/>
-    <updated>2012-06-25T10:23:00-07:00</updated>
+    <updated>2012-06-25T10:23:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma</id>
     <content type="html"><![CDATA[<h3>Before getting to Cooler Mixture Models</h3>
 
@@ -449,7 +449,7 @@ befuddled for a while, so don&#8217;t be like me.</p>
   <entry>
     <title type="html"><![CDATA[Topic Model Comparisons: how to replicate an experiment]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment/"/>
-    <updated>2012-06-04T14:35:00-07:00</updated>
+    <updated>2012-06-04T14:35:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment</id>
     <content type="html"><![CDATA[<p>We (Keith Stevens, Philip Kegelmeyer, David Andrzejewski, and David Buttler)
 published the paper <a href="https://github.com/fozziethebeat/TopicModelComparison">Exploring Topic Coherence over many models and many topics</a>
@@ -922,7 +922,7 @@ statement turns out to be wrong).</p>
   <entry>
     <title type="html"><![CDATA[Sonatype and Scala: A relationship of trickery]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/"/>
-    <updated>2012-06-02T22:28:00-07:00</updated>
+    <updated>2012-06-02T22:28:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery</id>
     <content type="html"><![CDATA[<p>Open source projects are amazing.  They let you easily share the work you do
 with others so that they can iterate and improve upon your ideas, an especially
@@ -995,7 +995,7 @@ your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no 
   <entry>
     <title type="html"><![CDATA[Stepping into the Mixtures with Gibbs Sampling]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/"/>
-    <updated>2012-05-17T16:07:00-07:00</updated>
+    <updated>2012-05-17T16:07:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling</id>
     <content type="html"><![CDATA[<script src="http://fozziethebeat.github.com/javascripts/raphael-min.js"></script>
 
@@ -1502,7 +1502,7 @@ you</strong> like a <em>magician</em>.</li>
   <entry>
     <title type="html"><![CDATA[Getting to the mixtures in Dirichlet Process Mixture Models]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/"/>
-    <updated>2012-05-04T13:01:00-07:00</updated>
+    <updated>2012-05-04T13:01:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models</id>
     <content type="html"><![CDATA[<p>The <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process</a> is pretty sweet as Edwin Chen and numerous others
 have <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">pointed out</a>.  When combined with a mixture of Bayesian models, it&#8217;s
@@ -1611,7 +1611,7 @@ Dirichlet Process Mixture Model (with some simplifications).</p>
   <entry>
     <title type="html"><![CDATA[Puzzle Time: Transforming Names]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names/"/>
-    <updated>2012-04-23T22:18:00-07:00</updated>
+    <updated>2012-04-23T22:18:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names</id>
     <content type="html"><![CDATA[<p>This post starts what will hopefully be a new trend: computational solutions to
 <a href="http://www.npr.org/2012/04/22/151120151/a-puzzle-worthy-of-don-draper">NPR&#8217;s Sunday Puzzle</a>.  In this weeks puzzle, we have to</p>
@@ -1742,7 +1742,7 @@ the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
   <entry>
     <title type="html"><![CDATA[Making Agglomerative Clustering run in N^2 Time]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/"/>
-    <updated>2012-03-16T17:21:00-07:00</updated>
+    <updated>2012-03-16T17:21:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time</id>
     <content type="html"><![CDATA[<p>Let&#8217;s say you&#8217;re an amateur zoologist and you&#8217;ve got a bunch of data describing
 <a href="http://en.wikipedia.org/wiki/Owl">parliaments of owls</a>, <a href="http://en.wikipedia.org/wiki/Goose">gaggles of geese</a>, <a href="http://en.wikipedia.org/wiki/Chicken">peeps of chickens</a>, and a
@@ -2156,7 +2156,7 @@ too fast to believe.</p>
   <entry>
     <title type="html"><![CDATA[Moral Dilemmas]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/"/>
-    <updated>2012-03-04T19:03:00-08:00</updated>
+    <updated>2012-03-04T19:03:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas</id>
     <content type="html"><![CDATA[<p>What is the nature of a moral dilemma?  How moral can any dilemma be?  Are some
 dilemmas inherently moral free or can any problem be cast into some level of a
@@ -2256,7 +2256,7 @@ those?&#8221;  You can make a handy debate about it.</p>
   <entry>
     <title type="html"><![CDATA[Morphological Analysis made easy with Scala]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala/"/>
-    <updated>2012-02-29T19:49:00-08:00</updated>
+    <updated>2012-02-29T19:49:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala</id>
     <content type="html"><![CDATA[<p>Ever since I got involved with distributional semantics, i&#8217;ve been perplexed
 about how to handle morphed words, which happens to be just about every noun and

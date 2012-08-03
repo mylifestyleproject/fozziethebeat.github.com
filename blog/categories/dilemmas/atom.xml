@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dilemmas | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/dilemmas/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-07-16T07:14:33-07:00</updated>
+  <updated>2012-08-03T11:16:59+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Moral Dilemmas]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/"/>
-    <updated>2012-03-04T19:03:00-08:00</updated>
+    <updated>2012-03-04T19:03:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas</id>
     <content type="html"><![CDATA[<p>What is the nature of a moral dilemma?  How moral can any dilemma be?  Are some
 dilemmas inherently moral free or can any problem be cast into some level of a
@@ -30,9 +30,7 @@ that the authors of "Lost in Transition" found that modern high school students
 are unequipped to think about things in moral terms.  For instance, The authors
 posed some questions to students and said the following:</p>
 
-<p>{% blockquote %}
-Not many of them have previously given much or any thought to many of the kinds of questions about morality that we asked.
-{% endblockquote %}</p>
+<p><blockquote><p>Not many of them have previously given much or any thought to many of the kinds of questions about morality that we asked.</p></blockquote></p>
 
 <p>I haven't read the book in detail, so I can't really comment on their full
 findings, proposals, or methodology, so I'm not about to comment on that now.
@@ -55,14 +53,7 @@ it is inherently a moral issue.  Namely, it's an issue about acting with empathy
 <p>According to Wikipedia, the world's coolest encyclopedia, <em>empathy</em> is defined
 as</p>
 
-<p>{% blockquote %}</p>
-
-<pre><code>the capacity to recognize and, to some extent, share feelings (such as
-sadness or happiness) that are being experienced by another sentient or
-semi-sentient being
-</code></pre>
-
-<p>{% endblockquote %}</p>
+<p><blockquote><p></p></p><p><pre><code>the capacity to recognize and, to some extent, share feelings (such as<br/>sadness or happiness) that are being experienced by another sentient or<br/>semi-sentient being<br/></code></pre></p><p><p></p></blockquote></p>
 
 <p>So how does empathy relate <em>at all</em> to doing the dishes? Well, by living in an
 apartment shared with other people, your actions implicitly affect the

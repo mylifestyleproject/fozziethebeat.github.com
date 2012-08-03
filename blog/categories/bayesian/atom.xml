@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bayesian | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/bayesian/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-07-16T07:14:33-07:00</updated>
+  <updated>2012-08-03T11:16:59+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Gamma Ramma]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma/"/>
-    <updated>2012-06-25T10:23:00-07:00</updated>
+    <updated>2012-06-25T10:23:00+09:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma</id>
     <content type="html"><![CDATA[<h3>Before getting to Cooler Mixture Models</h3>
 
@@ -44,18 +44,18 @@ distribution.</p>
 <h3>Sampling from Gamma Distributions</h3>
 
 <p>Let's start with an example.  Let's say we have two one dimensional Gaussian
-distributions.  Each distribution is defined by two parameters: {% m %} \mu
-{%em%} for the mean, or center point, and {%m%} \sigma<sup>2</sup> {%em%} for the variance,
+distributions.  Each distribution is defined by two parameters: <script type="math/tex"> \mu
+</script> for the mean, or center point, and <script type="math/tex"> \sigma<sup>2</sup> </script> for the variance,
 or inverse precision.  So let's say our two distributions have these two
-parametrizations: {%m%} \mu_1 = 5.0, \sigma<sup>2_1</sup> = 1.0{%em%} and {%m%} \mu_2 = 10.0,\sigma<sup>2_2</sup> = 6.0{%em%}.  Here's a nice density
+parametrizations: <script type="math/tex"> \mu_1 = 5.0, \sigma<sup>2_1</sup> = 1.0</script> and <script type="math/tex"> \mu_2 = 10.0,\sigma<sup>2_2</sup> = 6.0</script>.  Here's a nice density
 plot of these two distributions together:</p>
 
-<p>{% img /images/two_univariate_gaussians.png 500 500 %}</p>
+<p><img src="/images/two_univariate_gaussians.png" width="500" height="500"></p>
 
 <p>Now let's look at what the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution can do if we sample from it
 with the "proper" parameters (which I'll point out later on).</p>
 
-<p>{% img /images/gamma_breeze_samples.png 500 500 %}</p>
+<p><img src="/images/gamma_breeze_samples.png" width="500" height="500"></p>
 
 <p>It looks like a good approximation of what we know the two variance values to be
 and the samples can be generated really easily with Scala's <a href="https://github.com/dlwh/breeze">breeze</a> library
@@ -66,16 +66,16 @@ implementation of this distribution, like say in <a href="http://commons.apache.
 Java's <a href="http://acs.lbl.gov/software/colt/">Colt</a> library.  What happens if we take the parameters we passed into
 <a href="https://github.com/dlwh/breeze">breeze</a> and passed them to these libraries?  What comes out?  Let's See!</p>
 
-<p>{% img /images/gamma_comparison_samples.png 600 600 %}</p>
+<p><img src="/images/gamma_comparison_samples.png" width="600" height="600"></p>
 
 <p>That looks kinda funky.  What's going on?  This exposes the difference between
 the two main flavors of this distribution: two related but poorly explained ways
 to parameterize the model!  Both flavours depend on a shape parameter
 that (aptly named) guides the shape of the distribution.  The difference in the
-flavours is the use of either a scale parameter, sometimes referred to as {%m%}
-\theta {%em%}, or a rate parameter, sometimes denoted as {%m%}\beta{%em%}.  Is
+flavours is the use of either a scale parameter, sometimes referred to as <script type="math/tex">
+\theta </script>, or a rate parameter, sometimes denoted as <script type="math/tex">\beta</script>.  Is
 there a relation between these two?  Totally! They are inverses of each other,
-i.e. {%m%} \theta = 1/\beta {%em%}.</p>
+i.e. <script type="math/tex"> \theta = 1/\beta </script>.</p>
 
 <h3>Finding the funky culprit</h3>
 
@@ -93,7 +93,7 @@ to be an average of real values raised to the power of two.  And if we read the
 and not the scale, but it's never totally <strong>obvious</strong> in their documentation.
 So if we fix that in our parameterization, we get this agreeable set of plots:</p>
 
-<p>{% img /images/gamma_comparison_fixed_samples.png 600 600 %}</p>
+<p><img src="/images/gamma_comparison_fixed_samples.png" width="600" height="600"></p>
 
 <p>That's <strong>much</strong> better looking.</p>
 
@@ -138,19 +138,19 @@ for computing what I'm calling <code>alpha</code> and <code>beta_*</code>.  Look
 of <a href="http://en.wikipedia.org/wiki/Conjugate_prior#Continuous_likelihood_distributions">conjugate priors for continuous likelihood distributions</a>, we find these
 two core equations used in the code:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 \begin{array}{lll}
 \alpha &amp; = &amp; \alpha<em>{0} + \frac{n}{2} \
 \beta &amp; = &amp; \beta</em>{0} + \frac{\sum_i (x_i - mu)<sup>2</sup> }{2} \
 \end{array}
-{% em %}</p>
+</script></p>
 
-<p>Where {%m%}n{%em%} is the number of points in the group and {%m%}x_i{%em%}
+<p>Where <script type="math/tex">n</script> is the number of points in the group and <script type="math/tex">x_i</script>
 denotes points within coming from the same distribution.  Looking at that table
 of conjugate priors and the list created in the first for loop, you might wonder
-why i use the reciprocal of the {%m%}\beta{%em%} values, i.e. the scales.  This
+why i use the reciprocal of the <script type="math/tex">\beta</script> values, i.e. the scales.  This
 is because of the cute footnote in the conjugate prior table noting that
-{%m%}\beta{%em%} as computed above is in fact the rate.</p>
+<script type="math/tex">\beta</script> as computed above is in fact the rate.</p>
 
 <h3>An even more terrifying parametrization</h3>
 
@@ -160,28 +160,28 @@ really smart man by the name of Carl von Rasmussen designed an <a href="http://c
 that depends heavily on the <a href="http://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a> distribution for just the purpose I've
 described.  <em><strong>BUT</strong></em> he gives <strong>this</strong> parameterization:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 \begin{array}{lll}
 \alpha &amp; = &amp; \alpha_{0} + n \
 \beta &amp; = &amp; \frac{\alpha{0}}{\beta_0*\alpha_0 + \sum (x_i - \mu)<sup>2}</sup>
 \end{array}
-{% em %}</p>
+</script></p>
 
 <p>Throw this into our sampling code and we get this <strong>rediculous</strong> plot:</p>
 
-<p>{% img /images/gamma_comparison_samples_ras.png 600 600 %}</p>
+<p><img src="/images/gamma_comparison_samples_ras.png" width="600" height="600"></p>
 
 <p>Which is <em>totally</em> wrong.  So what gives?  <em>Well</em>, at a much later date, Mr.
 Rasmussen points out that as he defines them, the two parameters are slightly
 mutated versions of the shape and scale as we've described them so far.  The
 real way to use his parameters is to mutate them by doing this:</p>
 
-<p>{% math %}
+<p><script type="math/tex; mode=display">
 \begin{array}{lll}
 \alpha<em>{legit} &amp; = &amp; \frac{\alpha</em>{rasmussen}}{2} \
 \beta<em>{legit} &amp; = &amp; \frac{2*\beta</em>{rasmussen}}{\alpha_{rasmussen}} \
 \end{array}
-{% em %}</p>
+</script></p>
 
 <h3>Summary!</h3>
 
