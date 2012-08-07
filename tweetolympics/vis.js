@@ -23,7 +23,8 @@ var nestByDate = d3.nest().key(function(d) { return d3.time.day(d.startTime); })
 
 function plotSportData(summaries, tweets) {
 
-    d3.select("#summary-list").selectAll().remove();
+    // Remove any old svg charts that may exist using an old dataset.
+    console.log(d3.selectAll(".chart").selectAll("svg").remove());
 
     // Create the crossfilter for the relevant dimensions and groups.
     var tweet = crossfilter(tweets),
