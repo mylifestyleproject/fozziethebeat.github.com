@@ -79,7 +79,7 @@ h1, h2 {
 
 .chart {
   display: inline-block;
-  height: 151px;
+  height: 150;
   margin-bottom: 20px;
 }
 
@@ -118,19 +118,11 @@ h1, h2 {
 }
 
 #hour-chart {
-  width: 260px;
+  width: 500px;
 }
 
 #cluster-chart {
-  width: 600px;
-}
-
-#delay-chart {
-  width: 230px;
-}
-
-#distance-chart {
-  width: 420px;
+  width: 400px;
 }
 
 #date-chart {
@@ -165,4 +157,32 @@ aside {
   width: 220px;
 }
 
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
 
+.axis text {
+    font: 10px sans-serif;
+}
+
+.grid-line line {
+    fill: none;
+    stroke: #ccc;
+    opacity: .5;
+}
+
+.brush rect.background {
+    z-index: -999;
+}
+
+.brush rect.extent {
+    fill: steelblue;
+    fill-opacity: .125;
+}
+
+.brush .resize path {
+    fill: #eee;
+    stroke: #666;
+}

@@ -44,7 +44,7 @@ function plotSportData(summaries, tweets) {
                   .group(hours)
                   .x(d3.scale.linear()
                              .domain([0, 24])
-                             .rangeRound([0, 10 * 24])),
+                             .rangeRound([0, 20 * 24])),
 
         // The second chart tracks the tweet clusters.  The upper limit is
         // dependent on the number of summaries, which equals the number of
@@ -65,7 +65,7 @@ function plotSportData(summaries, tweets) {
                   .group(dates)
                   .round(d3.time.day.round)
                   .x(d3.time.scale()
-                            .domain([new Date(2012, 6, 26), new Date(2012, 8, 10)])
+                            .domain([new Date(2012, 6, 20), new Date(2012, 7, 15)])
                             .rangeRound([0, 40 * 20]))
     ];
 
@@ -195,6 +195,12 @@ d3.selectAll("#methods a").on("click", function (d) {
     var newMethod = d3.select(this).attr("id");
     activate("methods", newMethod);
     reloadData(activeLabel("sports"), activeLabel("methods"));
+});
+
+d3.selectAll("#summary a").on("click", function (d) {
+    var newMethod = d3.select(this).attr("id");
+    activate("summary", newMethod);
+    //reloadData(activeLabel("sports"), activeLabel("methods"));
 });
 
 reloadData(activeLabel("sports"), activeLabel("methods"));

@@ -4,7 +4,7 @@
   <title><![CDATA[Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-08-07T17:56:15+09:00</updated>
+  <updated>2012-08-13T18:41:00+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -12,6 +12,343 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Building A Phrase Graph]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph/"/>
+    <updated>2012-08-12T12:13:00+09:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph</id>
+    <content type="html"><![CDATA[<p>Research papers.  I hate them sometimes.  They present a great idea, talk about
+how it can be used and applied, and then give only the barest description of how
+to actually build and implement the idea, often with no pointers or links to
+what they built.  My current frustration is with building a <strong>Phrase Graph</strong>.
+The idea behind phrase graphs are pretty simple, they encode a large set of
+sentences with a minimal automata.</p>
+
+<p>Here&#8217;s a simple example.  Say you have the following two sentences:</p>
+
+<pre><code>#archery by the Republic of Korea and the guy is legally blind.
+#archery by the Republic of Korea and the guy who is legally blind.
+#archery by the Republic of Korea in archery by a guy who is legally blind.
+</code></pre>
+
+<p>There&#8217;s quite a lot of overlap at the start of the sentence and at the end of
+the sentence.  So a good phrase graph would look something like this:</p>
+
+<p><img src="http://fozziethebeat.github.com/images/phrase-graph-example.svg" alt="A simple Phrase Graph" /></p>
+
+<p>So you can see that the nodes in the graph represent words found in the
+sentences observed and if you weight the nodes based on how often they are
+traversed, you can start to detect which phrases are used most frequently.  But
+how does one do this?  And how does one do this efficiently?  This is where
+research papers make me mad.  They fail to point out the simplest algorithms for
+building these awesome ideas.  To complement these research ideas, this post&#8217;ll
+give a little more detail on what these phrase graphs are, an easy way to build
+them using existing libraries, and code to write your own custom phrase graph!</p>
+
+<h2>Badly described methods for building a phrase graph</h2>
+
+<p>The first paper I read for building phrase graphs, titled <a href="http://www.jeffreynichols.com/papers/summary-iui2012.pdf">Summarizing Sporting
+events using Twitter</a>, gives this highly detailed algorithm description:</p>
+
+<blockquote><p>The phrase graph consists of a node for each word appearing in any status<br/>update, and an edge between each set of two words that are used adjacently in<br/>any status update</p></blockquote>
+
+
+<p>Seems easy to implement, no?  Here&#8217;s a more detailed algorithm, found in
+<a href="http://www.cs.uccs.edu/~jkalita/papers/2010/SharifiBeauxSocialcom2010.pdf">Experiments in Microblog Summarization</a>:</p>
+
+<blockquote><p>To construct the left-hand side, the algorithm starts with the root node. It<br/>reduces the set of input sentences to the set of sentences that contain the<br/>current node’s phrase. The current node and the root node are initially the<br/>same. Since every input sentence is guaranteed to contain the root phrase, our<br/>list of sentences does not change initially. Subsequently, the algorithm<br/>isolates the set of words that occur immediately before the current node’s<br/>phrase. From this set, duplicate words are combined and assigned a count that<br/>represents how many instances of those words are detected. For each of these<br/>unique words, the algorithm adds them to the graph as nodes with their<br/>associated counts to the left of the current node.</p></blockquote>
+
+
+<p>This gives a lot more detail on what the phrase graph contains, and an easy
+enough algorithm, but it&#8217;s not exactly a <strong>fast</strong> algorithm, especially if you
+want to do this using 10 million tweets about the Olympics.  Both descriptions
+leave out a key detail: these phrase graphs are really just <a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Compressed Tries</a>.</p>
+
+<h2>Tries and their compressed cousins</h2>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/b/be/Trie_example.svg" alt="A simple Trie" /></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Tries</a> are one of the simplest data structures, and one of the most powerful
+when processing natural languages.  Given a set of words or sentences, a
+<a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Trie</a> is essentially a standard tree where the leaves represent observed
+words or sentences.  The power of it is that each internal node in the <a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Trie</a>
+represents overlapping sequences. So if you want to build a <a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Trie</a> for an <a href="http://www.brics.dk/automaton/">English
+Dictionary</a>, the root node would be a blank character, which then points to a
+node for each letter of the alphabet.  From the &#8220;a&#8221; child, you would then have
+access to all words starting with &#8220;a&#8221;, and the further down the <a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Trie</a> you
+go, you get longer prefixes of words.</p>
+
+<p>Now a <em>Phrase Graph</em> is essentially a <a href="http://en.wikipedia.org/wiki/Trie#Compressing_tries">Trie</a> which condenses not only shared
+prefixes, but also any shared subsequence, be they in the middle, or the end.
+Formally, they are directed acyclic graphs, and if they are treated as a lookup
+structure, ala a dictionary, they are called <em>Minimal Acyclic Finite-State
+Automata</em>.  And there&#8217;s plenty of fast and simple ways to build these things.
+The easiest places to start reading about these is <a href="http://acl.ldc.upenn.edu/J/J00/J00-1002.pdf">Incremental Construction of
+Minimal Acyclic Finite State Automata</a>. The <a href="http://www.brics.dk/automaton/">Brics Automaton package</a> also
+provides a really good implantation for these that works</p>
+
+<figure class='code'><figcaption><span>A simple example using the Brics package</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">dk.brics.automaton.BasicAutomata</span>
+</span><span class='line'><span class="k">val</span> <span class="n">automata</span> <span class="k">=</span> <span class="nc">BasicAutomata</span><span class="o">.</span><span class="n">makeStringUnion</span><span class="o">(</span>
+</span><span class='line'>    <span class="s">&quot;#archery by the Republic of Korea and the guy is legally blind&quot;</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;#archery by the Republic of Korea in archery by a guy who is legally blind&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="n">println</span><span class="o">(</span><span class="n">automata</span><span class="o">.</span><span class="n">toDot</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The above code snippet will generate this simple minimal automata:</p>
+
+<p><img src="http://fozziethebeat.github.com/images/brics-phrase-graph-example.svg" alt="A GraphViz version of the Brics Automata" /></p>
+
+<p>*Note, you may want to open this in a new tab to zoom in as every letter has
+it&#8217;s own state.</p>
+
+<h2>Rolling your own automata builder</h2>
+
+<p>Using <a href="http://www.brics.dk/automaton/">Brics</a> works really well if you just want to check whether or not a
+sentence matches one seen in a corpus.  However, it doesn&#8217;t easily let you check
+how often particular sub-phrases are used within the corpus.  For that kinda
+power, you&#8217;ll have to craft your own implemenation.  And now it&#8217;s time to share
+the very code to do this!</p>
+
+<h3>Nodes in the graph, that&#8217;s where.</h3>
+
+<p>Where does one start?  First, you need a node data structure, with some very
+carefully crafted functions to determine equality (which indidentally, the
+research papers <strong>don&#8217;t</strong> point out).</p>
+
+<figure class='code'><figcaption><span>The PhraseNode data structure</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * A simple node structure that records a label, a weight, and a mapping from this node to other nodes using labeled arcs.  This</span>
+</span><span class='line'><span class="cm"> * implementation overrides {@link hashCode} and {@link equals} such that only nodes with the same label and which point to the same exact</span>
+</span><span class='line'><span class="cm"> * children (i.e.  same objects, not equivalent objects), are considered equal.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">PhraseNode</span><span class="o">(</span><span class="k">val</span> <span class="n">label</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * The internal weight for this {@link PhraseNode}.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">inCount</span> <span class="k">=</span> <span class="mi">0</span><span class="n">d</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * A mapping from this {@link PhraseNode} to children {@link PhraseNode}s using labeled arcs.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">linkMap</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">[</span><span class="kt">String</span>,<span class="kt">PhraseNode</span><span class="o">]()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * A record of the last {@link PhraseNode} added as a child to this {@link PhraseNode}.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">lastAdded</span><span class="k">:</span><span class="kt">PhraseNode</span> <span class="o">=</span> <span class="kc">null</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Returns the {@link PhraseNode} connected to {@code this} {@link PhraseNode} via the arc {@code term}.  If no such node exists, a new</span>
+</span><span class='line'><span class="cm">     * {@link PhraseNode} is created and returned.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">def</span> <span class="n">neighbor</span><span class="o">(</span><span class="n">term</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span>
+</span><span class='line'>        <span class="n">linkMap</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">term</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">node</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">node</span>
+</span><span class='line'>            <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="o">{</span> <span class="n">lastAdded</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PhraseNode</span><span class="o">(</span><span class="n">term</span><span class="o">)</span>
+</span><span class='line'>                           <span class="n">linkMap</span> <span class="o">+=</span> <span class="o">(</span><span class="n">term</span> <span class="o">-&gt;</span> <span class="n">lastAdded</span><span class="o">)</span>
+</span><span class='line'>                           <span class="n">lastAdded</span>
+</span><span class='line'>                         <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Adds {@code delta} to the {@code inCount} and returns a pointer to {@code this} {@link PhraseNode}.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">def</span> <span class="n">addCount</span><span class="o">(</span><span class="n">delta</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mi">1</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">inCount</span> <span class="o">+=</span> <span class="n">delta</span>
+</span><span class='line'>        <span class="k">this</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Returns a hashcode based on java&#39;s internal hash code method for every object which uniquely identifies every object.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">def</span> <span class="n">pointerHashCode</span> <span class="k">=</span> <span class="k">super</span><span class="o">.</span><span class="n">hashCode</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Override {@code hashCode} to use three factors:</span>
+</span><span class='line'><span class="cm">     * &lt;ol&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The hash code for {@code label}&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The hash code for {@code label} of each child node&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The hash code for {@code pointer} of each child node&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     * &lt;/ol&gt;</span>
+</span><span class='line'><span class="cm">     * This ensures that nodes only have the same hash code if they have the same label, same number of children, same links to those</span>
+</span><span class='line'><span class="cm">     * children, and point to the very same children.  This is a cheap and fast way to ensure that we don&#39;t accidently consider two nodes</span>
+</span><span class='line'><span class="cm">     * with the same link labels aren&#39;t equivalent.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">override</span> <span class="k">def</span> <span class="n">hashCode</span> <span class="k">=</span>
+</span><span class='line'>        <span class="n">linkMap</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="k">case</span><span class="o">(</span><span class="n">childLabel</span><span class="o">,</span> <span class="n">child</span><span class="o">)</span> <span class="k">=&gt;</span>
+</span><span class='line'>            <span class="n">childLabel</span><span class="o">.</span><span class="n">hashCode</span> <span class="o">^</span> <span class="n">child</span><span class="o">.</span><span class="n">pointerHashCode</span>
+</span><span class='line'>        <span class="o">}.</span><span class="n">foldLeft</span><span class="o">(</span><span class="n">label</span><span class="o">.</span><span class="n">hashCode</span><span class="o">)(</span><span class="n">_^_</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Override {@code equals} to use the same three factors as {@cod hachCode}:K</span>
+</span><span class='line'><span class="cm">     * &lt;ol&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The {@code label}&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The {@code label} of each child node&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     *  &lt;li&gt;The {@code pointer} of each child node&lt;/li&gt;</span>
+</span><span class='line'><span class="cm">     * &lt;/ol&gt;</span>
+</span><span class='line'><span class="cm">     * </span>
+</span><span class='line'><span class="cm">     * This ensures that nodes only equal when they have the same distinguishing meta data and point to the same children.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">override</span> <span class="k">def</span> <span class="n">equals</span><span class="o">(</span><span class="n">that</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span> <span class="k">=</span>
+</span><span class='line'>        <span class="n">that</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">case</span> <span class="n">other</span><span class="k">:</span> <span class="kt">PhraseNode</span> <span class="o">=&gt;</span> <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">hashCode</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">hashCode</span><span class="o">)</span> <span class="kc">false</span>
+</span><span class='line'>                                      <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">label</span><span class="o">)</span> <span class="kc">false</span>
+</span><span class='line'>                                      <span class="k">else</span> <span class="n">compareLinkMaps</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">linkMap</span><span class="o">,</span> <span class="n">other</span><span class="o">.</span><span class="n">linkMap</span><span class="o">)</span>
+</span><span class='line'>            <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Returns true if the two maps have the same size, same keys, and the key in each map points to the same object.  We use this instead</span>
+</span><span class='line'><span class="cm">     * of simply calling equals between the two maps because we want to check node equality using just the pointer hash code, which prevents</span>
+</span><span class='line'><span class="cm">     * walking down the entire graph structure from each node.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="k">def</span> <span class="n">compareLinkMaps</span><span class="o">(</span><span class="n">lmap1</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">PhraseNode</span><span class="o">],</span> <span class="n">lmap2</span><span class="k">:</span> <span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">PhraseNode</span><span class="o">])</span> <span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">lmap1</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lmap2</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span> <span class="o">(</span><span class="n">key1</span><span class="o">,</span> <span class="n">entry1</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">lmap1</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">val</span> <span class="n">matched</span> <span class="k">=</span> <span class="n">lmap2</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="n">key1</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">entry2</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">entry2</span><span class="o">.</span><span class="n">pointerHashCode</span> <span class="o">==</span> <span class="n">entry1</span><span class="o">.</span><span class="n">pointerHashCode</span>
+</span><span class='line'>                <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="kc">false</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(!</span><span class="n">matched</span><span class="o">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="kc">false</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="kc">true</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This <code>PhraseNode</code> has three fairly simple data members, a label that records
+which word the node represents, the weight of the node, and a map from this node
+to it&#8217;s children based on their labels.  The tricky part of this node is how you
+determine equality.  Two nodes can be equal in two different senses: 1) they are
+the exact same data structure in memory, and so their memory locations are the
+same or 2) they have the same label and point to the same exact children in
+memory.  Checking the first type of equality is easy, you can compare the hash
+code of their addresses using the default <code>hashCode</code> method java provides for
+every object.  Checking the second form of equality is more challenging to do
+efficiently.  The naive way would be to recursively check that all children
+eventually point to sub-graphs with the same structure.  However, checking the
+hash code of the pointers of each children is <strong>much</strong> faster and accomplishes
+the same goal.  Hence, this is why we override <code>hashCode</code> and <code>equals</code> with such
+complicated code.</p>
+
+<h3>Linking together those Phrase Nodes</h3>
+
+<h3>Tweaking the automata to condense more phrases</h3>
+
+<h2>Visualizing that beast</h2>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building Visualizations to Test Summarizations]]></title>
