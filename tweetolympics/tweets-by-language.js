@@ -83,14 +83,24 @@ function mousedown() {
 }
 
 function mousemove() {
-  if (m0) {
-    var m1 = [d3.event.pageX, d3.event.pageY],
-        o1 = [o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8];
-    projection.origin(o1);
-    circle.origin(o1)
-    refresh();
-  }
+    if (m0) {
+        var m1 = [d3.event.pageX, d3.event.pageY];
+        rotateGlobe([o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8]);
+    }
 }
+
+function rotateGlobe(newOrigin) {
+    projection.origin(newOrigin);
+    circle.origin(newOrigin)
+    refresh();
+}
+
+function updateGlobe() {
+    var origin = projection.origin();
+    rotateGlobe([origin[0] + 2, origin[1]]);
+}
+
+setInterval(updateGlobe, 50);
 
 function mouseup() {
   if (m0) {
