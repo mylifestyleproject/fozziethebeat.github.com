@@ -1,25 +1,25 @@
 var feature; 
 var projection = d3.geo.azimuthal()
-                       .scale(380)
+                       .scale(240)
                        .origin([-71.03,42.37])
                        .mode("orthographic")
-                       .translate([640, 400]);
+                       .translate([350, 250]);
 
 var circle = d3.geo.greatCircle()
                    .origin(projection.origin());
 
 var scale = {
-  orthographic: 380,
-  stereographic: 380,
-  gnomonic: 380,
-  equidistant: 380 / Math.PI * 2,
-  equalarea: 380 / Math.SQRT2
+  orthographic: 240,
+  stereographic: 240,
+  gnomonic: 240,
+  equidistant: 240/ Math.PI * 2,
+  equalarea: 240 / Math.SQRT2
 };
 
 var path = d3.geo.path()
                  .projection(projection);
 
-var quantize = d3.scale.log().domain([0, 15000000]).range(d3.range(8));
+var fontSize = d3.scale.log().range([14, 26])
 var logScale = d3.scale.log();
 
 var scaleCount = function(x) { return Math.round(logScale(x)) + 1; };
@@ -32,9 +32,50 @@ d3.json("world-countries.json", function(collection) {
     loadGlobe(activeLabel("sports"));
 });
 
+loadTagCloud(activeLabel("sports"));
+
+function draw(words) {
+    d3.select("#tagcloud")
+      .append("svg")
+      .attr("width", 300)
+      .attr("height", 300)
+      .append("g")
+      .attr("transform", "translate(150,150)")
+      .selectAll("text")
+      .data(words)
+      .enter()
+      .append("text")
+      .style("font-size", function(d) { return d.size +"px";})
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+      })
+      .text(function(d) { return d.text; });
+};
+
+function loadTagCloud(sport) {
+    console.log("loading tag cloud for: " + sport);
+    clearsvg("#tagCloud");
+    var countFile = "olympics." + sport + ".tags.json";
+    d3.json(countFile , function(tagcounts) {
+        tagcounts.forEach(function (e, i) {
+            e.value = +e.value;
+        });
+
+        d3.layout.cloud()
+          .size([300, 300])
+          .words(tagcounts)
+          .text(function(d) { return d.key; })
+          .font("Impact")
+          .fontSize(function(d) { return fontSize(+d.value); })
+          .on("end", draw)
+          .start();
+    });
+};
+
 function loadGlobe(sport) {
-    console.log("loading: " + sport);
-    clearsvg();
+    console.log("loading globe for: " + sport);
+    clearsvg("#globe");
     setupsvg();
     var langFile = "olympics." + sport + ".langs.json";
     d3.json(langFile, function(languageCounts) {
@@ -121,6 +162,7 @@ d3.selectAll("#sports a").on("click", function (d) {
     var newSport = d3.select(this).attr("id");
     activate("sports", newSport);
     loadGlobe(activeLabel("sports"));
+    loadTagCloud(activeLabel("sports"));
 });
 
 function activeLabel(controlGroup) {
@@ -132,15 +174,15 @@ function activate(group, link) {
     d3.select("#" + group + " #" + link).classed("active", true);
 };
 
-function clearsvg() {
-    d3.select("#globe").selectAll("svg").remove();
+function clearsvg(div) {
+    d3.select(div).selectAll("svg").remove();
 };
 
 function setupsvg() {
     svg = d3.select("#globe")
             .append("svg:svg")
             .attr("class", "Blues")
-            .attr("width", 1280)
-            .attr("height", 800)
+            .attr("width", 700)
+            .attr("height", 700)
             .on("mousedown", mousedown);
 };

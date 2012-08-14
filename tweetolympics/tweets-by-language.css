@@ -1,39 +1,32 @@
 body {
   background: url(/tweetolympics/texture-noise.png);
+  position: relative;
   overflow: hidden;
   margin: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica;
 }
 
-#chart, #header, #footer {
-  position: absolute;
-  top: 0;
+#tagCloud {
+  top: 100px;
+  width: 300px;
+  height: 300px;
+  padding-left: 20px;
 }
 
-#header, #footer {
-  z-index: 1;
-  display: block;
-  font-size: 24px;
-  font-weight: 300;
-  text-shadow: 0 1px 0 #fff;
-}
-
-#header.inverted, #footer.inverted {
-  color: #fff;
-  text-shadow: 0 1px 4px #000;
-}
-
-#header {
-  top: 80px;
-  left: 20px;
-  width: 150px;
+#controls {
+  width: 300px;
   height: 200px;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 #globe {
-  top: 80px;
-  left: 250px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 700px;
+  height: 700px;
 }
 
 rect {
@@ -83,14 +76,14 @@ a:hover {
 .hint {
   position: absolute;
   right: 0;
-  width: 1280px;
+  width: 1024px;
   font-size: 12px;
   color: #999;
 }
 
 svg {
-  width: 1280px;
-  height: 800px;
+  width: 1024px;
+  height: 768px;
   pointer-events: all;
 }
 
@@ -103,14 +96,9 @@ path {
   stroke: #fff;
 }
 
-#controls {
-  width: 100%;
-  float: left;
-  margin-bottom: 10px;
-}
 
 .control {
-  float: left;
+  display: inline-block;
   padding-left: 20px;
 }
 
@@ -121,6 +109,7 @@ path {
   background: #E2E2E2;
   cursor: pointer;
   margin-right: 3px;
+  margin-bottom: 10px;
   text-decoration: none;
 }
 

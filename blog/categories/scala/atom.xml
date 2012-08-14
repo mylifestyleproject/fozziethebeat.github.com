@@ -4,7 +4,7 @@
   <title><![CDATA[Category: scala | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-08-14T02:14:56+09:00</updated>
+  <updated>2012-08-14T23:07:02+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -51,12 +51,12 @@ them using existing libraries, and code to write your own custom phrase graph!</
 <p>The first paper I read for building phrase graphs, titled <a href="http://www.jeffreynichols.com/papers/summary-iui2012.pdf">Summarizing Sporting
 events using Twitter</a>, gives this highly detailed algorithm description:</p>
 
-<p><blockquote><p>The phrase graph consists of a node for each word appearing in any status<br/>update, and an edge between each set of two words that are used adjacently in<br/>any status update</p></blockquote></p>
+<p><blockquote><p>The phrase graph consists of a node for each word appearing in any status update, and an edge between each set of two words that are used adjacently in any status update</p></blockquote></p>
 
 <p>Seems easy to implement, no?  Here's a more detailed algorithm, found in
 <a href="http://www.cs.uccs.edu/~jkalita/papers/2010/SharifiBeauxSocialcom2010.pdf">Experiments in Microblog Summarization</a>:</p>
 
-<p><blockquote><p>To construct the left-hand side, the algorithm starts with the root node. It<br/>reduces the set of input sentences to the set of sentences that contain the<br/>current node’s phrase. The current node and the root node are initially the<br/>same. Since every input sentence is guaranteed to contain the root phrase, our<br/>list of sentences does not change initially. Subsequently, the algorithm<br/>isolates the set of words that occur immediately before the current node’s<br/>phrase. From this set, duplicate words are combined and assigned a count that<br/>represents how many instances of those words are detected. For each of these<br/>unique words, the algorithm adds them to the graph as nodes with their<br/>associated counts to the left of the current node.</p></blockquote></p>
+<p><blockquote><p>To construct the left-hand side, the algorithm starts with the root node. It reduces the set of input sentences to the set of sentences that contain the current node’s phrase. The current node and the root node are initially the same. Since every input sentence is guaranteed to contain the root phrase, our list of sentences does not change initially. Subsequently, the algorithm isolates the set of words that occur immediately before the current node’s phrase. From this set, duplicate words are combined and assigned a count that represents how many instances of those words are detected. For each of these unique words, the algorithm adds them to the graph as nodes with their associated counts to the left of the current node.</p></blockquote></p>
 
 <p>This gives a lot more detail on what the phrase graph contains, and an easy
 enough algorithm, but it's not exactly a <strong>fast</strong> algorithm, especially if you
@@ -241,9 +241,237 @@ complicated code.</p>
 
 <h3>Linking together those Phrase Nodes</h3>
 
+<p>The algorithm for linking together <code>PhraseNodes</code> such that they form a minimal
+transducer relies on a few interesting tricks and <strong>beautiful</strong> recursion.  The
+first trick we need is lexicographically sorted input.  By sorting the input,
+you're maximizing the size of matching prefixes between any neighboring words you want
+to put in the transducer.  So let's look at how we do that adding in sorted
+order.</p>
+
+<p>Before we get there though, let's flesh sketch out a <code>CondensedTrie</code> data
+structure.  It's pretty simple.  It starts off with just having a single
+<code>PhraseNode</code> element, the root.</p>
+
+<p>``` scala Not the data structure we deserve, but the data structure we need
+/<em>*
+ * The {@link CondensedTrie} represents a single phrase graph centered around a single key phrase.  Lists of tokens, representing sentences,
+ * can be added to the {@link CondensedTrie} to create a minimal finite state automata which counts the number of times sequences of tokens
+ * appear.  Lists must be added in fully sorted order, otherwise the behavior is undefined.  Once the {@link CondensedTrie} has been
+ * completed, a sequence of tokens can be used to walk through the {@link CondensedTrie} and count the weight of that particular sequence.
+ </em>/
+class CondensedTrie() {</p>
+
+<pre><code>/**
+ * The root node in the {@link CondensedTrie}.  This always has an emtpy label.
+ */
+val root = new PhraseNode("")
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Now comes adding entries.  Since we want a clean and easy to use interface,
+we'll be defensive and assume the elements aren't sorted, but they are already
+tokenized, so each element in the given list is a sequence of tokens.   How you
+sort thoes beasts is a homework assignment.</p>
+
+<p>``` scala Adding elements to the Trie</p>
+
+<pre><code>/**
+ * Trains the {@link CondensedTrie} on a list of token sequences.  This list does not have to be sorted and will instead be sorted
+ * before any sentences are added.
+ */
+def train(tokenizedSentences: Seq[List[String]]) {
+    for ( tokenizedSentence &lt;- tokenizedSentences.sortWith(Util.tokenListComparator) )
+        add(tokenizedSentence)
+    if (root.linkMap.size != 0)
+        replaceOrRegister(root)
+}
+
+/**
+ * Adds the list of tokens to this {@link CondensedTrie}.
+ */
+def add(tweet: List[String]) {
+    val (lastSharedNode, remainingSuffix) = computeDeepestCommonNodeAndSuffix(root, tweet)
+    if (lastSharedNode.linkMap.size != 0)
+        replaceOrRegister(lastSharedNode)
+    addSuffix(lastSharedNode, remainingSuffix)
+}
+
+/**
+ * Returns the deepest {@link PhraseNode} in the {@link CondensedTrie} matching the tokens in {@code tweet}.  When a {@link PhraseNode}
+ * no longer has an arc matching the first element in {@code tweet}, this returns that {@link PhraseNode} and the remaining tokens in
+ * {@code tweet} that cold not be matched.
+ */
+def computeDeepestCommonNodeAndSuffix(node: PhraseNode, tweet: List[String]) : (PhraseNode, List[String]) =
+    tweet match {
+        case head::tail =&gt; node.linkMap.get(head) match {
+            case Some(child) =&gt; {
+                child.addCount()
+                computeDeepestCommonNodeAndSuffix(child, tail)
+            }
+            case None =&gt; (node, tweet)
+        }
+        case _ =&gt; (node, tweet)
+    }
+
+/**
+ * Adds all tokens in {@code tweet} as a branch stemming from {@code node}
+ */
+def addSuffix(node: PhraseNode, tweet: List[String]) {
+    tweet.foldLeft(node)( (n, t) =&gt; n.neighbor(t).addCount() )
+}
+</code></pre>
+
+<p>```</p>
+
+<p>These methods are mostly simple.  <code>addSuffix</code> starts adding links to nodes
+starting from some initial point, note that nodes will automatically create a
+new node for a word if one doesn't already exist.
+<code>computeDeepestCommonNodeAndSuffix</code> walks down the Trie starting at the root
+consuming each token that has a node and returns the deepest node reachable,
+i.e. finds the node with the longest common prefix with a given sequence of
+tokens.  Finally adding a single tweet depends on getting the prefix, doing some
+magic called <code>replaceOrRegister</code> and then adding the suffix to the last node in
+the longest prefix.  So, only question left, what is this registry business?</p>
+
+<p>The registry keeps track of all nodes in the graph after they've been validated.
+And what does validation entail?  It involves checking wether or not an existing
+node already exists in the registry.  If one does, you simply replace that
+duplicate node with the one in the registry.  If no such node exists, in goes
+the node.  And this is exactly what <code>replaceOrRegister</code> does.  To do this
+efficiently <em>and</em> correctly, we call <code>replaceOrRegister</code> on the last node in our
+comment prefix and walk all the way down along the most recently added path,
+i.e. the added by the <strong>last</strong> element we added, and then zip up any matching
+nodes which correspond to matching suffixes.  By starting at the bottom, we match together end points which have no
+children and merge them.</p>
+
+<p>Take our archery example above, all three sentences end with "is legally blind."
+After we add the first sentence, there would be a node for each token in the
+order of the sentence.  When we add the second sentence and walk down to the
+end, we see that "blind." has a duplicate, which we can merge.  Taking one step
+backwards, we'll see that "legally" also has an exact match, where two nodes
+with the same label point to the <strong>same exact</strong> node, the node we just merged.
+And then thanks to recursion, we keep zipping things along until we get to
+"who", which has no exact match, and we can stop zipping.  Walking through an
+example like this should make the code below a little clearer.</p>
+
+<p>``` scala Should i stay or should i go</p>
+
+<pre><code>/**
+ * Recursively walks down the chain of last nodes added starting at {@code node} and then checks if the last child of that node are in the
+ * registry.  If an equivalent {@link PhraseNode} matching the last child is in the registry, this replaces the last child with the
+ * registry node.  If no matching {@link PhraseNode} exists in the registry, then the last child is added to the registry.
+ */
+def replaceOrRegister(node: PhraseNode) {
+    // Recursively replace or register the last added child of the current node.
+    val child = node.lastAdded
+    if (child.linkMap.size != 0)
+        replaceOrRegister(child)
+
+    // Get the possible matches for the last child.
+    val candidateChildren = register.get(child.label)
+    // Select only the registry node which has an exact match to the last
+    // child.  We can also replace this equivalence check for a subsumption
+    // check later on to condence the trie even more while breaking the
+    // automata contract.
+    candidateChildren.filter(matchMethod(_, child)) match {
+        // If such a child exists, merge the counts of the last child to the
+        // existing child and link the parent to the existing child.  This
+        // is just a convenient way to match a list, which is what gets
+        // returned by filter
+        case existingChild :: tail =&gt; 
+            existingChild.addCount(child.inCount)
+            // Make sure to update the most recently added node with the
+            // registry version!
+            node.lastAdded = existingChild
+            node.linkMap += (child.label -&gt; existingChild)
+        // If no chld exists, put the last child in the registery.
+        case _ =&gt; register.put(child.label, child)
+    }
+}
+</code></pre>
+
+<p>```</p>
+
+<p>And Voila, we now have all the code needed to make a phrase graph!</p>
+
+<p><img src="/images/example.exact.phrase-graph.svg" alt="An exact phrase graph using our example sentences" /></p>
+
 <h3>Tweaking the automata to condense more phrases</h3>
 
-<h2>Visualizing that beast</h2>
+<p>BUT! Suppose you want something more minimal?  Suppose you think it's kinda
+funny that interjection of "who" prevents "guy SOMETHING OR NOTHING is" from
+being a phrase.  Or you try adding in the sentence</p>
+
+<pre><code>#archery ZOIDBERG by the Republic of Korea and the guy who is legally blind.
+</code></pre>
+
+<p>and notice how it creates an entirely new branch for "the Republic of Korea"
+starting at "ZOIDBERG", thus making the number of times you think you've seen
+that phrase dependent on the previous tokens.  Can we fix this?  YES!  All we
+have to do is relax our definition of finding a matching element in the registry
+to finding a node whose outgoing links are a superset of the most recently added
+children.</p>
+
+<p>And since Scala is awesome, we can do this with minimal effort.</p>
+
+<p>``` scala Enhancing our Trie to be even more compressed
+class CondensedTrie(useSubsumingMatches: Boolean = false) {</p>
+
+<pre><code>/**
+ * The filtering method for determining which candidate node from the register will replace existing children nodes during the
+ * compaction phase.
+ */
+val matchMethod = if (useSubsumingMatches) subsumeMatch _ 
+
+/**
+ * Returns true if {@code child} and {@code candidate} are exact matches.
+ */
+def exactMatch(candidate: PhraseNode, child: PhraseNode) = 
+    candidate == child
+
+/**
+ * Returns true if {@code child} and {@code candidate} have the same label and the links from {@code child} are a subset of the links
+ * from {@code candidate}.
+ */
+def subsumeMatch(candidate: PhraseNode, child: PhraseNode) =
+    if (candidate.label != child.label)
+        false
+    else
+        child.linkMap.map{ case(key, subchild) =&gt;
+            candidate.linkMap.get(key) match {
+                case Some(otherSubchild) if otherSubchild.pointerHashCode == subchild.pointerHashCode =&gt; true
+                case _ =&gt; false
+            }
+        }.foldLeft(true)(_&amp;&amp;_)
+</code></pre>
+
+<p><code>``
+All we had to do was update the contractor to take in a boolean, then create a
+new data member that links to one of two comparison functions for pairs of
+nodes: 1) an exact matching function, which we would use for a true compressed
+trie and 2) a subset matching function, to get our even more compressed
+sorta-trie.  If we swap in</code>subsumeMatch`, we now get this phrase graph:</p>
+
+<p>Let's see how the two versions handle this as input:</p>
+
+<pre><code>Republic of Korea in archery by a guy who is legally blind
+#archery by the Republic of Korea and by the guy is legally blind
+#archery by the Republic of Korea and the guy is legally blind
+#archery by the Republic of Korea in archery by a guy who is legally blind
+#archery zoidberg by the Republic of Korea and by the guy is legally blind
+#archery zoidberg by the Republic of Korea in archery by a guy who is legally blin
+</code></pre>
+
+<p>Using exact Matching:
+<img src="/images/test.exact.svg" alt="Using Exact Matching" /></p>
+
+<p>Using link subset Matching:
+<img src="/images/test.subsume.svg" alt="Using Subset matching" /></p>
+
+<p>Finally! This second version is <strong>precisely</strong> the data structure those three
+original papers were describing.</p>
 ]]></content>
   </entry>
   

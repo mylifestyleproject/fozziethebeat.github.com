@@ -3,23 +3,32 @@
     <title>Number of tweets per language"</title>
     <script type="text/javascript" src="/javascripts/d3.v2.js"></script>
     <script type="text/javascript" src="/javascripts/d3.geo.js"></script>
-    <link type="text/css" rel="stylesheet" href="globe-style.css"/>
+    <script type="text/javascript" src="/javascripts/d3.layout.cloud.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="tweets-by-language.css"/>
     <link type="text/css" rel="stylesheet" href="colorbrewer.css"/>
   </head>
   <body>
-    <div id="header">
-        <div id="controls">
-            <div id="sports" class="control"
-                <h3>Select a Sport</h3>
-                </br>
-                <a id="all" class="active">All</a>
-                <a id="archery">Archery</a>
-            </div>
+    <div id="controls">
+        <div id="sports" class="control">
+            <h3>Select a Sport</h3>
+            <a id="all" class="active">All</a>
+            <a id="archery">Archery</a>
+            <a id="fencing">Fencing</a>
+            <a id="gymnastics">Gymnastics</a>
+            <a id="judo">Judo</a>
+            <a id="tennis">Tennis</a>
         </div>
+    </div>
+
+    <div id="tagCloud">
+        <h3>Popular Hash Tags</h3>
     </div>
 
     <div id="globe">
     </div>
+
     <script type="text/javascript" src="/tweetolympics/tweets-by-language.js"></script>
+    <script type="text/javascript" src="/tweetolympics/hash-tag-cloud.js"></script>
   </body>
 </html>
