@@ -31,7 +31,8 @@
         };
       }).sort(function(a, b) { return b.size - a.size; });
 
-      if (timer) clearInterval(timer);
+      if (timer) 
+          clearInterval(timer);
       timer = setInterval(step, 0);
       step();
 
@@ -48,8 +49,10 @@
           if (place(board, d, bounds)) {
             tags.push(d);
             event.word(d);
-            if (bounds) cloudBounds(bounds, d);
-            else bounds = [{x: d.x + d.x0, y: d.y + d.y0}, {x: d.x + d.x1, y: d.y + d.y1}];
+            if (bounds) 
+                cloudBounds(bounds, d);
+            else 
+                bounds = [{x: d.x + d.x0, y: d.y + d.y0}, {x: d.x + d.x1, y: d.y + d.y1}];
             // Temporary hack
             d.x -= size[0] >> 1;
             d.y -= size[1] >> 1;
@@ -89,16 +92,20 @@
           dy;
 
       while (dxdy = s(t += dt)) {
+
         dx = ~~dxdy[0];
         dy = ~~dxdy[1];
 
-        if (Math.min(dx, dy) > maxDelta) break;
+        if (Math.min(dx, dy) > maxDelta)
+            break;
 
         tag.x = startX + dx;
         tag.y = startY + dy;
 
         if (tag.x + tag.x0 < 0 || tag.y + tag.y0 < 0 ||
-            tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1]) continue;
+            tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1])
+            continue;
+
         // TODO only check for collisions within current bounds.
         if (!bounds || !cloudCollide(tag, board, size[0])) {
           if (!bounds || collideRects(tag, bounds)) {

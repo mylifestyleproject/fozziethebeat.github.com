@@ -2,29 +2,58 @@ body {
   background: url(/tweetolympics/texture-noise.png);
   position: relative;
   overflow: hidden;
-  margin: 0;
   font-size: 14px;
-  font-family: "Helvetica Neue", Helvetica;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  width: 1280px;
+  margin-top: 40px;
+  margin-bottom: 4em;
 }
+
+#vis text:hover { opacity: .7 !important; }
+#text { width: 100%; height: 100px; }
+#form { font-size: small; position: relative; }
 
 #tagCloud {
   top: 100px;
-  width: 300px;
+  width: 480px;
   height: 300px;
   padding-left: 20px;
 }
 
 #controls {
-  width: 300px;
+  width: 480px;
   height: 200px;
+  margin-bottom: 10px;
+}
+
+#sports {
   display: inline-block;
   margin-bottom: 10px;
+}
+
+#sportChart {
+  position: relative;
+  width: 480px;
+  height: 200px;
+}
+
+#sportLabels {
+    position: absolute;
+    left: 0;
+  width: 80px;
+  height: 200px;
+}
+#sportBars {
+    position: absolute;
+    right: 0;
+  width: 400px;
+  height: 200px;
 }
 
 #globe {
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: 10px;
   width: 700px;
   height: 700px;
 }
@@ -32,6 +61,17 @@ body {
 rect {
   fill: none;
   pointer-events: all;
+}
+
+#sportBars .chart text.bar {
+  font: 12px sans-serif;
+  text-align: right;
+  color: white;
+}
+
+#sportBars .chart rect {
+  stroke: white;
+  fill: steelblue;
 }
 
 pre {

@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>Visualizing the Cultural Revolution in China</title>
+        <script type="text/javascript" src="/javascripts/d3.v2.js"></script>
+        <script type="text/javascript" src="/javascripts/d3.layout.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+            var w = 960,
+                h = 500,
+                nodes = [],
+                node;
+
+            d3.json("china.cr.entity.json", function(entityList) {
+
+            var vis = d3.select("body").append("svg:svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+            var force = d3.layout.force()
+                          .nodes(entityList)
+                          .links([])
+                          .size([w, h]);
+
+            force.on("tick", function(e) {
+              vis.selectAll("path")
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            });
+
+            var typeMap = {
+                "person" : d3.svg.symbolTypes[~~(Math.random() * d3.svg.symbolTypes.length)],
+                "item" : d3.svg.symbolTypes[~~(Math.random() * d3.svg.symbolTypes.length)],
+                "group" : d3.svg.symbolTypes[~~(Math.random() * d3.svg.symbolTypes.length)],
+            };
+
+              // Restart the layout.
+              force.start();
+
+              vis.selectAll("path")
+                  .data(nodes)
+                .enter().append("svg:path")
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+                  .attr("d", d3.svg.symbol())
+                  .size(10)
+                  .type(function(d) { return typeMap[d.type]; })
+                  .style("fill", "steelblue")
+                  .style("stroke", "white")
+                  .style("stroke-width", "1.5px")
+                  .call(force.drag);
+            });
+        </script>
+    </body>
+</html>
