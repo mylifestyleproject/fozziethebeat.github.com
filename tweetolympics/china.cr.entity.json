@@ -61,5 +61,12 @@
         "shortname": "dàzìbào",
         "url": "http://en.wikipedia.org/wiki/Big-character_poster",
         "image": "http://upload.wikimedia.org/wikipedia/commons/0/07/Futu-north-0059.jpg"
+    },
+    {
+        "id": "china.cr.happening.001",
+        "type": "event",
+        "name": "The Cultural Revolution",
+        "url": "http://en.wikipedia.org/wiki/Cultural_Revolution",
+        "image": "http://upload.wikimedia.org/wikipedia/en/c/c6/Cultural_Revolution_poster.jpg"
     }
 ]

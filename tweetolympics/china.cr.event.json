@@ -1,22 +1,51 @@
 [
-    { id: "china.cr.event.001",
-      entities: [ "china.cr.group.001",
-                  "china.cr.item.001",
-                  "china.cr.per.001",
-                  "china.cr.per.002",
-                  "china.cr.per.003",
-                  "china.cr.per.004",
-                ],
-      summary: "the Politburo issued six Central Documents regarding the dismissal of Peng, Luo, Lu and Yang in which they declared that the \"Great Cultural Revolution\" had been launched",
-      time: "1966"
+    { 
+       "id": "china.cr.event.001",
+       "central": "china.cr.group.001",
+       "affected": [ "china.cr.item.001" ],
+       "type": "distribute",
+       "summary": "the Politburo issued six Central Documents regarding the dismissal of Peng, Luo, Lu and Yang in which they declared that the \"Great Cultural Revolution\" had been launched",
+       "time": "1966"
     },
-    { id: "china.cr.event.002",
-      entities: [ "china.cr.per.005",
-                  "china.cr.group.002",
-                  "china.cr.per.001",
-                  "china.cr.item.002",
-                ],
-      summary: " Nie Yuanzi, a philosophy lecturer at Peking University, authored a big-character poster along with other leftists and posted it to a public bulletin. Nie attacked the university's party administration and its leader Lu Ping.[24] Nie insinuated that the university leadership, much like Peng Zhen, were trying to contain revolutionary fervour in a \"sinister\" attempt to oppose the party and advance revisionism.",
-      time: "1996-05-26"
+    {
+        "id": "china.cr.event.003",
+        "central": "china.cr.item.001",
+        "affected": [ "china.cr.per.001",
+                      "china.cr.per.002",
+                      "china.cr.per.003",
+                      "china.cr.per.004"
+                    ],
+        "type": "discuss",
+        "summary": "The six central documents commented on the dismissal of Peng, Luo, Lu, and Yang.",
+        "time": "1966",
+        "prev": "china.cr.event.001"
+    },
+    {
+        "id": "china.cr.event.004",
+        "central": "china.cr.item.001",
+        "affected": ["china.cr.happening.001"],
+        "type": "initiate",
+        "summary": "The six central documents announced the start of the \"Cultural Revolution\"",
+        "time":"1966",
+        "prev": "china.cr.event.001"
+    },
+    {
+        "id": "china.cr.event.005",
+        "central": "china.cr.per.005",
+        "affected": [ "china.cr.item.002" ],
+        "type": "distribute",
+        "summary": " Nie Yuanzi, a philosophy lecturer at Peking University, authored a big-character poster along with other leftists and posted it to a public bulletin. Nie attacked the university's party administration and its leader Lu Ping.[24] Nie insinuated that the university leadership, much like Peng Zhen, were trying to contain revolutionary fervour in a \"sinister\" attempt to oppose the party and advance revisionism.",
+        "time": "1996-05-26"
+    },
+    { 
+        "id": "china.cr.event.006",
+        "central": "china.cr.item.002",
+        "affected": [ "china.cr.group.002",
+                      "china.cr.per.001"
+                    ], 
+        "type": "attack",
+        "summary": " Nie Yuanzi, a philosophy lecturer at Peking University, authored a big-character poster along with other leftists and posted it to a public bulletin. Nie attacked the university's party administration and its leader Lu Ping.[24] Nie insinuated that the university leadership, much like Peng Zhen, were trying to contain revolutionary fervour in a \"sinister\" attempt to oppose the party and advance revisionism.",
+        "time": "1996-05-26",
+        "prev": "china.cr.event.005"
     }
 ]

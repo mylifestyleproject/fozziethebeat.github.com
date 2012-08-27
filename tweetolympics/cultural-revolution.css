@@ -2,11 +2,28 @@ html {
   min-width: 1040px;
 }
 
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}
+
 body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   margin: 1em auto 4em auto;
   position: relative;
   width: 960px;
+}
+
+#summaries {
+    width: 200px;
+}
+
+#graph {
+    width: 960px;
 }
 
 h1 {
@@ -78,6 +95,8 @@ pre {
   border-left: solid 2px #ccc;
   padding-left: 18px;
   margin: 2em 0 2em -20px;
+  width: 960px;
+  overflow-x: auto;
 }
 
 .html .value,
