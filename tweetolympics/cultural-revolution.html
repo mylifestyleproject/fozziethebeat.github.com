@@ -6,8 +6,6 @@
         <script type="text/javascript" src="jquery-1.8.0.min.js"></script>
     </head>
     <body>
-        <input type="button" onclick="colour('red')" value='red'/>
-
         <div id="summaries"></div>
         <div id="graph"></div>
         <script type="text/javascript">
@@ -29,6 +27,19 @@
                 h = 500,
                 nodes = [],
                 node;
+            function tagSummary(summary, tags) {
+                var prevIndex = 0;
+                var updatedSummary = "";
+                tags.forEach(function(tag, i) {
+                    updatedSummary += summary.substring(prevIndex, tags.start);
+                    updatedSummary += "<span style=\"background:yellow\">";
+                    updatedSummary += summary.substring(tags.start, tags.end);
+                    updatedSummary += "</span>";
+                    prevIndex = tags.end;
+                });
+                updatedSummary += summary.substring(prevIndex);
+                return updatedSummary;
+            }
 
             function getShape(type) {
                 if (!(type in symbolMap)) 
@@ -42,19 +53,6 @@
                 return colorMap[type];
             }
 
-
-            function colour(colour) {
-                var selection= window.getSelection();
-                console.log(selection)
-                if (selection.toString()!=="") {
-                    var range = selection.getRangeAt(0);
-                    var span = document.createElement("span");
-                    span.className = colour;
-                    span.innerHTML = range.toString();
-                    range.deleteContents();
-                    range.insertNode(span);
-                }
-            }
 
             d3.json("china.cr.entity.json", function(entityList) {
                 var entityMap = {};
@@ -81,7 +79,15 @@
                     $.post("http://localhost:8080",
                            { text: d.summary },
                            function(response) {
+                        response = $.parseJSON(response);
+                        response.forEach(function(d, i) {
+                            d.start = +d.start;
+                            d.end = +d.end;
+                        });
+                        var updatedSummary = tagSummary(summaryList[summaryId],
+                                                        response);
                         summaryList[summaryId].annotations = response;
+                        console.log(updatedSummary);
                     });
 
                     eventTypeSet[d.type] = true;
