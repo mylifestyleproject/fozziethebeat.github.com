@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linguistics | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/linguistics/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-08-27T19:48:57+09:00</updated>
+  <updated>2012-09-02T14:21:02+09:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -21,7 +21,9 @@
     <content type="html"><![CDATA[<p>This post starts what will hopefully be a new trend: computational solutions to
 [NPR's Sunday Puzzle][1].  In this weeks puzzle, we have to</p>
 
-<p><blockquote><p>Think of a common man's name in four letters, one syllable. Move each letter exactly halfway around the alphabet. For example, A would become N, N would become A, and B would become O. The result will be a common woman's name in two syllables. What names are these?</p></blockquote></p>
+<p>{% blockquote %}
+Think of a common man's name in four letters, one syllable. Move each letter exactly halfway around the alphabet. For example, A would become N, N would become A, and B would become O. The result will be a common woman's name in two syllables. What names are these?
+{% endblockquote %}</p>
 
 <p>Word puzzles can often be pretty hard for automated computer programs.  This is
 in part what made [IBM's Watson][2] so darn cool.  But thankfully this week's

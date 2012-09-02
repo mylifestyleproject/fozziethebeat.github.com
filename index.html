@@ -9,8 +9,8 @@
   <meta name="author" content="Keith Stevens">
 
   
-  <meta name="description" content="Research papers. I hate them sometimes. They present a great idea, talk about
-how it can be used and applied, and then give only the barest &hellip;">
+  <meta name="description" content="I needed the event times for every game, tournament, and competition that
+happened during the London 2012 Olympics. Thankfully the London 2012 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +84,359 @@ how it can be used and applied, and then give only the barest &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/28/finding-events-during-the-olympics/">Finding Events During the Olympics</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-28T14:56:00+09:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I needed the event times for every game, tournament, and competition that
+happened during the London 2012 Olympics.  Thankfully the <a href="http://www.london2012.com/index-olympic.html">London 2012</a>
+website posts all this information online.   Sadly, this information isn&#8217;t
+posted anywhere in an easy to utilize format.  I was deeply hoping that there
+would be a csv file describing when every event took place, but to no avail.
+Instead, all I had access to was beautifully rendered web pages like below,
+which graphically detail when each event began and end for each day.</p>
+
+<p><img src="/images/olympics-archery-event-example.png" alt="Event listings for Archery during the London 2012 Olympics" /></p>
+
+<p>This handy web page has <em>all</em> the information I need, but how easy is it to get
+that information out?</p>
+
+<h2>The raw event information</h2>
+
+<p>Well, let&#8217;s take a gander at the html used to describe
+each event:</p>
+
+<figure class='code'><figcaption><span>Html describing an event on London2012.com</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="nt">&lt;li&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;barWrap disciplines&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>     <span class="c">&lt;!--s-u: ARM073900 - ARM073900--&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;left: 72px; width: 90px; height:19px; overflow:hidden;&quot;</span>
+</span><span class='line'>          <span class="na">class=</span><span class="s">&quot;bar ed_2012-08-30T12:30:00+01:00&quot;</span>
+</span><span class='line'>          <span class="na">id=</span><span class="s">&quot;bar-ARM073900&quot;</span>
+</span><span class='line'>          <span class="na">data-type=</span><span class="s">&quot;a_20120830090000 b_&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;barcnt m0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;a</span>  <span class="na">href=</span><span class="s">&quot;/paralympics/archery/event/men-individual-recurve-w1-w2/phase=arm073900/index.html&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>           <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;bar-time&quot;</span><span class="nt">&gt;</span>10:00 <span class="nt">&lt;/span&gt;</span>
+</span><span class='line'>           <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;bar-phasedesc&quot;</span><span class="nt">&gt;</span>Ranking Round <span class="nt">&lt;/span&gt;</span>
+</span><span class='line'>           <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;bar-scheduleline&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>             <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;score&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>           <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/li&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s pretty obvious when the event took place no?</p>
+
+<p>Not really.  They&#8217;ve crammed all the timing information into the second <code>div</code>
+element using two different attributes: <code>class</code> and <code>data-type</code>.  Furthermore,
+they&#8217;ve also encoded the start time within a deeply nested span.  <strong>But</strong> it
+gets <strong><strong>better</strong></strong>.  They use two <strong>different</strong> time zones and two different
+date formats, the <code>class</code> attribute uses GMT+01:00 using a pretty readible
+format while the <code>data-type</code> uses GMT+00:00 with a horribly mashed together
+format.  But at least, it&#8217;s a regular pattern.  So we should be able to get
+everything we want by treating this as xml and just extracting the attribute
+values for the nodes we care about.</p>
+
+<h2>The obvious way to extract those times</h2>
+
+<p>XML parsing is both pretty fast and easy, if you select the right language.
+Let&#8217;s throw this into a simple xml parser and see what happens:</p>
+
+<figure class='code'><figcaption><span>Parsing the </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">import</span> <span class="nn">scala.xml.XML</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">val</span> <span class="n">eventXml</span> <span class="k">=</span> <span class="nc">XML</span><span class="o">.</span><span class="n">loadFile</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Parsing&#8230;parsing&#8230;parsing&#8230;</p>
+
+<figure class='code'><figcaption><span>Parsing the </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">org</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">sax</span><span class="o">.</span><span class="nc">SAXParseException</span><span class="o">;</span> <span class="n">lineNumber</span><span class="k">:</span> <span class="err">3</span><span class="o">;</span> <span class="n">columnNumber</span><span class="k">:</span> <span class="err">299</span><span class="o">;</span> <span class="nc">The</span> <span class="n">entity</span> <span class="n">name</span> <span class="n">must</span> <span class="n">immediately</span> <span class="n">follow</span> <span class="n">the</span> <span class="sc">&#39;&amp;&#39;</span> <span class="n">in</span> <span class="n">the</span> <span class="n">entity</span> <span class="n">reference</span><span class="o">.</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">ErrorHandlerWrapper</span><span class="o">.</span><span class="n">createSAXParseException</span><span class="o">(</span><span class="nc">ErrorHandlerWrapper</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">198</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">ErrorHandlerWrapper</span><span class="o">.</span><span class="n">fatalError</span><span class="o">(</span><span class="nc">ErrorHandlerWrapper</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">177</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="nc">XMLErrorReporter</span><span class="o">.</span><span class="n">reportError</span><span class="o">(</span><span class="nc">XMLErrorReporter</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">441</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="nc">XMLErrorReporter</span><span class="o">.</span><span class="n">reportError</span><span class="o">(</span><span class="nc">XMLErrorReporter</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">368</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="nc">XMLScanner</span><span class="o">.</span><span class="n">reportFatalError</span><span class="o">(</span><span class="nc">XMLScanner</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">1375</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">at</span> <span class="n">com</span><span class="o">.</span><span class="n">sun</span><span class="o">.</span><span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">xerces</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="nc">XMLScanner</span><span class="o">.</span><span class="n">scanAttributeValue</span><span class="o">(</span><span class="nc">XMLScanner</span><span class="o">.</span><span class="n">java</span><span class="k">:</span><span class="err">824</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, it looks like XML parsing this beast is both slow and higly error prone.
+What else could we do?  We could try using a more accurate or graceful xml
+parser that&#8217;s built to deal with html&#8217;s malformities, but I&#8217;ll leave out story
+of how that doesn&#8217;t work well in this case either.  Instead, we&#8217;ll do something
+even more silly.</p>
+
+<h2>In rolls javascript</h2>
+
+<p>Obviously someone code path out in the world has to be capable of handling this
+html mess.   Otherwise it&#8217;d never show in a browser.  But what&#8217;s the shortest
+path for doing this?  Hacking through either the <a href="https://developer.mozilla.org/en-US/docs/Developer_Guide/Source_Code/Mercurial?redirectlocale=en-US&amp;redirectslug=Mozilla_Source_Code_%28Mercurial%29">Firefox source code</a> or the
+<a href="http://src.chromium.org/viewvc/chrome/">Chromium source code</a> both sound like longest path solutions to me.  In
+comes the magic of Javascript.  <a href="http://jquery.com/">jQuery</a> is able to single handedly take an
+html file, turn it into a <a href="http://en.wikipedia.org/wiki/Document_Object_Model">Document Object Model</a> structure, and let you run
+queries over it, not only does this work in a few lines of code, it&#8217;s super
+fast.</p>
+
+<h3>A quick setup</h3>
+
+<p><strong>But</strong>, first you have to do a little setup to run all this outside of a
+browser.  The easiest system I found was <a href="http://nodejs.org/">node.js</a>.  To setup, all you have
+to do is grab a tarball, I used <a href="http://nodejs.org/dist/v0.8.8/node-v0.8.8.tar.gz">this</a> one, untar it, and added the binaries
+to your path:</p>
+
+<pre><code>wget http://nodejs.org/dist/v0.8.7/node-v0.8.7.tar.gz
+tar -xvzf node-v0.8.7.tar.gz
+export $PATH:`pwd`/node-v0.8.7-linux-x86/bin/node
+export $PATH:`pwd`/node-v0.8.7-linux-x86/bin/npm
+</code></pre>
+
+<p>And to get <a href="http://jquery.com/">jQuery</a> setup for <a href="http://nodejs.org/">node.js</a>, it&#8217;s as easy as running:</p>
+
+<pre><code>npm install jquery
+</code></pre>
+
+<p>Only hitch is that you have to run this from the root directory where you&#8217;ll be
+running your processing, but that&#8217;s a minor problem.</p>
+
+<h3>Parsing Power!</h3>
+
+<p>Now that our javascript runtime environment is setup with the library we need,
+it&#8217;s time to get into the meat of the code.  The approach is pretty simple:</p>
+
+<ol>
+<li>parse a html file using jquery</li>
+<li>find the nodes with the <code>bar</code> id nested within a div having a <code>disciplines</code> id.</li>
+<li>Get the <code>class</code> and <code>data-type</code> attributes from the div we got back and
+handle one of three cases:
+
+<ol>
+<li>The <code>class</code> attritube tells us all we need</li>
+<li><code>class</code> and <code>data-type</code> include timing information</li>
+<li>the <code>data-type</code> attribute tells us all we need.</li>
+</ol>
+</li>
+</ol>
+
+
+<p>So let&#8217;s code that up!  First, import the js libraries you need.</p>
+
+<figure class='code'><figcaption><span>Importing jquery and the filesystem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">/// Import jquery library.</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jquery&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// Import file system library.</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now parse the javascript to get a <a href="http://en.wikipedia.org/wiki/Document_Object_Model">DOM</a> structure:</p>
+
+<figure class='code'><figcaption><span>Getting the DOM out of the olympics</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Throw any errors found.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// Convert the raw data to text.</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// More coming shortly!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So far so easy, breezy.  Now comes the challenging part: grabbing the div&#8217;s
+holding the timing info we need and checking for the funny ways <a href="http://www.london2012.com/index-olympic.html">london 2012</a>
+decided to encode that information:</p>
+
+<figure class='code'><figcaption><span>Handling london 2012&#8217;s horrible html stle</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>    <span class="c1">// Navigate the html to find all div elements with the &quot;disciplines&quot; class</span>
+</span><span class='line'>    <span class="c1">// and the children of these elements with the &quot;bar&quot; class.  These elements</span>
+</span><span class='line'>    <span class="c1">// define the time of each event.</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">barElemens</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">html</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;.disciplines&quot;</span><span class="p">).</span><span class="nx">children</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">// For each bar element found, extract the start time and end time.  The</span>
+</span><span class='line'>    <span class="c1">// start time is the text within the span having a &quot;.bar-time&quot; class and the</span>
+</span><span class='line'>    <span class="c1">// end time is the second class label of each element.</span>
+</span><span class='line'>    <span class="nx">barElemens</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// Convert the index to an element in the array.</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">elem</span> <span class="o">=</span> <span class="nx">barElemens</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">classAttr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">dataType</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-type&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">dataType</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// If the data-type attribute is empty, then we know that both the</span>
+</span><span class='line'>            <span class="c1">// start and end times are stored in the class attribute, albeit in</span>
+</span><span class='line'>            <span class="c1">// an utterly horrible and wretched format that uses two different</span>
+</span><span class='line'>            <span class="c1">// timezones and two different formats.</span>
+</span><span class='line'>            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">classAttr</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dataType</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// If the data-type ends with an underscore, we know that the start</span>
+</span><span class='line'>            <span class="c1">// time is in the text and the end time is in the class attribute.</span>
+</span><span class='line'>            <span class="c1">// So report that.</span>
+</span><span class='line'>            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">classAttr</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;.bar-time&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">());</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// Otherwise, the data-type has the full time range for the event,</span>
+</span><span class='line'>            <span class="c1">// so just report that, even though it&#39;s in a different format.</span>
+</span><span class='line'>            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">dataType</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">});</span> <span class="c1">// This ends the original jquery call to parse the html file</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that&#8217;s it.  With <a href="http://jquery.com/">jQuery</a> and <a href="http://nodejs.org/">node.js</a>, I have significantly more
+comments than actual code, mostly to describe my new understanding of the api&#8217;s
+and data based logic processing that no human should have to decifer through
+code.</p>
+
+<h2>Actually getting the data</h2>
+
+<p>Actually downloading the data requires a few simple tricks that are worth
+noting, just in case anyone ever wants to duplicatet this whole shebang.</p>
+
+<p>First, <a href="http://www.london2012.com/index-olympic.html">london 2012</a> doesn&#8217;t let you do a normal <code>wget</code> call, it requires a
+user agent.  So, every request looks like this:</p>
+
+<pre><code>userAgent="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092416 Firefox/3.0.3"
+wget --user-agent=$userAgent $url
+</code></pre>
+
+<p>Now we just need to figure out the pattern for each sport.  For once, <a href="http://www.london2012.com/index-olympic.html">london
+2012</a> makes that part easy.  Their uer&#8217;s use just two key values: the sport
+you want and the day you want, so here&#8217;s a little bit of bash to extract all
+that (and save everything in an easier to use file name:</p>
+
+<pre><code>sports="judo gymnastics-artistic fencing tennis archery"
+julyDays=`seq  25 31 | while read day; do echo $day-july; done`
+augDays=`seq 1 12 | while read day; do echo $day-august; done`
+userAgent="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092416 Firefox/3.0.3"
+resultDir=tmpHtmlData
+
+# Define a helper function to return the full url based on the sport and day.
+# This is just to make changing the url easier.
+function olympicsUrl() {
+    echo http://www.london2012.com/$sport/schedule-and-results/day=$day/all-day.html 
+}
+
+# Now iterate through every sport.
+for sport in $sports; do
+    # And every day of the olympics.
+    for day in $julyDays $augDays; do
+        # And do a simple wget request.  Since each page has the same html file
+        # name, the -O bit saves the html output to a file based on the sport
+        # and day for easier management.
+        wget --user-agent=$userAgent -O $tmpHtmlData/$sport-$day.html `olympicsUrl`
+    done
+done
+</code></pre>
+
+<p>And voila, you have all the sports you want for each day of the olympics.  You
+can no easily power through all those files with this dandy bit of code:</p>
+
+<pre><code>for sport in $sports; do
+    for html in $resultDir/*$sport*.html; do
+        node src/main/javascript/ExtractTimes.js $html
+    done &gt; olympics.$sport.times.txt
+done
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -830,7 +1183,7 @@ ton of data to process, and then processing it all, I figured I should design a
 night UI for exploring the results.  Being a terrible UI guy I thought I could
 never pull it off, but thanks to the magicians behind <a href="http://square.github.com/crossfilter/">Crossfilter</a> and
 <a href="http://d3js.org/">D3.js</a>, it turned out to be pretty easy.  The result of my UI wizardry is
-currently <a href="/tweetolympics/">here</a>.  And while there&#8217;s quite a lot more to add, such a way to
+currently <a href="http://kracken.cs.ucla.edu/olympics/">here</a>.  And while there&#8217;s quite a lot more to add, such a way to
 select other sports or other summarization methods, it does the bulk of what I
 want:</p>
 
@@ -3123,447 +3476,6 @@ the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/">Making Agglomerative Clustering Run in N^2 Time</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-16T17:21:00+09:00" pubdate data-updated="true">Mar 16<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Let&#8217;s say you&#8217;re an amateur zoologist and you&#8217;ve got a bunch of data describing
-<a href="http://en.wikipedia.org/wiki/Owl">parliaments of owls</a>, <a href="http://en.wikipedia.org/wiki/Goose">gaggles of geese</a>, <a href="http://en.wikipedia.org/wiki/Chicken">peeps of chickens</a>, and a
-<a href="http://en.wikipedia.org/wiki/Jackdaw">train of jackdaws</a> but you don&#8217;t really know that you have these bird types.
-All you really have are descriptive features describing each bird like feature
-type, beak type, conservation status, feeding preferences, etc.   Using just
-this data, you&#8217;d like to find out how many bird species you have and how similar
-each group is to the others in a nice graphical fashion like down below.  How
-would you do it?</p>
-
-<p><img class="center" src="/images/circularDendrogram.png"></p>
-
-<p>The classic solution to the problem would be to use <a href="http://en.wikipedia.org/wiki/Hierarchical_clustering">Hierarchical Agglomerative
-Clustering</a>.  In this case, Agglomerative Clustering would group together
-birds that have similar features into hopefully distinct species of birds.  And
-there&#8217;s a lot of packages out there that kind of do this for you like <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>,
-<a href="http://scikit-learn.org/stable/">Scikit-Learn</a>, or plain old <a href="http://www.statmethods.net/advstats/cluster.html">R</a>.  However, you&#8217;ve got a <em><em>lot</em></em> of birds
-to deal with and these standard packages are just taking <em><em>way</em></em> too long.  Why
-are they taking way too long?  Because they&#8217;re doing agglomerative clustering
-the slow ways.</p>
-
-<p>So what do they slow ways look like?  Well, pretty much all ways of doing
-agglomerative clustering start by building an Affinity Matrix that simply
-measures how similar two birds are to each other:</p>
-
-<figure class='code'><figcaption><span>Building the Affinity Matrix</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">m</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="n">numBirds</span><span class="o">,</span> <span class="n">numBirds</span><span class="o">)(</span><span class="mi">0</span><span class="o">)</span>
-</span><span class='line'><span class="k">for</span> <span class="o">((</span><span class="n">bird1</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">birds</span><span class="o">.</span><span class="n">zipWithIndex</span><span class="o">;</span>
-</span><span class='line'>     <span class="o">(</span><span class="n">bird2</span><span class="o">,</span> <span class="n">j</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">birds</span><span class="o">.</span><span class="n">zipWithIndex</span><span class="o">)</span>
-</span><span class='line'>    <span class="n">m</span><span class="o">(</span><span class="n">i</span><span class="o">)(</span><span class="n">j</span><span class="o">)</span> <span class="k">=</span> <span class="n">similarityBetween</span><span class="o">(</span><span class="n">bird1</span><span class="o">,</span> <span class="n">bird2</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This little snippet just compares each bird against all other birds and stores
-how &#8220;similar&#8221; they are to each other in terms of their descriptive features.
-What next?  Well, you need another data structure to keep track of your bird
-groups.  We&#8217;ll do this with just a map from group identifiers to sets of bird
-identifiers.  And since this algorithm is named &#8220;agglomerative&#8221;, we gotta
-agglomerate things, so we&#8217;ll start by putting every bird in their own bird
-group:</p>
-
-<figure class='code'><figcaption><span>Starting off the bird groups</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'>    <span class="c1">// First get each bird and it&#39;s id, then create a tuple holding the bird id</span>
-</span><span class='line'>    <span class="c1">// and a set with the bird as the only element.  Then turn this list of</span>
-</span><span class='line'>    <span class="c1">// tuples into a map.</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">groupMap</span> <span class="k">=</span> <span class="n">birds</span><span class="o">.</span><span class="n">zipWithIndex</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">birdIndex</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">birdIndex</span><span class="o">.</span><span class="n">_2</span><span class="o">,</span> <span class="nc">Set</span><span class="o">(</span><span class="n">birdIndex</span><span class="o">.</span><span class="n">_1</span><span class="o">))).</span><span class="n">toMap</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So that was simple.  Now comes the complicated bits that either lead you to a
-slow version, a fairly slow version, or a <em>super</em> slow version of agglomerative
-clustering.  Before we do either of these options, let&#8217;s make two
-simplifications: let&#8217;s assume we just want the final groups that our bird show
-up in and we know how many bird groups we want to find.  Agglomerative
-Clustering can give you not only this information, but a whole tree showing how
-birds are linked together, but the book-keeping for doing this is tricky and
-doesn&#8217;t really affect the issues we&#8217;re focusing on here.  With that out of the
-way, what does the <em>super</em> slow method look like?</p>
-
-<figure class='code'><figcaption><span>The Super Slow Agglomerative Clustering</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="n">groupMap</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">numClusters</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">val</span> <span class="n">groupSet</span> <span class="k">=</span> <span class="n">groupMap</span><span class="o">.</span><span class="n">toSet</span>
-</span><span class='line'>    <span class="c1">// Find the two most similar groups in our map.</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">bestSim</span> <span class="k">=</span> <span class="mf">0.0</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">bestGroups</span> <span class="k">=</span> <span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="nc">Array</span><span class="o">((</span><span class="n">id1</span><span class="o">,</span> <span class="n">birds1</span><span class="o">),</span> <span class="o">(</span><span class="n">id2</span><span class="o">,</span> <span class="n">birds2</span><span class="o">))</span> <span class="k">&lt;-</span> <span class="n">groupSet</span><span class="o">.</span><span class="n">subsets</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="n">toArray</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// Get the similarity between the two bird groups using the raw</span>
-</span><span class='line'>        <span class="c1">// values in m.</span>
-</span><span class='line'>        <span class="k">val</span> <span class="n">sim</span> <span class="k">=</span> <span class="n">groupSim</span><span class="o">(</span><span class="n">id1</span><span class="o">,</span> <span class="n">birds1</span><span class="o">,</span> <span class="n">id2</span><span class="o">,</span> <span class="n">birds2</span><span class="o">,</span> <span class="n">m</span><span class="o">)</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">sim</span> <span class="o">&gt;</span> <span class="n">bestSim</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">bestSim</span> <span class="k">=</span> <span class="n">sim</span>
-</span><span class='line'>            <span class="n">bestGroups</span> <span class="k">=</span> <span class="o">(</span><span class="n">id1</span><span class="o">,</span> <span class="n">id2</span><span class="o">)</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Now merge the two groups together into a new group</span>
-</span><span class='line'>    <span class="k">val</span> <span class="n">newGroup</span> <span class="k">=</span> <span class="n">groupMap</span><span class="o">(</span><span class="n">bestGroups</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span> <span class="o">++</span> <span class="n">groupMap</span><span class="o">(</span><span class="n">bestGroups</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
-</span><span class='line'>    <span class="c1">// Now remove the two groups from the map</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">-</span> <span class="n">bestGroups</span><span class="o">.</span><span class="n">_1</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">-</span> <span class="n">bestGroups</span><span class="o">.</span><span class="n">_2</span>
-</span><span class='line'>    <span class="c1">// Update the map to store the new group.  Since the old id&#39;s are</span>
-</span><span class='line'>    <span class="c1">// removed, we can just re-use one of them without any change.</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">++</span> <span class="nc">Map</span><span class="o">((</span><span class="n">bestGroups</span><span class="o">.</span><span class="n">_1</span> <span class="o">-&gt;</span> <span class="n">newGroup</span><span class="o">))</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&#8217;s it!  It&#8217;s <em>super</em> simple and <em>super</em> slow.  Why is it so slow?  Well, in
-general, you&#8217;ll do the big while loop <code>O(N)</code> times, where N is your number of
-birds.  Then the next block of code compares each possible pairing of bird
-groups.  Since in general the number of groups is proportional to the number of
-birds, this will be <code>O(N^2)</code> comparisons.  Throw these two bits together
-and you get a runtime of <code>O(N3)</code>!  When you have 100,000 birds,
-<em>that&#8217;s</em> <strong>super</strong> slow.</p>
-
-<p>So what can you do to hasten that up?  Well, the main goal of the big loop
-through pairs of groups is to find the most <em>similar</em> pair of bird groups, so an
-obvious choice would be to create a priority queue, so let&#8217;s see how that looks:</p>
-
-<figure class='code'><figcaption><span>Agglomerative Clustering, Priority Queue Style</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// Create a new priority queue that tracks the similarity of two groups and</span>
-</span><span class='line'><span class="c1">// their id&#39;s</span>
-</span><span class='line'><span class="k">val</span> <span class="n">groupQueue</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PriorityQueue</span><span class="o">[(</span><span class="kt">double</span>, <span class="kt">int</span>, <span class="kt">int</span><span class="o">)]()</span>
-</span><span class='line'><span class="k">val</span> <span class="n">groupSet</span> <span class="k">=</span> <span class="n">groupMap</span><span class="o">.</span><span class="n">toSet</span>
-</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="nc">Array</span><span class="o">((</span><span class="n">id1</span><span class="o">,</span> <span class="n">birds1</span><span class="o">),</span> <span class="o">(</span><span class="n">id2</span><span class="o">,</span> <span class="n">birds2</span><span class="o">))</span> <span class="k">&lt;-</span> <span class="n">groupMap</span><span class="o">.</span><span class="n">subsets</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="n">toArray</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>    <span class="c1">// Get the similarity between the two bird groups using the raw</span>
-</span><span class='line'>    <span class="c1">// values in m.</span>
-</span><span class='line'>    <span class="k">val</span> <span class="n">sim</span> <span class="k">=</span> <span class="n">groupSim</span><span class="o">(</span><span class="n">id1</span><span class="o">,</span> <span class="n">birds1</span><span class="o">,</span> <span class="n">id2</span><span class="o">,</span> <span class="n">birds2</span><span class="o">,</span> <span class="n">m</span><span class="o">)</span>
-</span><span class='line'>    <span class="n">groupQueue</span><span class="o">.</span><span class="n">enque</span><span class="o">((</span><span class="n">sim</span><span class="o">,</span> <span class="n">id1</span><span class="o">,</span> <span class="n">id2</span><span class="o">))</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">var</span> <span class="n">nextId</span> <span class="k">=</span> <span class="n">groupMap</span><span class="o">.</span><span class="n">size</span>
-</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="n">groupMap</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">numClusters</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">best</span> <span class="k">=</span> <span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span>
-</span><span class='line'>    <span class="k">do</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">best</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">dequeue</span>
-</span><span class='line'>    <span class="o">}</span> <span class="k">while</span> <span class="o">(</span><span class="n">groupMap</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">best</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">groupMap</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">best</span><span class="o">.</span><span class="n">_3</span><span class="o">))</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Now merge the two groups together into a new group</span>
-</span><span class='line'>    <span class="k">val</span> <span class="n">newGroup</span> <span class="k">=</span> <span class="n">groupMap</span><span class="o">(</span><span class="n">best</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span> <span class="o">++</span> <span class="n">groupMap</span><span class="o">(</span><span class="n">best</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
-</span><span class='line'>    <span class="c1">// Now remove the two groups from the map</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">-</span> <span class="n">best</span><span class="o">.</span><span class="n">_1</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">-</span> <span class="n">best</span><span class="o">.</span><span class="n">_2</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Create a new id for this group.</span>
-</span><span class='line'>    <span class="k">val</span> <span class="n">newId</span> <span class="k">=</span> <span class="n">nextId</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Next, add in the similarity between the new group and all existing</span>
-</span><span class='line'>    <span class="c1">// groups to the queue.</span>
-</span><span class='line'>    <span class="k">for</span> <span class="o">(</span> <span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">group</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">groupMap</span> <span class="o">)</span>
-</span><span class='line'>        <span class="n">groupQueue</span><span class="o">.</span><span class="n">enqueue</span><span class="o">((</span><span class="n">groupSim</span><span class="o">(</span><span class="n">newId</span><span class="o">,</span> <span class="n">newGroup</span><span class="o">,</span> <span class="n">id</span><span class="o">,</span> <span class="n">group</span><span class="o">,</span> <span class="n">m</span><span class="o">),</span>
-</span><span class='line'>                            <span class="n">newId</span><span class="o">,</span> <span class="n">id</span><span class="o">))</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Finally, update the map to store the new group.</span>
-</span><span class='line'>    <span class="n">nextId</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="n">groupMap</span> <span class="k">=</span> <span class="n">groupMap</span> <span class="o">++</span> <span class="o">(</span><span class="n">newId</span><span class="o">-&gt;</span> <span class="n">newGroup</span><span class="o">)</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now this approach is definitely <em>faster</em> but it&#8217;s also horribly memory
-inefficient.  Even if you have an array based priority queue that doesn&#8217;t
-allocate any extra memory for each entry other than the tuple being stored, this
-approach has one major problem: after every merge step <code>O(N)</code> elements
-immediately become invalidated.  Since the two merged groups no longer exist,
-any comparison between them and other groups is moot.  However the priority
-queue doesn&#8217;t easily permit removing them so they just float around.  This is
-precisely why lines 14-16 are in a do while loop that ensures the returned
-groups exist.  It&#8217;s highly likely that they wont.  I think we can do better,
-both in terms of speed and in terms of memory.  So let&#8217;s blaze through a faster
-method in couple of steps.</p>
-
-<p>First, we need to change the setup of the algorithm.  The previous two method
-just depended on some simple data structures.  This approach requires two
-additional structures for bookkeeping: a way to track chains of nearest
-neighbors and a way to track the set of clusters not already a part of the
-chain.</p>
-
-<figure class='code'><figcaption><span>Agglomerative Clustering, Blazingly Fast Style Step 1</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// A mapping from cluster id&#39;s to their point sets.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">clusterMap</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">HashSet</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// A set of clusters to be considered for merging.</span>
-</span><span class='line'><span class="k">val</span> <span class="n">remaining</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">[</span><span class="kt">Int</span><span class="o">]()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Create a cluster for every data point and add it to the cluster map</span>
-</span><span class='line'><span class="c1">// and to the examine set.</span>
-</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">r</span> <span class="k">&lt;-</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">adj</span><span class="o">.</span><span class="n">size</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">remaining</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
-</span><span class='line'>    <span class="n">clusterMap</span><span class="o">(</span><span class="n">r</span><span class="o">)</span> <span class="k">=</span> <span class="nc">HashSet</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Create a stack to represent the nearest neighbor.  The real source of</span>
-</span><span class='line'><span class="c1">// matic</span>
-</span><span class='line'><span class="k">val</span> <span class="n">chain</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">[(</span><span class="kt">Double</span>, <span class="kt">Int</span><span class="o">)]()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Add in a random node from remaining to start the neighbor chain.</span>
-</span><span class='line'><span class="n">initializeChain</span><span class="o">(</span><span class="n">chain</span><span class="o">,</span> <span class="n">remaining</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>clusterMap</code> structure replaces our <code>birdMap</code> but does the same thing, but
-the remaining set and the chain stack hold the crux of this approach.  Instead
-of trying to find the best link between two clusters, we&#8217;re going to depend on
-chains of nearest neighbors, so the first node in the chain could be anything,
-but the second node is simply the nearest neighbor to the first node.  To add
-the third node, we find the nearest neighbor out of any nodes not in the chain.
-We&#8217;ll keep doing this until two nodes in the chain represent reciprocal nearest
-neighbors, that is two nodes that are most similar to each other, and no other
-nodes in or outside of the chain.  Upon finding these two nodes, we merge them,
-immediately.  Then we just repeat the process until we have the desired number
-of clusters.  In scala, this turns out to be pretty simple to do:</p>
-
-<figure class='code'><figcaption><span>Agglomerative Clustering, Blazingly Fast Style Step 2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="c1">// Find the nearest neighbors and merge as soon as recursive nearest</span>
-</span><span class='line'><span class="c1">// neighbors are found.</span>
-</span><span class='line'><span class="k">while</span> <span class="o">(</span><span class="n">clusterMap</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">numClusters</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="c1">// Get the last link in the chain.</span>
-</span><span class='line'>    <span class="k">val</span> <span class="o">(</span><span class="n">parentSim</span><span class="o">,</span> <span class="n">current</span><span class="o">)</span> <span class="k">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">top</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Find the nearest neighbor using the clusters not in the chain</span>
-</span><span class='line'>    <span class="c1">// already.</span>
-</span><span class='line'>    <span class="k">val</span> <span class="o">(</span><span class="n">linkSim</span><span class="o">,</span> <span class="n">next</span><span class="o">)</span> <span class="k">=</span> <span class="n">findBest</span><span class="o">(</span><span class="n">remaining</span><span class="o">,</span> <span class="n">adj</span><span class="o">,</span> <span class="n">current</span><span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Check the similarity for the best neighbor and compare it to that of</span>
-</span><span class='line'>    <span class="c1">// the current node in the chain.  If the neighbor sim is larger, then</span>
-</span><span class='line'>    <span class="c1">// the current node and it&#39;s parent aren&#39;t RNNs.  Otherwise, the current</span>
-</span><span class='line'>    <span class="c1">// node is RNNs with it&#39;s parent.</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">linkSim</span> <span class="o">&gt;</span> <span class="n">parentSim</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// The current node to push is more similar to the last node in the</span>
-</span><span class='line'>        <span class="c1">// chain, so the last node and the next to last nodes can&#39;t be</span>
-</span><span class='line'>        <span class="c1">// reciprocal nearest neighbors.</span>
-</span><span class='line'>        <span class="n">chain</span><span class="o">.</span><span class="n">push</span><span class="o">((</span><span class="n">linkSim</span><span class="o">,</span> <span class="n">next</span><span class="o">))</span>
-</span><span class='line'>        <span class="n">remaining</span><span class="o">.</span><span class="n">remove</span><span class="o">(</span><span class="n">next</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// The current node is less similar to the last node than the last</span>
-</span><span class='line'>        <span class="c1">// node is to it&#39;s predecesor in the chain, so the last two nodes in</span>
-</span><span class='line'>        <span class="c1">// the chain are just the kind of nodes we&#39;re looking to merge.</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// Pop the current node from the top. </span>
-</span><span class='line'>        <span class="n">chain</span><span class="o">.</span><span class="n">pop</span>
-</span><span class='line'>        <span class="c1">// Pop the parent of the best node.</span>
-</span><span class='line'>        <span class="k">val</span> <span class="o">(</span><span class="n">_</span><span class="o">,</span> <span class="n">parent</span><span class="o">)</span> <span class="k">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">pop</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// These are the two nodes we&#39;ll be merging.  The node we</span>
-</span><span class='line'>        <span class="c1">// found above is left in the remaining set and is essentially</span>
-</span><span class='line'>        <span class="c1">// forgotten.</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// Remove the current and parent clusters from the cluster map</span>
-</span><span class='line'>        <span class="c1">// and extract the sizes.</span>
-</span><span class='line'>        <span class="k">val</span> <span class="o">(</span><span class="n">c1Points</span><span class="o">,</span> <span class="n">c1Size</span><span class="o">)</span> <span class="k">=</span> <span class="n">removeCluster</span><span class="o">(</span><span class="n">clusterMap</span><span class="o">,</span> <span class="n">current</span><span class="o">)</span>
-</span><span class='line'>        <span class="k">val</span> <span class="o">(</span><span class="n">c2Points</span><span class="o">,</span> <span class="n">c2Size</span><span class="o">)</span> <span class="k">=</span> <span class="n">removeCluster</span><span class="o">(</span><span class="n">clusterMap</span><span class="o">,</span> <span class="n">parent</span><span class="o">)</span>
-</span><span class='line'>        <span class="k">val</span> <span class="n">total</span> <span class="k">=</span> <span class="n">c1Size</span> <span class="o">+</span> <span class="n">c2Size</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// Update the similarity between the new merged cluster and all</span>
-</span><span class='line'>        <span class="c1">// other existing clusters.  </span>
-</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">key</span> <span class="k">&lt;-</span> <span class="n">clusterMap</span><span class="o">.</span><span class="n">keys</span><span class="o">)</span>
-</span><span class='line'>            <span class="n">adj</span><span class="o">(</span><span class="n">current</span><span class="o">)(</span><span class="n">key</span><span class="o">)</span> <span class="k">=</span> <span class="n">updatedSimilarity</span><span class="o">(</span>
-</span><span class='line'>                <span class="n">adj</span><span class="o">,</span> <span class="n">current</span><span class="o">,</span> <span class="n">c1Size</span><span class="o">,</span> <span class="n">parent</span><span class="o">,</span> <span class="n">c2Size</span><span class="o">,</span> <span class="n">key</span><span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// Replace the mapping from current to now point to the merged</span>
-</span><span class='line'>        <span class="c1">// cluster and add current back into the set of remaining</span>
-</span><span class='line'>        <span class="c1">// clusters so that it&#39;s compared to nodes in the chain.</span>
-</span><span class='line'>        <span class="n">clusterMap</span><span class="o">(</span><span class="n">current</span><span class="o">)</span> <span class="k">=</span> <span class="n">c1Points</span> <span class="o">++</span> <span class="n">c2Points</span>
-</span><span class='line'>        <span class="n">remaining</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">current</span><span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// If the chain is now empty, re-initialize it.</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">chain</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
-</span><span class='line'>            <span class="n">initializeChain</span><span class="o">(</span><span class="n">chain</span><span class="o">,</span> <span class="n">remaining</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And that&#8217;s it!  By focusing on reciprocal nearest neighbors, the algorithm
-merges together clusters that will always be merged, no matter how you find
-them.  Furthermore, it&#8217;s remarkably easy and fast to find these nodes.  By
-building the chain, the number of things that can go on the chain gets smaller
-and smaller.</p>
-
-<p>Oh, but there&#8217;s one other magic trick to making this super fast, and it depends
-on how you compute <code>updateSimilarity</code>.  The silly way to do it would be to
-traverse all the pairings between nodes in the new cluster and the each other
-remaining cluster, but that in itself gets really slow as the clusters grow.
-But rather than doing that, <a href="http://onlinelibrary.wiley.com/doi/10.1002/widm.53/full">these folks</a> suggest some recurrence relations
-that can be computed in <em>constant time</em>, for any of the existing agglomerative
-criteria methods.  Crazy right?  But just crazy enough to work correctly and be
-too fast to believe.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -3585,6 +3497,10 @@ too fast to believe.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/28/finding-events-during-the-olympics/">Finding Events During the Olympics</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/12/building-a-phrase-graph/">Building A Phrase Graph</a>
       </li>
     
@@ -3600,15 +3516,11 @@ too fast to believe.</p>
         <a href="/blog/2012/06/25/gamma-ramma/">Gamma Ramma</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment/">Topic Model Comparisons: how to replicate an experiment</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/bayesian' style='font-size: 108.57142857142857%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 117.14285714285714%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 134.28571428571428%'>Clustering(4)</a> <a href='/blog/categories/computational' style='font-size: 108.57142857142857%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 108.57142857142857%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 108.57142857142857%'>Conferences(1)</a> <a href='/blog/categories/d3' style='font-size: 108.57142857142857%'>D3(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 108.57142857142857%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 108.57142857142857%'>Experiments(1)</a> <a href='/blog/categories/linguistics' style='font-size: 117.14285714285714%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 108.57142857142857%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 108.57142857142857%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 117.14285714285714%'>Natural language processing(2)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 108.57142857142857%'>Natural language processing(1)</a> <a href='/blog/categories/open-source' style='font-size: 108.57142857142857%'>Open source(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(7)</a> <a href='/blog/categories/statistics' style='font-size: 108.57142857142857%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 108.57142857142857%'>Topic models(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/automation' style='font-size: 108.57142857142857%'>Automation(1)</a> <a href='/blog/categories/bayesian' style='font-size: 108.57142857142857%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 117.14285714285714%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 134.28571428571428%'>Clustering(4)</a> <a href='/blog/categories/computational' style='font-size: 108.57142857142857%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 108.57142857142857%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 108.57142857142857%'>Conferences(1)</a> <a href='/blog/categories/d3' style='font-size: 108.57142857142857%'>D3(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 108.57142857142857%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 108.57142857142857%'>Experiments(1)</a> <a href='/blog/categories/javascript' style='font-size: 108.57142857142857%'>Javascript(1)</a> <a href='/blog/categories/linguistics' style='font-size: 117.14285714285714%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 108.57142857142857%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 108.57142857142857%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 108.57142857142857%'>Natural language processing(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 117.14285714285714%'>Natural language processing(2)</a> <a href='/blog/categories/open-source' style='font-size: 108.57142857142857%'>Open source(1)</a> <a href='/blog/categories/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(7)</a> <a href='/blog/categories/statistics' style='font-size: 108.57142857142857%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 108.57142857142857%'>Topic models(1)</a> </span>
 </section>
 
 <section>
