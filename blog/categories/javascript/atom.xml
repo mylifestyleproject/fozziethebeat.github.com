@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-09-02T14:21:02+09:00</updated>
+  <updated>2012-09-12T23:07:16-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Finding Events During the Olympics]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/08/28/finding-events-during-the-olympics/"/>
-    <updated>2012-08-28T14:56:00+09:00</updated>
+    <updated>2012-08-28T14:56:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/08/28/finding-events-during-the-olympics</id>
     <content type="html"><![CDATA[<p>I needed the event times for every game, tournament, and competition that
 happened during the London 2012 Olympics.  Thankfully the <a href="http://www.london2012.com/index-olympic.html">London 2012</a>

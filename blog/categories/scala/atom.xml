@@ -4,7 +4,7 @@
   <title><![CDATA[Category: scala | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-09-02T14:21:02+09:00</updated>
+  <updated>2012-09-12T23:07:53-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Building A Phrase Graph]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph/"/>
-    <updated>2012-08-12T12:13:00+09:00</updated>
+    <updated>2012-08-12T12:13:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph</id>
     <content type="html"><![CDATA[<p>Research papers.  I hate them sometimes.  They present a great idea, talk about
 how it can be used and applied, and then give only the barest description of how
@@ -482,7 +482,7 @@ original papers were describing.</p>
   <entry>
     <title type="html"><![CDATA[Sonatype and Scala: A relationship of trickery]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/"/>
-    <updated>2012-06-02T22:28:00+09:00</updated>
+    <updated>2012-06-02T22:28:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery</id>
     <content type="html"><![CDATA[<p>Open source projects are amazing.  They let you easily share the work you do
 with others so that they can iterate and improve upon your ideas, an especially
@@ -539,7 +539,7 @@ your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no 
   <entry>
     <title type="html"><![CDATA[Stepping into the Mixtures with Gibbs Sampling]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/"/>
-    <updated>2012-05-17T16:07:00+09:00</updated>
+    <updated>2012-05-17T16:07:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling</id>
     <content type="html"><![CDATA[<script src="http://fozziethebeat.github.com/javascripts/raphael-min.js"></script>
 
@@ -1015,7 +1015,7 @@ you</strong> like a <em>magician</em>.</li>
   <entry>
     <title type="html"><![CDATA[Getting to the mixtures in Dirichlet Process Mixture Models]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/"/>
-    <updated>2012-05-04T13:01:00+09:00</updated>
+    <updated>2012-05-04T13:01:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models</id>
     <content type="html"><![CDATA[<p>The <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process</a> is pretty sweet as Edwin Chen and numerous others
 have <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">pointed out</a>.  When combined with a mixture of Bayesian models, it's
@@ -1123,7 +1123,7 @@ Dirichlet Process Mixture Model (with some simplifications).</p>
   <entry>
     <title type="html"><![CDATA[Puzzle Time: Transforming Names]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names/"/>
-    <updated>2012-04-23T22:18:00+09:00</updated>
+    <updated>2012-04-23T22:18:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names</id>
     <content type="html"><![CDATA[<p>This post starts what will hopefully be a new trend: computational solutions to
 [NPR's Sunday Puzzle][1].  In this weeks puzzle, we have to</p>

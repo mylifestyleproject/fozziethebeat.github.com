@@ -4,7 +4,7 @@
   <title><![CDATA[Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-09-02T14:20:40+09:00</updated>
+  <updated>2012-09-12T23:07:16-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -14,9 +14,88 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Papers I've really enjoyed reading]]></title>
+    <link href="http://fozziethebeat.github.com/blog/2012/09/12/papers-ive-really-enjoyed-reading/"/>
+    <updated>2012-09-12T22:36:00-07:00</updated>
+    <id>http://fozziethebeat.github.com/blog/2012/09/12/papers-ive-really-enjoyed-reading</id>
+    <content type="html"><![CDATA[<p>As any good grad student would, I&#8217;ve read a <em>lot</em> of research papers.  And my
+reading interest have swayed far and wide across the Natural Language Processing
+spectrum and even expanded into more general Machine Learning methods and
+Bayesian modelling.  Now that i&#8217;m transitioning from a full time grad student
+focused on research to being a full time software developer at Google, I want to
+just briefly jot down a list of papers that have stuck out the most for me this
+last week as I transition.  So in no particular order, and in no way totally
+inclusive, here they are:</p>
+
+<ul>
+<li><a href="http://www.cs.berkeley.edu/~jordan/papers/hdp.pdf">Hierarchical Dirichlet Processes</a>: This paper really helped me figure out
+both how Dirichlet Processes worked, the multiple interpretations of these
+models, and inference procedures.  On top of that, it introduced an even cooler
+hierarchical extension to Dirichlet Processes.  A must read for non-parametric
+Bayesian models.</li>
+<li><a href="http://ba.stat.cmu.edu/journal/2010/vol05/issue04/carvalho.pdf">Particle Learning for General Mixtures</a>: I still don&#8217;t <em>fully</em> understand
+how to design good particle filters, but this paper pushed my mind in a lot of
+ways and got me excited about Sequential Markov Models quite a while ago.
+It&#8217;s event got a cool surprise: It&#8217;s written by people in Business schools!</li>
+<li><a href="http://faculty.haas.berkeley.edu/eandrade/p12_LaranDaltonAndrade_JCR2010.pdf">The Curious Case of Behavioral Backlash: Why Brands Produce Priming Effects and Slogans Produce Reverse Priming Effects</a>:
+I in generally love anything to do with psychical priming, so this paper
+caught my attention when I came across it.  And the horribly long title says
+what it&#8217;s all about.  They go through a battery of experiments testing the
+impact upon people created by both branding and slogans.  Their results are
+kinda surprising between</li>
+<li><a href="http://www.aclweb.org/anthology-new/D/D11/D11-1130.pdf">Cross-Cutting Models of Lexical Semantics</a>: This paper is both really
+simple and really complicated at the same time.  They glue together two really
+great ideas: Latent Dirichlet Allocation and Dirichlet Process Mixture Models
+to build a nicely thought out Cross Cutting, or multiple clustering under
+multiple views, model for processing text documents.  I only wish I&#8217;d thought
+of this idea first.</li>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.7133">An Introduction to MCMC for Machine Learning</a>: If you love topic models,
+Dirichlet Process Mixture Models, or any other sophisticated Bayesian model,
+then this paper is a must read.  Written by some of the big hitters in MCMC
+learning, they cover all the major Monte Carlo Markov Chain approaches in
+sweet sweet detail.</li>
+<li><a href="http://www.gatsby.ucl.ac.uk/~edward/pub/inf.mix.nips.99.pdf">The Infinite Gaussian Mixture Model</a>: Yet another paper based on Dirichlet
+Process Mixture Models.  It&#8217;s a totally non-parametric Bayesian clustering
+model with deep layers of hierarchy to smooth out the mixtures nicely.</li>
+<li><a href="http://jmlr.csail.mit.edu/proceedings/papers/v22/niu12/niu12.pdf">A Nonparametric Bayesian Model for Multiple Clusterings with Overlapping Feature Views</a>:
+ This was my first introduction to cross cutting clustering models.  They take
+ a <em>totally</em> different approach than the original multi-clustering approach
+ and but as complicated as it looks at first, it makes a nice amount of sense
+ after a while.</li>
+<li><a href="http://ai.stanford.edu/~rion/papers/semtax_acl06.pdf">Semantic Taxonomy Induction from Heterogeneous Evidence</a>: Yet another
+paper I wish I&#8217;d though of first.  How do you extend an ontology
+automatically?  You just use the knowledge you already have encoded to train a
+classifier for the kind of relationships you want to add and let it fly over
+new data.  Final product? A bigger and better taxonomy with oodles of new
+information.</li>
+<li><a href="http://www.aclweb.org/anthology/E/E09/E09-1005.pdf">Personalizing PageRank for Word Sense Disambiguation</a>: This is one of the
+earlier really great graph based and fully unsupervised Word Sense
+Disambiguation papers.  It glues together the magic of PageRank and intuitions
+about word senses to get a general model that&#8217;s pretty hard to beat event
+today.</li>
+<li><a href="http://homepages.inf.ed.ac.uk/mlap/Papers/PAMI_2010_Navigli_Lapata-1.pdf">An Experimental Study of Graph Connectivity for Unsupervised Word Sense Disambiguation</a>:
+Another really good paper covering all the ways you can build fully
+unsupervised Word Sense Disambiguation models using graphs of word senses.
+The best of the models used still get used pretty often in WSD.</li>
+<li><a href="http://www.aclweb.org/anthology/P/P12/P12-1092.pdf">Improving Word Representations via Global Context and Multiple Word Prototypes</a>:
+Andrew Socher is a badass.  Simple as that.  I never though I&#8217;d see a totally
+legitimate and awesome lexical semantics model use a neural network, but hey
+made it work beautifully.  It&#8217;s a good competitor to the Cross-Cutting model
+of semantics too.</li>
+<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/21377146">A probabilistic model of cross-categorization</a>: Probably the best
+starting point for learning about cross categorization (cross-cutting) models.
+It gives a good bit of theory of how they work, how to build them, and a
+<em>huge</em> swath of examples of how they can be applied to approximate human
+decision making.  Really impressive stuff.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Finding Events During the Olympics]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/08/28/finding-events-during-the-olympics/"/>
-    <updated>2012-08-28T14:56:00+09:00</updated>
+    <updated>2012-08-28T14:56:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/08/28/finding-events-during-the-olympics</id>
     <content type="html"><![CDATA[<p>I needed the event times for every game, tournament, and competition that
 happened during the London 2012 Olympics.  Thankfully the <a href="http://www.london2012.com/index-olympic.html">London 2012</a>
@@ -342,7 +421,7 @@ done
   <entry>
     <title type="html"><![CDATA[Building A Phrase Graph]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph/"/>
-    <updated>2012-08-12T12:13:00+09:00</updated>
+    <updated>2012-08-12T12:13:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/08/12/building-a-phrase-graph</id>
     <content type="html"><![CDATA[<p>Research papers.  I hate them sometimes.  They present a great idea, talk about
 how it can be used and applied, and then give only the barest description of how
@@ -1015,7 +1094,7 @@ original papers were describing.</p>
   <entry>
     <title type="html"><![CDATA[Building Visualizations to Test Summarizations]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/08/03/building-visualizations-to-test-summarizations/"/>
-    <updated>2012-08-03T12:08:00+09:00</updated>
+    <updated>2012-08-03T12:08:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/08/03/building-visualizations-to-test-summarizations</id>
     <content type="html"><![CDATA[<p>I&#8217;m currently working on interesting on-line methods for summarizing streams of
 documents.  The basic idea is that documents come hurtling into your inbox at a
@@ -1411,7 +1490,7 @@ i&#8217;ll be the topic of a blog post describing what failed!  So stay tuned!</
   <entry>
     <title type="html"><![CDATA[ACL and EMNLP 2012 Debrief]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief/"/>
-    <updated>2012-07-13T18:08:00+09:00</updated>
+    <updated>2012-07-13T18:08:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/07/13/acl-and-emnlp-2012-debrief</id>
     <content type="html"><![CDATA[<h1>Attending two conference in Jeju, South Korea</h1>
 
@@ -1634,7 +1713,7 @@ students felt the same way.</p>
   <entry>
     <title type="html"><![CDATA[Gamma Ramma]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma/"/>
-    <updated>2012-06-25T10:23:00+09:00</updated>
+    <updated>2012-06-25T10:23:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/25/gamma-ramma</id>
     <content type="html"><![CDATA[<h3>Before getting to Cooler Mixture Models</h3>
 
@@ -1844,7 +1923,7 @@ befuddled for a while, so don&#8217;t be like me.</p>
   <entry>
     <title type="html"><![CDATA[Topic Model Comparisons: how to replicate an experiment]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment/"/>
-    <updated>2012-06-04T14:35:00+09:00</updated>
+    <updated>2012-06-04T14:35:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/04/topic-model-comparisons-how-to-replicate-an-experiment</id>
     <content type="html"><![CDATA[<p>We (Keith Stevens, Philip Kegelmeyer, David Andrzejewski, and David Buttler)
 published the paper <a href="https://github.com/fozziethebeat/TopicModelComparison">Exploring Topic Coherence over many models and many topics</a>
@@ -2317,7 +2396,7 @@ statement turns out to be wrong).</p>
   <entry>
     <title type="html"><![CDATA[Sonatype and Scala: A relationship of trickery]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery/"/>
-    <updated>2012-06-02T22:28:00+09:00</updated>
+    <updated>2012-06-02T22:28:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/06/02/sonatype-and-scala-a-relationship-of-trickery</id>
     <content type="html"><![CDATA[<p>Open source projects are amazing.  They let you easily share the work you do
 with others so that they can iterate and improve upon your ideas, an especially
@@ -2390,7 +2469,7 @@ your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no 
   <entry>
     <title type="html"><![CDATA[Stepping into the Mixtures with Gibbs Sampling]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling/"/>
-    <updated>2012-05-17T16:07:00+09:00</updated>
+    <updated>2012-05-17T16:07:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/17/stepping-into-the-mixtures-with-gibbs-sampling</id>
     <content type="html"><![CDATA[<script src="http://fozziethebeat.github.com/javascripts/raphael-min.js"></script>
 
@@ -2897,7 +2976,7 @@ you</strong> like a <em>magician</em>.</li>
   <entry>
     <title type="html"><![CDATA[Getting to the mixtures in Dirichlet Process Mixture Models]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models/"/>
-    <updated>2012-05-04T13:01:00+09:00</updated>
+    <updated>2012-05-04T13:01:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/05/04/getting-to-the-mixtures-in-dirichlet-process-mixture-models</id>
     <content type="html"><![CDATA[<p>The <a href="http://en.wikipedia.org/wiki/Dirichlet_process">Dirichlet Process</a> is pretty sweet as Edwin Chen and numerous others
 have <a href="http://blog.echen.me/2012/03/20/infinite-mixture-models-with-nonparametric-bayes-and-the-dirichlet-process/">pointed out</a>.  When combined with a mixture of Bayesian models, it&#8217;s
@@ -3006,7 +3085,7 @@ Dirichlet Process Mixture Model (with some simplifications).</p>
   <entry>
     <title type="html"><![CDATA[Puzzle Time: Transforming Names]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names/"/>
-    <updated>2012-04-23T22:18:00+09:00</updated>
+    <updated>2012-04-23T22:18:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names</id>
     <content type="html"><![CDATA[<p>This post starts what will hopefully be a new trend: computational solutions to
 <a href="http://www.npr.org/2012/04/22/151120151/a-puzzle-worthy-of-don-draper">NPR&#8217;s Sunday Puzzle</a>.  In this weeks puzzle, we have to</p>
@@ -3137,7 +3216,7 @@ the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
   <entry>
     <title type="html"><![CDATA[Making Agglomerative Clustering run in N^2 Time]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time/"/>
-    <updated>2012-03-16T17:21:00+09:00</updated>
+    <updated>2012-03-16T17:21:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/03/16/making-agglomerative-clustering-run-in-n-2-time</id>
     <content type="html"><![CDATA[<p>Let&#8217;s say you&#8217;re an amateur zoologist and you&#8217;ve got a bunch of data describing
 <a href="http://en.wikipedia.org/wiki/Owl">parliaments of owls</a>, <a href="http://en.wikipedia.org/wiki/Goose">gaggles of geese</a>, <a href="http://en.wikipedia.org/wiki/Chicken">peeps of chickens</a>, and a
@@ -3551,7 +3630,7 @@ too fast to believe.</p>
   <entry>
     <title type="html"><![CDATA[Moral Dilemmas]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas/"/>
-    <updated>2012-03-04T19:03:00+09:00</updated>
+    <updated>2012-03-04T19:03:00-08:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/03/04/moral-dilemmas</id>
     <content type="html"><![CDATA[<p>What is the nature of a moral dilemma?  How moral can any dilemma be?  Are some
 dilemmas inherently moral free or can any problem be cast into some level of a
@@ -3651,7 +3730,7 @@ those?&#8221;  You can make a handy debate about it.</p>
   <entry>
     <title type="html"><![CDATA[Morphological Analysis made easy with Scala]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala/"/>
-    <updated>2012-02-29T19:49:00+09:00</updated>
+    <updated>2012-02-29T19:49:00-08:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala</id>
     <content type="html"><![CDATA[<p>Ever since I got involved with distributional semantics, i&#8217;ve been perplexed
 about how to handle morphed words, which happens to be just about every noun and

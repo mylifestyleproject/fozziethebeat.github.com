@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linguistics | Wordsi by Fozzie The Beat]]></title>
   <link href="http://fozziethebeat.github.com/blog/categories/linguistics/atom.xml" rel="self"/>
   <link href="http://fozziethebeat.github.com/"/>
-  <updated>2012-09-02T14:21:02+09:00</updated>
+  <updated>2012-09-12T23:07:53-07:00</updated>
   <id>http://fozziethebeat.github.com/</id>
   <author>
     <name><![CDATA[Keith Stevens]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Puzzle Time: Transforming Names]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names/"/>
-    <updated>2012-04-23T22:18:00+09:00</updated>
+    <updated>2012-04-23T22:18:00-07:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/04/23/puzzle-time-transforming-names</id>
     <content type="html"><![CDATA[<p>This post starts what will hopefully be a new trend: computational solutions to
 [NPR's Sunday Puzzle][1].  In this weeks puzzle, we have to</p>
@@ -138,7 +138,7 @@ the first pair since I haven't heard "Elna" in forever.
   <entry>
     <title type="html"><![CDATA[Morphological Analysis made easy with Scala]]></title>
     <link href="http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala/"/>
-    <updated>2012-02-29T19:49:00+09:00</updated>
+    <updated>2012-02-29T19:49:00-08:00</updated>
     <id>http://fozziethebeat.github.com/blog/2012/02/29/morphological-analysis-made-easy-with-scala</id>
     <content type="html"><![CDATA[<p>Ever since I got involved with distributional semantics, i've been perplexed
 about how to handle morphed words, which happens to be just about every noun and

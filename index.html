@@ -9,8 +9,8 @@
   <meta name="author" content="Keith Stevens">
 
   
-  <meta name="description" content="I needed the event times for every game, tournament, and competition that
-happened during the London 2012 Olympics. Thankfully the London 2012 &hellip;">
+  <meta name="description" content="As any good grad student would, I&#8217;ve read a lot of research papers. And my
+reading interest have swayed far and wide across the Natural &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,112 @@ happened during the London 2012 Olympics. Thankfully the London 2012 &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/09/12/papers-ive-really-enjoyed-reading/">Papers I&#8217;ve Really Enjoyed Reading</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T22:36:00-07:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>As any good grad student would, I&#8217;ve read a <em>lot</em> of research papers.  And my
+reading interest have swayed far and wide across the Natural Language Processing
+spectrum and even expanded into more general Machine Learning methods and
+Bayesian modelling.  Now that i&#8217;m transitioning from a full time grad student
+focused on research to being a full time software developer at Google, I want to
+just briefly jot down a list of papers that have stuck out the most for me this
+last week as I transition.  So in no particular order, and in no way totally
+inclusive, here they are:</p>
+
+<ul>
+<li><a href="http://www.cs.berkeley.edu/~jordan/papers/hdp.pdf">Hierarchical Dirichlet Processes</a>: This paper really helped me figure out
+both how Dirichlet Processes worked, the multiple interpretations of these
+models, and inference procedures.  On top of that, it introduced an even cooler
+hierarchical extension to Dirichlet Processes.  A must read for non-parametric
+Bayesian models.</li>
+<li><a href="http://ba.stat.cmu.edu/journal/2010/vol05/issue04/carvalho.pdf">Particle Learning for General Mixtures</a>: I still don&#8217;t <em>fully</em> understand
+how to design good particle filters, but this paper pushed my mind in a lot of
+ways and got me excited about Sequential Markov Models quite a while ago.
+It&#8217;s event got a cool surprise: It&#8217;s written by people in Business schools!</li>
+<li><a href="http://faculty.haas.berkeley.edu/eandrade/p12_LaranDaltonAndrade_JCR2010.pdf">The Curious Case of Behavioral Backlash: Why Brands Produce Priming Effects and Slogans Produce Reverse Priming Effects</a>:
+I in generally love anything to do with psychical priming, so this paper
+caught my attention when I came across it.  And the horribly long title says
+what it&#8217;s all about.  They go through a battery of experiments testing the
+impact upon people created by both branding and slogans.  Their results are
+kinda surprising between</li>
+<li><a href="http://www.aclweb.org/anthology-new/D/D11/D11-1130.pdf">Cross-Cutting Models of Lexical Semantics</a>: This paper is both really
+simple and really complicated at the same time.  They glue together two really
+great ideas: Latent Dirichlet Allocation and Dirichlet Process Mixture Models
+to build a nicely thought out Cross Cutting, or multiple clustering under
+multiple views, model for processing text documents.  I only wish I&#8217;d thought
+of this idea first.</li>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.7133">An Introduction to MCMC for Machine Learning</a>: If you love topic models,
+Dirichlet Process Mixture Models, or any other sophisticated Bayesian model,
+then this paper is a must read.  Written by some of the big hitters in MCMC
+learning, they cover all the major Monte Carlo Markov Chain approaches in
+sweet sweet detail.</li>
+<li><a href="http://www.gatsby.ucl.ac.uk/~edward/pub/inf.mix.nips.99.pdf">The Infinite Gaussian Mixture Model</a>: Yet another paper based on Dirichlet
+Process Mixture Models.  It&#8217;s a totally non-parametric Bayesian clustering
+model with deep layers of hierarchy to smooth out the mixtures nicely.</li>
+<li><a href="http://jmlr.csail.mit.edu/proceedings/papers/v22/niu12/niu12.pdf">A Nonparametric Bayesian Model for Multiple Clusterings with Overlapping Feature Views</a>:
+ This was my first introduction to cross cutting clustering models.  They take
+ a <em>totally</em> different approach than the original multi-clustering approach
+ and but as complicated as it looks at first, it makes a nice amount of sense
+ after a while.</li>
+<li><a href="http://ai.stanford.edu/~rion/papers/semtax_acl06.pdf">Semantic Taxonomy Induction from Heterogeneous Evidence</a>: Yet another
+paper I wish I&#8217;d though of first.  How do you extend an ontology
+automatically?  You just use the knowledge you already have encoded to train a
+classifier for the kind of relationships you want to add and let it fly over
+new data.  Final product? A bigger and better taxonomy with oodles of new
+information.</li>
+<li><a href="http://www.aclweb.org/anthology/E/E09/E09-1005.pdf">Personalizing PageRank for Word Sense Disambiguation</a>: This is one of the
+earlier really great graph based and fully unsupervised Word Sense
+Disambiguation papers.  It glues together the magic of PageRank and intuitions
+about word senses to get a general model that&#8217;s pretty hard to beat event
+today.</li>
+<li><a href="http://homepages.inf.ed.ac.uk/mlap/Papers/PAMI_2010_Navigli_Lapata-1.pdf">An Experimental Study of Graph Connectivity for Unsupervised Word Sense Disambiguation</a>:
+Another really good paper covering all the ways you can build fully
+unsupervised Word Sense Disambiguation models using graphs of word senses.
+The best of the models used still get used pretty often in WSD.</li>
+<li><a href="http://www.aclweb.org/anthology/P/P12/P12-1092.pdf">Improving Word Representations via Global Context and Multiple Word Prototypes</a>:
+Andrew Socher is a badass.  Simple as that.  I never though I&#8217;d see a totally
+legitimate and awesome lexical semantics model use a neural network, but hey
+made it work beautifully.  It&#8217;s a good competitor to the Cross-Cutting model
+of semantics too.</li>
+<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/21377146">A probabilistic model of cross-categorization</a>: Probably the best
+starting point for learning about cross categorization (cross-cutting) models.
+It gives a good bit of theory of how they work, how to build them, and a
+<em>huge</em> swath of examples of how they can be applied to approximate human
+decision making.  Really impressive stuff.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/08/28/finding-events-during-the-olympics/">Finding Events During the Olympics</a></h1>
     
     
@@ -106,7 +212,7 @@ happened during the London 2012 Olympics. Thankfully the London 2012 &hellip;">
   
 
 
-<time datetime="2012-08-28T14:56:00+09:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+<time datetime="2012-08-28T14:56:00-07:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
         
       </p>
     
@@ -459,7 +565,7 @@ done
   
 
 
-<time datetime="2012-08-12T12:13:00+09:00" pubdate data-updated="true">Aug 12<span>th</span>, 2012</time>
+<time datetime="2012-08-12T12:13:00-07:00" pubdate data-updated="true">Aug 12<span>th</span>, 2012</time>
         
       </p>
     
@@ -1159,7 +1265,7 @@ original papers were describing.</p>
   
 
 
-<time datetime="2012-08-03T12:08:00+09:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
+<time datetime="2012-08-03T12:08:00-07:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
         
       </p>
     
@@ -1582,7 +1688,7 @@ i&#8217;ll be the topic of a blog post describing what failed!  So stay tuned!</
   
 
 
-<time datetime="2012-07-13T18:08:00+09:00" pubdate data-updated="true">Jul 13<span>th</span>, 2012</time>
+<time datetime="2012-07-13T18:08:00-07:00" pubdate data-updated="true">Jul 13<span>th</span>, 2012</time>
         
       </p>
     
@@ -1832,7 +1938,7 @@ students felt the same way.</p>
   
 
 
-<time datetime="2012-06-25T10:23:00+09:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
+<time datetime="2012-06-25T10:23:00-07:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
         
       </p>
     
@@ -2069,7 +2175,7 @@ befuddled for a while, so don&#8217;t be like me.</p>
   
 
 
-<time datetime="2012-06-04T14:35:00+09:00" pubdate data-updated="true">Jun 4<span>th</span>, 2012</time>
+<time datetime="2012-06-04T14:35:00-07:00" pubdate data-updated="true">Jun 4<span>th</span>, 2012</time>
         
       </p>
     
@@ -2569,7 +2675,7 @@ statement turns out to be wrong).</p>
   
 
 
-<time datetime="2012-06-02T22:28:00+09:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time>
+<time datetime="2012-06-02T22:28:00-07:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2012</time>
         
       </p>
     
@@ -2669,7 +2775,7 @@ your maven projects to <a href="https://oss.sonatype.org/">Sonatype</a> with no 
   
 
 
-<time datetime="2012-05-17T16:07:00+09:00" pubdate data-updated="true">May 17<span>th</span>, 2012</time>
+<time datetime="2012-05-17T16:07:00-07:00" pubdate data-updated="true">May 17<span>th</span>, 2012</time>
         
       </p>
     
@@ -3203,7 +3309,7 @@ you</strong> like a <em>magician</em>.</li>
   
 
 
-<time datetime="2012-05-04T13:01:00+09:00" pubdate data-updated="true">May 4<span>th</span>, 2012</time>
+<time datetime="2012-05-04T13:01:00-07:00" pubdate data-updated="true">May 4<span>th</span>, 2012</time>
         
       </p>
     
@@ -3318,164 +3424,6 @@ Dirichlet Process Mixture Model (with some simplifications).</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/23/puzzle-time-transforming-names/">Puzzle Time: Transforming Names</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-23T22:18:00+09:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post starts what will hopefully be a new trend: computational solutions to
-<a href="http://www.npr.org/2012/04/22/151120151/a-puzzle-worthy-of-don-draper">NPR&#8217;s Sunday Puzzle</a>.  In this weeks puzzle, we have to</p>
-
-<blockquote><p>Think of a common man&#8217;s name in four letters, one syllable. Move each letter exactly halfway around the alphabet. For example, A would become N, N would become A, and B would become O. The result will be a common woman&#8217;s name in two syllables. What names are these?</p></blockquote>
-
-
-<p>Word puzzles can often be pretty hard for automated computer programs.  This is
-in part what made <a href="http://www-03.ibm.com/innovation/us/watson/index.html">IBM&#8217;s Watson</a> so darn cool.  But thankfully this week&#8217;s
-puzzle is amazingly simple for a program, in fact, i&#8217;d even say it&#8217;s ideal for a
-program.  To solve it, just need two simple steps:</p>
-
-<ol>
-<li>Gather a bunch of male and female names</li>
-<li>Process the male names as noted to see if we have any matching female names</li>
-</ol>
-
-
-<p>Step 1 is perhaps the hardest since it requires gathering not only names, but
-common names in english.  However, <a href="http://names.mongabay.com">this</a> handy site has done the work for
-us.  Here they have listings of common English names based on a variety of
-categories: region, ranking, gender, alphabetical, etc.  For our purposes, we&#8217;ll
-just grab the a long list of the most frequent male and female names from
-<a href="http://names.mongabay.com/male_names.htm">here</a> and <a href="http://names.mongabay.com/female_names.htm">here</a>.  All the names are nicely laid out in a table with a
-pretty regular format.  In fact the format is so regular we can write a <a href="http://en.wikipedia.org/wiki/Regular_expression"><em>regular expression</em></a> for it.  Here&#8217;s an example of the table:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;table</span> <span class="na">align=</span><span class="s">&quot;left&quot;</span> <span class="na">CELLPADDING=</span><span class="s">&quot;3&quot;</span> <span class="na">CELLSPACING=</span><span class="s">&quot;3&quot;</span> <span class="na">style=</span><span class="s">&quot;table1&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;F5FDD9&quot;</span><span class="nt">&gt;&lt;td&gt;&lt;b&gt;</span>Name<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/td&gt;&lt;td&gt;&lt;b&gt;</span>% Frequency<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/td&gt;&lt;td&gt;&lt;b&gt;</span>Approx Number<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/td&gt;&lt;td&gt;&lt;b&gt;</span>Rank<span class="ni">&amp;nbsp;&amp;nbsp;</span><span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>AARON<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.24<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 350,151 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>77<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ABDUL<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.007<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 10,213 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>831<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;F5FDD9&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ABE<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.006<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 8,754 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>854<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ABEL<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.019<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 27,720 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>485<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ABRAHAM<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.035<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 51,064 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>347<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ABRAM<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.005<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 7,295 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>1053<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;F5FDD9&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ADALBERTO<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.005<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 7,295 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>1040<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span><span class='line'><span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;&lt;td&gt;</span>ADAM<span class="nt">&lt;/td&gt;&lt;td&gt;</span>0.259<span class="nt">&lt;/td&gt;&lt;td&gt;</span> 377,871 <span class="nt">&lt;/td&gt;&lt;td&gt;</span>69<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Regular right?  It&#8217;s so darn simple we can use some simple command line tools to
-clean it up:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>cat female_names_alpha.htm | grep &#39;<span class="nt">&lt;tr</span> <span class="na">bgcolor=</span><span class="s">&quot;&#39; | sed &quot;</span><span class="na">s</span><span class="err">/.*&lt;</span><span class="na">td</span><span class="nt">&gt;</span>\([A-Z]\+\).*/\1/&quot; | tail -n +2 &gt; female_names.txt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If we downloaded the female names into <code>female_names_alpha.htm</code>, the first part
-will simply print out the contents of the html page to standard out.  The second
-part, the grep command, will catch all rows in the table, which thankfully have
-the same start prefix.  Part three extracts the names nestled in a row element.
-And finally the tail part eliminates the first row of the table, e.g. the head
-row, which grep accidentally catches.  This&#8217;ll grab us a ton of names.</p>
-
-<p>So what&#8217;s next?  Well, we have a bunch of male and female names.  But we&#8217;ve got
-too many, namely we have names that clearly won&#8217;t work as they have too many or
-too few letters.  So let&#8217;s so some more cleaning, but this time in scala:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">val</span> <span class="n">maleNames</span> <span class="k">=</span> <span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">)).</span><span class="n">getLines</span><span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">4</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This dandy line reads the text from the file and filters out any lines that have
-more than four characters.  Since our initial processing placed each name on a
-line, this in effect removes any names with more than four letters.  If we do
-this with the female names, we&#8217;ll have lists of common four letter names for the
-two genders.  For later use, we&#8217;ll also turn the female names into a set by
-calling <code>.toSet</code> on the list.</p>
-
-<p>Last, we can do the transformation on each male name to see if it&#8217;s a valid
-female name and then print out any combinations that match.  The next three
-lines do this slickly:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="n">maleNames</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">w</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">w</span><span class="o">,</span> <span class="n">w</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">l</span> <span class="k">=&gt;</span> <span class="o">(((</span><span class="n">l</span><span class="o">-</span><span class="-Symbol">&#39;A</span><span class="err">&#39;</span><span class="o">+</span><span class="mi">13</span><span class="o">)</span> <span class="o">%</span> <span class="mi">26</span><span class="o">)</span> <span class="o">+</span> <span class="-Symbol">&#39;A</span><span class="err">&#39;</span><span class="o">).</span><span class="n">toChar</span><span class="o">).</span><span class="n">toString</span><span class="o">))</span>
-</span><span class='line'>         <span class="o">.</span><span class="n">filter</span><span class="o">(</span> <span class="n">bg</span> <span class="k">=&gt;</span> <span class="n">femaleNames</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="n">bg</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span>
-</span><span class='line'>         <span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This works in three steps.  First, the <code>map</code> call transforms each male name into
-a <code>tuple</code> which consists of the original male name, and then a <em>potential</em>
-female name by sliding up each letter in the name by 13 letters.  With ascii
-characters, this is done just by first grounding the letter to 0, by subtracting
-the char value for <code>A</code>, adding 13, and then rolling over the value to be back
-in the range of the 26 letter characters by taking the modulo (<code>%</code>) and finally
-bumping the character value into the range of real ascii characters by adding
-<code>A</code>.   That&#8217;s all done in the first line.  Step two is to simply throw out any
-generated female names that don&#8217;t show up in our list of female names, done by
-line 3.  And the final line just prints out any matches we get.  With our name
-lists, this turns out to be:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="o">(</span><span class="nc">ERIN</span><span class="o">,</span><span class="nc">REVA</span><span class="o">)</span>
-</span><span class='line'><span class="o">(</span><span class="nc">EVAN</span><span class="o">,</span><span class="nc">RINA</span><span class="o">)</span>
-</span><span class='line'><span class="o">(</span><span class="nc">GLEN</span><span class="o">,</span><span class="nc">TYRA</span><span class="o">)</span>
-</span><span class='line'><span class="o">(</span><span class="nc">IVAN</span><span class="o">,</span><span class="nc">VINA</span><span class="o">)</span>
-</span><span class='line'><span class="o">(</span><span class="nc">RYAN</span><span class="o">,</span><span class="nc">ELNA</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The rules of the game stipulated that the male name had to have one syllable and
-the female name has to have two.  We didn&#8217;t code for this at all since that
-parts slightly more complicated, and since our pre-processing reduced the set of
-options down to five, we can easily pick out a valid answer.  In this case,
-&#8220;Glen&#8221; and &#8220;Tyra&#8221; or &#8220;Ryan&#8221; and &#8220;Elna&#8221; look like valid responses.  I&#8217;d vote for
-the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -3497,6 +3445,10 @@ the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/09/12/papers-ive-really-enjoyed-reading/">Papers I&#8217;ve really enjoyed reading</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/28/finding-events-during-the-olympics/">Finding Events During the Olympics</a>
       </li>
     
@@ -3512,15 +3464,11 @@ the first pair since I haven&#8217;t heard &#8220;Elna&#8221; in forever.</p>
         <a href="/blog/2012/07/13/acl-and-emnlp-2012-debrief/">ACL and EMNLP 2012 Debrief</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/06/25/gamma-ramma/">Gamma Ramma</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/automation' style='font-size: 108.57142857142857%'>Automation(1)</a> <a href='/blog/categories/bayesian' style='font-size: 108.57142857142857%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 117.14285714285714%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 134.28571428571428%'>Clustering(4)</a> <a href='/blog/categories/computational' style='font-size: 108.57142857142857%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 108.57142857142857%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 108.57142857142857%'>Conferences(1)</a> <a href='/blog/categories/d3' style='font-size: 108.57142857142857%'>D3(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 108.57142857142857%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 108.57142857142857%'>Experiments(1)</a> <a href='/blog/categories/javascript' style='font-size: 108.57142857142857%'>Javascript(1)</a> <a href='/blog/categories/linguistics' style='font-size: 117.14285714285714%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 108.57142857142857%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 108.57142857142857%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 108.57142857142857%'>Natural language processing(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 117.14285714285714%'>Natural language processing(2)</a> <a href='/blog/categories/open-source' style='font-size: 108.57142857142857%'>Open source(1)</a> <a href='/blog/categories/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(7)</a> <a href='/blog/categories/statistics' style='font-size: 108.57142857142857%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 108.57142857142857%'>Topic models(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/automation' style='font-size: 108.57142857142857%'>Automation(1)</a> <a href='/blog/categories/bayesian' style='font-size: 108.57142857142857%'>Bayesian(1)</a> <a href='/blog/categories/bayesian-modeling' style='font-size: 117.14285714285714%'>Bayesian modeling(2)</a> <a href='/blog/categories/clustering' style='font-size: 134.28571428571428%'>Clustering(4)</a> <a href='/blog/categories/computational' style='font-size: 108.57142857142857%'>Computational(1)</a> <a href='/blog/categories/computational-linguistics' style='font-size: 108.57142857142857%'>Computational linguistics(1)</a> <a href='/blog/categories/conferences' style='font-size: 108.57142857142857%'>Conferences(1)</a> <a href='/blog/categories/d3' style='font-size: 108.57142857142857%'>D3(1)</a> <a href='/blog/categories/dilemmas' style='font-size: 108.57142857142857%'>Dilemmas(1)</a> <a href='/blog/categories/experiments' style='font-size: 108.57142857142857%'>Experiments(1)</a> <a href='/blog/categories/javascript' style='font-size: 108.57142857142857%'>Javascript(1)</a> <a href='/blog/categories/linguistics' style='font-size: 117.14285714285714%'>Linguistics(2)</a> <a href='/blog/categories/maven' style='font-size: 108.57142857142857%'>Maven(1)</a> <a href='/blog/categories/morality' style='font-size: 108.57142857142857%'>Morality(1)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 117.14285714285714%'>Natural language processing(2)</a> <a href='/blog/categories/natural-language-processing' style='font-size: 108.57142857142857%'>Natural language processing(1)</a> <a href='/blog/categories/open-source' style='font-size: 108.57142857142857%'>Open source(1)</a> <a href='/blog/categories/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/categories/research' style='font-size: 108.57142857142857%'>Research(1)</a> <a href='/blog/categories/scala' style='font-size: 160.0%'>Scala(7)</a> <a href='/blog/categories/statistics' style='font-size: 108.57142857142857%'>Statistics(1)</a> <a href='/blog/categories/topic-models' style='font-size: 108.57142857142857%'>Topic models(1)</a> </span>
 </section>
 
 <section>
