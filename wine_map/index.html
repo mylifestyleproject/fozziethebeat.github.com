@@ -1,0 +1,462 @@
+<html>
+  <head>
+    <title>Bordeaux Map</title>
+    <meta charset="utf-8">
+    <script src="/d3.v4.min.js"></script>
+    <style>
+      div.maps {
+        display: flex;
+        flex-direction: column;
+      }
+      .point {
+        cursor: pointer;
+      }
+      .titles {
+        display: block;
+      }
+      .title {
+        display: inline-flex;
+        width: 280px;
+        height: 75px;
+        padding: 6px;
+      }
+      .title-icon {
+        height: 65px;
+        width: 120px;
+      }
+
+      svg {
+        position: relative;
+      }
+
+      div.panel-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
+
+      div.panel_on {
+        visibility: visible;
+        pointer-events: all;
+      }
+
+      div.panel_off {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .detail-container {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #fff;
+        width: 640px;
+      }
+      .detail-title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .detail-img-container {
+        margin: 10px 10px 0;
+        padding: 10px;
+        background: #e9e9e9;
+        text-align: center;
+      }
+      .detail-img {
+        max-height: 600px;
+        max-width: 600px;
+      }
+      .detail-text {
+        margin: 10px 10px;
+      }
+      .detail-desc {
+        margin: 10px 0px;
+      }
+      .detail-kv {
+      }
+      .detail-key {
+        margin-right: 6px;
+      }
+
+      .detail-exit-container {
+        margin: 10px;
+      }
+      .detail-exit-button {
+        cursor: pointer;
+        text-align: right;
+      }
+
+      .title-text {
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 19px;
+        height: 100%;
+        justify-content: center;
+        margin: 6px;
+        max-width: 200px;
+      }
+    </style>
+  </head>
+  <body onload="loadMaps()">
+    <h1>
+      美味しいボルドー巡り
+    </h1>
+
+    <div class="description">
+      ワインの一大産地にして、近年はフランス人が一番住みたい街にも選ばれるボルドー。ワイナリー巡りや街歩きが楽しくなる情報マップを大公開。
+    </div>
+
+    <div class="maps">
+      <div id="winerymap">
+      </div>
+      <div id="townmap">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      function loadMaps() {
+        let maps = [{
+        div: '#winerymap',
+          map: '/src/townmap_base.png',
+          size: { width: 1268, height: 1355 },
+          locations: [{
+            id: 1,
+            icon: '/src/icon1.png',
+            image: '/src/T-1 Comptoir Cuisine.JPG',
+            size: { width: 120, height: 100 },
+            location: { x: 45, y: 390 },
+            title: 'Comptoir Cuisine',
+            description: 'コメディ広場に面したテラスは、きりっと決めた地元の人や観光客でいつも賑わっている。前菜、メイン、デザートが手軽に楽しめる日替わりのランチプレートにグラスワインを合わせて、スマートカジュアルに楽しみたい。',
+            address: '2 place de la Comédie',
+            phone: '+33 5 56 56 22 33',
+            hours: '12:00~19:00',
+            website: 'http://www.comptoircuisine.com',
+          },
+          ],
+        },
+        {
+          div: '#townmap',
+          map: '/src/townmap_base.png',
+          size: { width: 1268, height: 1355 },
+          locations: [{
+            id: 1,
+            icon: '/src/icon1.png',
+            image: '/src/T-1 Comptoir Cuisine.JPG',
+            size: { width: 120, height: 100 },
+            location: { x: 45, y: 390 },
+            title: 'Comptoir Cuisine',
+            description: 'コメディ広場に面したテラスは、きりっと決めた地元の人や観光客でいつも賑わっている。前菜、メイン、デザートが手軽に楽しめる日替わりのランチプレートにグラスワインを合わせて、スマートカジュアルに楽しみたい。',
+            address: '2 place de la Comédie',
+            phone: '+33 5 56 56 22 33',
+            hours: '12:00~19:00',
+            website: 'http://www.comptoircuisine.com',
+          },{
+            id: 2,
+            icon: '/src/icon2.png',
+            image: '/src/T-2 Miles.JPG',
+            size: { width: 120, height: 100 },
+            location: { x: 385, y: 865 },
+            title: 'Miles',
+            description: 'ボルドーっ子に大人気のMilesは、伝統的なフレンチに、梅干しや香菜など世界中の食材を組み合わせた料理が評判だ。ディナーは、一皿ごとに世界各地のワインを合わせた「サプライズ」コースのみ。内装はシンプルで居心地がいい。',
+            address: '33 du Cancera, 33000 Bordeaux, France',
+            hours: '火曜日〜金曜日 12:00~14:30 / 19:30~22:00 / 土曜日 19:30〜22:00',
+            phone: '+33 5 56 81 18 24',
+            email: 'info@restaurantmiles.com',
+            website: 'http://restaurantmiles.com',
+          },{
+            id: 3,
+            icon: '/src/icon3.png',
+            image: '/src/T-3 Aux 4 Coins du Vin.JPG',
+            size: { width: 110, height: 90 },
+            location: { x: 605, y: 955 },
+            title: 'Aux 4 Coins du Vin',
+            description: '地元でお勧めのワインバーを聞くと、必ず名前の挙がる人気の店。店の中心に置かれたディスペンサーからセルフサービスで、高価なワインや少量生産のワインを含む、世界中のワインがグラスで楽しめる。',
+            address: '8 rue de la devise, Bordeaux, France',
+            hours: '月曜日〜火曜日18:00~24:00 / 水曜日〜土曜日18:00〜25:00',
+            email: 'closben@aux4coinsduvin.com',
+            website: 'http://aux4coinsduvin.com',
+          },{
+            id: 4,
+            icon: '/src/icon4.png',
+            image: '/src/T-4 Le Petit Commerce.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 560, y: 870 },
+            title: 'Le Petit Commerce',
+            description: 'ボルドー近郊で獲れる魚貝料理の人気店。日替わりメニューには魚の名前が並び、調理法などを聞いてくれる。貝類や海老、蟹が堪能できる「海鮮の盛り合わせ」はボリュームがあるので、何人かでシェアするのがお勧め。もちろん、ワインリストも充実している。',
+            address: '22 rue du Parlement Saint-Pierre, 33000 Bordeaux, France',
+            hours: '10:00〜25:00',
+            phone: '+33 5 56 79 76 58',
+          },{
+            id: 5,
+            icon: '/src/icon5.png',
+            image: '/src/T-5 Le Millesime.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 665, y: 710 },
+            title: 'Le Millesime',
+            description: 'ほのかな明かりとシックな雰囲気に包まれて、フランス産を中心にセレクトしたワインと、ボルドー地方やスペイン南西部の食材を使ったタパスなどの料理が楽しめる。トリュフの香りが絶品のハムは、ボルドーの赤との相性が抜群。',
+            address: '4 Rue du Puits Descujols, 33000 Bordeaux, France',
+            hours: '月曜日〜金曜日11:00〜15:30 / 18:30〜26:00 土曜日18:30〜26:00日曜日休み',
+            phone: '+33 5 56 30 05 38',
+            website: 'http://le-millesime.net',
+          },{
+            id: 6,
+            icon: '/src/icon6.png',
+            image: '/src/T-6 P\'tit Bahut.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 700, y: 1005 },
+            title: 'P’tit Bahut',
+            description: '今年の6月末にオープンしたばかりの小さなワインバー。フランス各地のワイナリーや生産者を回り、オーナーの二人がセレクトした絶品のワインや食材が気軽に楽しめる。軽く一杯、フラッと立ち寄るのにちょうどいい。',
+            address: '10 Rue des Bahutiers, 33000 Bordeaux, France',
+            hours: '11:30 am〜14:30 / 18:30〜23:30',
+            phone: '+33 6 34 22 13 08',
+            email: 'optitbahut@laposte.net',
+            website: 'http://optitbahut.wixsite.com/optitbahut',
+          },{
+            id: 7,
+            icon: '/src/icon7.png',
+            image: '/src/T-7 Le Wine Bar.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 610, y: 1095 },
+            title: 'Le Wine Bar',
+            description: 'カジュアルにワインを楽しむならLe Wine Barへ。天気の良い夕暮れ時に、外のテーブルでのんびり味わうワインとシャルキュトリーは格別だ。塩気の強いハムには、ソーテルヌやルピアックなどの甘口白ワインを合わせてみてほしい。',
+            address: '19 rue des Bahutiers, Quartier Saint Pierre 33000 Bordeaux',
+            phone: '+33 6 76 00 50 54',
+            email: 'lewinebar@yahoo.fr',
+            website: 'http://www.lewinebar-bordeaux.com',
+          },{
+            id: 8,
+            icon: '/src/icon8.png',
+            image: '/src/T-8 La Maison du Vin.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 110, y: 200},
+            title: 'La Maison du Vin',
+            description: 'ボルドーワイン委員会が運営しているWine Barでは、ボルドー各地のワインをグラスで気軽に楽しめる。値段も手頃なので、気になるワインを色々とテイスティングするのもお勧め。ボルドーのスタート地点として訪れてみてほしい。',
+            address: '3 Cours du XXX Juillet, 33000 Bordeaux, France',
+            hours: '月曜日〜土曜日11:00〜22:00 / 日曜祝日休み',
+            phone: '+33 5 56 00 43 47',
+            email: 'baravin@vins-bordeaux.fr',
+            website: 'http://www.bordeaux-tourism.co.uk/offre/fiche/le-bar-a-vin-du-civb/LOIAQU033FS000W7',
+          },{
+            id: 9,
+            icon: '/src/icon9.png',
+            image: '/src/T-9 Brasserie L\'Orleans.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 275, y: 200 },
+            title: 'Brasserie L’Orleans',
+            description: '伝統的なボルドー地方の料理が楽しめる古き良きブラッサリー。ボルドーの赤と相性の良いステーキやタルタルはもちろんのこと、「ソーセージ付き生牡蠣」のようなボルドー特有の食べ方もぜひお試しあれ。',
+            address: '36 allée d\'Orléans, 33000 Bordeaux, France',
+            hours: '12: 00〜14h30 / 19:30〜23:00',
+            phone: '+33 5 56 00 50 06',
+            email: 'brasserielorleans@orange.fr',
+            website: 'http://www.bordeaux-tourisme.com/offre/fiche/brasserie-l-orleans/RESAQU033FS000WC',
+          },{
+            id: 10,
+            icon: '/src/icon10.png',
+            image: '/src/T-10 Salle a Manger dez Chrtron.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 255, y: 80 },
+            title: 'Salle a Manger des Chartrons',
+            description: 'ボルドー旧市街地の北部にある小さなカフェバー。親子のように仲が良いオーナーとシェフが開催している料理教室では、ロゼと相性の良い赤いベリーのジュレや、甘口白ワインと合うカヌレなど、家でも作れるレシピを教えてくれる。',
+            address: '18 rue Saint-Joseph 33000 BORDEAUX',
+            hours: '月曜日〜金曜日12:00〜15:00',
+            phone: '+33 6 10 01 18 77',
+            email: 'contact@salle-a-manger-bordeaux.fr',
+            website: 'http://salle-a-manger-bordeaux.fr',
+          },{
+            id: 11,
+            icon: '/src/icon11.png',
+            image: '/src/T-11 Grands Crus Classes en 1855.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 690, y: 490 },
+            title: 'Grands Crus Classes en 1855 Diner de Gala',
+            description: 'ボルドーワイン祭りと連動して開催される晩餐会には、1885年にナポレオン三世がグランクリュクラスと格付けしたワイナリーが一堂に会する。コース料理と共に、テーブルを囲むオーナー達のワインを楽しむ趣向だ。隣合わせたChateau CamensacのJean-Pierreさんはパリの出身で、奥さまがシャトーの跡継ぎだったそう。運ばれて来たワインをひと嗅ぎして、「もう少し冷やして」と指示する姿は、貫禄たっぷりだ。同じボルドーとはいえ、地区が違う生産者と交流する機会が多くはないそうで、テーブル越しに熱いワイン談義を交わす姿が印象的だった。次期大統領と噂されるアラン・ジュペ市長も挨拶に駆けつけ、終了後はブルス広場でプロジェクションマッピングを堪能した。',
+          },{
+            id: 12,
+            icon: '/src/icon12.png',
+            image: '/src/T-12 Marche des Capucins.JPG',
+            size: { width: 180, height: 170 },
+            location: { x: 365, y: 1075 },
+            title: 'Marche des Capucins',
+            description: 'カプサン市場は、ボルドー市民の台所。野菜とチーズ、肉に魚、もちろんワインも、新鮮な旬の素材がなんでも揃う。ボックスワインをペットボトルに詰めて売る、格安ワインのお店まであった。早起きして活気ある市場を楽しんで。',
+            address: 'Place des Capucins, 33800 Bordeaux',
+            hours: '火曜日〜金曜日　6:00〜13:00、土曜日と日曜日　5:30〜14:30',
+          },{
+            id: 13,
+            icon: '/src/icon13.png',
+            image: '/src/T-13 La Cite du Vin.JPG',
+            size: { width: 280, height: 250 },
+            location: { x: 430, y: 35 },
+            title: 'La Cite du Vin',
+            description: 'ワイン文明博物館は、市街地の北部にある港の跡地に6月にオープンしたばかりの新名所。歴史や文化、地学に経済学まで、世界中のワインに関する全てのことがゲーム感覚で学べる必見の博物館だ。ワインの表現に使われる香りを実際に嗅ぐことができるコーナーや、大きな地球儀と連動してワイン経済を紐解く展示など、インタラクティブな仕掛けが多いので飽きさせない。チケットにはテイスティングバーでワインが一杯ついてくるので、色々と学んだ後に味わうと、美味しさもひとしおだ。',
+            address: '150, 134 Quai de Bacalan, 33300 Bordeaux, France',
+            hours: '8月31日までは午前9時半～午後7時半。その後は多少変動するので、要確認。',
+            capacity: '大人20ユーロ',
+            website: 'http://www.laciteduvin.com/en（英語）',
+          },{
+            id: 14,
+            icon: '/src/icon14.png',
+            image: '/src/T-14 La Fete du Vin.JPG',
+            size: { width: 100, height: 80 },
+            location: { x: 780, y: 230 },
+            title: 'La Fete du Vin',
+            description: 'ガロンヌ河の河岸が２キロメートルにわたり、ボルドー各地区のテイスティングショップや、ワークショップ、野外コンサートなどで埋め尽くされるボルドーワイン祭り。前売りだと16ユーロで、13杯分の試飲やワークショップへの参加ができる。目当てのワインを待ちながら話をした地元の男性は、「格安で試飲ができるから、若者は色々なワインを知ることができるし、年を重ねた人は、ボルドーを訪れる友人達とボルドーワインの素晴らしさを共有できる」と今年で10回目になるワイン祭りを絶賛していた。次の開催は２年後の2018年6月の予定。',
+          }],
+        }
+        ];
+
+        for (var i = 0; i < maps.length; ++i) {
+          var mapInfo = maps[i];
+          console.log(mapInfo);
+          setChart(mapInfo);
+        }
+      }
+
+      function setChart(mapInfo) {
+        let charts = d3.select(mapInfo.div);
+        let mapDivs = charts
+            .append('div')
+            .attr('class', 'map');
+
+        mapSvgs = mapDivs
+          .append('svg')
+            .attr('width', mapInfo.size.width)
+            .attr('height', mapInfo.size.height)
+            .append('g');
+
+        mapSvgs.append('image')
+            .attr('xlink:href', mapInfo.map)
+            .attr('width', mapInfo.size.width)
+            .attr('height', mapInfo.size.height);
+
+        // Add the popup div that initially is hidden.  We declare this 
+        // here so that each point is able to modify the state of the 
+        // panel when clicked.
+        var panelContainer = mapDivs.append('div')
+          .attr('class', 'panel-container');
+        var detailPanel = panelContainer.append('div')
+          .attr('class', 'panel_off');
+
+        function closeDetailPanel() {
+          openLocation = 0;
+          panelContainer.style('visibility', 'hidden');
+          detailPanel.attr('class', 'panel_off');
+        }
+
+        var openLocation = 0;
+        function updateDetailPanel(locationDetails, show) {
+          if (!show) {
+            closeDetailPanel();
+            return;
+          }
+
+          panelContainer.style('visibility', 'visible')
+            .style('top', locationDetails.location.y);
+          detailPanel.attr('class', 'panel_on');
+
+          detailPanel.selectAll('*').remove();
+
+          openLocation = locationDetails.id;
+
+          let detailContainer = detailPanel.append('div')
+            .attr('class', 'detail-container');
+
+
+          // Add the image.
+          detailContainer.append('div')
+            .attr('class', 'detail-img-container')
+            .append('img')
+            .attr('class', 'detail-img')
+            .attr('src', locationDetails.image);
+
+          let detailText = detailContainer.append('div')
+            .attr('class', 'detail-text');
+
+          // Add the title section.
+          detailText.append('div')
+            .attr('class', 'detail-title')
+            .text(locationDetails.title);
+
+          // Add the description.
+          detailText.append('div')
+            .attr('class', 'detail-desc')
+            .text(locationDetails.description);
+
+          let kvToAdd = [
+          { key: 'hours', keyText: '営業時間:' },
+          { key: 'address', keyText: '住所:' },
+          { key: 'phone', keyText: '電話:' },
+          { key: 'fax', keyText: 'Fax:' },
+          { key: 'email', keyText: 'email:' },
+          { key: 'website', keyText: 'HP:' },
+          ];
+
+          // Add all of the key value details.
+          for (var i = 0; i < kvToAdd.length; ++i) {
+            let kvEntry = kvToAdd[i];
+
+            if (locationDetails[kvEntry.key]) {
+              let kvContainer = detailText.append('div')
+                .attr('class', 'detail-kv');
+              kvContainer.append('span')
+                .attr('class', 'detail-key').text(kvEntry.keyText);
+              kvContainer.append('span')
+                .attr('class', 'detail-value')
+                .text(locationDetails[kvEntry.key]);
+            }
+          }
+
+          detailContainer.append('div')
+            .attr('class', 'detail-exit-container')
+            .append('div')
+            .attr('class', 'detail-exit-button')
+            .on('click', closeDetailPanel)
+            .text('X');
+        }
+
+        mapSvgs.selectAll('.points')
+          .data(mapInfo.locations)
+            .enter().append('image')
+              .attr('class', 'point')
+              .attr('transform', function(d) {
+                return 'translate(' + d.location.x + ',' + d.location.y + ')';
+              })
+              .attr('xlink:href', function(d) { return d.icon; })
+              .attr('width', function(d) { return d.size.width; })
+              .attr('height', function(d) { return d.size.height; })
+              .on('click', function(d) {
+                let panelState = detailPanel.attr('class');
+                if (panelState == 'panel_off') {
+                  updateDetailPanel(d, true);
+                } else {
+                  if (openLocation == d.id) {
+                    updateDetailPanel(undefined, false);
+                  } else {
+                    updateDetailPanel(d, true);
+                  }
+                }
+              });
+
+        // Create an enter block for each location title that sits below
+        // the map.
+        var titleDivs = mapDivs.append('div')
+            .attr('class', 'titles')
+            .style('width', mapInfo.size.width)
+          .selectAll('.title')
+            .data(mapInfo.locations)
+          .enter().append('div')
+            .attr('class', 'title');
+
+        // Set the image.
+        titleDivs.append('img')
+          .attr('class', 'title-icon')
+          .attr('src', function(d) { return d.icon; });
+
+        // Set the title.
+        titleDivs.append('span')
+          .attr('class', 'title-text')
+          .text(function(d) { return d.title; });
+
+      }
+    </script>
+  </body>
+</html>
