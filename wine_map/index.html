@@ -60,6 +60,7 @@
         position: absolute;
         top: 0px;
         left: 10px;
+        z-index: 100;
       }
 
       div.panel_on {
@@ -128,6 +129,8 @@
     </style>
   </head>
   <body onload="loadMaps()">
+    <div id="popup", class="panel-container">
+    </div>
     <div class="header">
       <div class="buffer">
       </div>
@@ -149,23 +152,77 @@
     </div>
 
     <script type="text/javascript">
+      var panelContainer;
+      var detailPanel;
+      var openLocation;
       function loadMaps() {
         let maps = [{
         div: '#winerymap',
-          map: '/src/townmap_base.png',
-          size: { width: 800, height: 855 },
+          map: '/src/winery/WineryMap_base.png',
+          size: { width: 800, height: 782 },
           locations: [{
-            id: 1,
-            icon: '/src/icon1.png',
-            image: '/src/T-1 Comptoir Cuisine.JPG',
-            size: { width: 70, height: 50 },
-            location: { x: 30, y: 250 },
-            title: 'Comptoir Cuisine',
-            description: 'コメディ広場に面したテラスは、きりっと決めた地元の人や観光客でいつも賑わっている。前菜、メイン、デザートが手軽に楽しめる日替わりのランチプレートにグラスワインを合わせて、スマートカジュアルに楽しみたい。',
-            address: '2 place de la Comédie',
-            phone: '+33 5 56 56 22 33',
-            hours: '12:00~19:00',
-            website: 'http://www.comptoircuisine.com',
+            id: 101,
+            icon: '/src/winery/icon1.png',
+            image: '/src/winery/4 Chateau Chantegrieve.JPG',
+            size: { width: 300, height: 154 },
+            location: { x: 150, y: 580 },
+            title: 'Château de Chantegrive',
+            description: '1966年に２haのブドウ畑から始まったChateau de Chantegriveは、50年で赤、白、ロゼを生産する80ヘクタールの大規模なワイナリーに成長した。当初は松林に囲まれ、chante（鳴く）grive（ツグミ）というシャトー名は、創業者アンリが松林で鳴くツグミの声に発想を得たもの。赤ワイン「アンリ」や、その孫の名のつく白ワイン「カロリーヌ」に、家族経営ならではの愛情が垣間見える。赤ワインCh. Chantegrive 2011は、スモーキーな香りが魅惑的で、ぜひテイスティングしてもらいたい一本。',
+            address: '44 Cours Georges Clémenceau, 33720 Podensac, France',
+            phone: '+33 5 56 27 17 38',
+            fax: '+33 5 56 27 29 42',
+            email: 'courrier@chateau-chantegrive.com',
+            website: 'http://www.chantegrive.com',
+          },{
+            id: 102,
+            icon: '/src/winery/icon2.png',
+            image: '/src/winery/1 Chateau Coutet.JPG',
+            size: { width: 300, height: 154 },
+            location: { x: 315, y: 80 },
+            title: 'Chateau Coutet',
+            description: 'オーガニックの赤ワインを作り続けているサンテミリオンのChateau Coutetは、1601年に創業したグランクリュ。ブドウ畑で農薬が使われ始めた1950年代、鳥類学者でもあった12代目が環境保全の観点から頑なに無農薬を貫き、今では各地から生産者が視察に訪れる。14代目のアドリアンは、敷地内の果樹や生物、ここにしか生息しないチューリップについて話してくれた。ヴィンテージごとのワインの他に、セラーで見つかった200年前のワインをもとに、ボトルも全て1700年代の方法で造るワインを近々販売予定だ。',
+            address: 'Château COUTET, 33330 Saint-Emilion, France',
+            phone: '+33 5 57 74 43 21',
+            email: 'contact@chateau-coutet.com',
+            website: 'http://chateau-coutet.wine',
+          },{
+            id: 103,
+            icon: '/src/winery/icon3.png',
+            image: '/src/winery/5 Chateau de Leognam.JPG',
+            size: { width: 250, height: 243 },
+            location: { x: 25, y: 260 },
+            title: 'Château de Léognan / Le Manege',
+            description: 'かつての馬小屋を改装した「Le Manege」は、Chateau de Leognanの運営する大人気のレストラン。シャトーのワインはもちろんのこと、前菜からデザートまで、とにかく「美味しい！」につきる。ワイナリー巡りの合間にぜひ訪れてほしい一軒だ。',
+            address: '88 chemin du Barp, 33850 Léognan, France',
+            phone: '+33 5 57 67 13 84',
+            email: 'franck@lemanege-leognan.fr',
+            website: 'http://www.lemanege-leognan.fr',
+          },{
+            id: 104,
+            icon: '/src/winery/icon4.png',
+            image: '/src/winery/2 Chateau Dauphine-Rondillon.JPG',
+            size: { width: 250, height: 243 },
+            location: { x: 485, y: 200 },
+            title: 'Chateau Dauphine-Rondillon',
+            description: 'ルピアックのChateau Dauphine-Rondillonでは、辛口と甘口の白ワインを生産している。ワイナリーを率いるサンドリンさんは、梅干しやわさび豆などの和の食材と甘口白ワインのマリアージュを楽しむ大の親日家だ。化学工学者の父が、将来的な影響を心配して農薬を使わなかったというブドウ畑には、洋梨の木が植えられていて、「土壌の性質や気候も含めて、こうしたこと全てが“テロワール”なの」と教えてくれた。ブルーチーズやフルーツとも相性の良い彼女の甘口白ワインは日本でも購入できるので、ぜひお試しあれ。',
+            address: 'Château Dauphiné-Rondillon, 33410 Loupiac, France',
+            phone: '+33 5 5662 6175',
+            fax: '+33 5 5662 6373',
+            email: 'info@vignoblesdarriet.fr',
+            website: 'http://www.vignoblesdarriet.fr/pag/eng/home.html',
+          },{
+            id: 105,
+            icon: '/src/winery/icon5.png',
+            image: '/src/winery/3 Chateau Gravas.JPG ',
+            size: { width: 250, height: 243 },
+            location: { x: 515, y: 495 },
+            title: 'Chateau Gravas',
+            description: 'ソーテルヌとグラーヴにまたがるChateau Gravasでは、甘口白ワインを中心に生産している。案内してくれた6代目の奥さま、ヴェルジニーさんもバルサックのシャトーの出身という生粋のボルドーワイン一家だ。6代目発案の香水瓶型のボトルや娘さん発案のワンカップ、親しいアーティストが描くエチケットなど、デザインの遊び心も大切にしている。手入れの行き届いた庭や、使わなくなったセラーを改装したギャラリーなど、誰もが楽しめるワイナリーは、2014年にベスト・ワインツーリズムの文化賞を受賞している。',
+            address: '6 lieu dit Gravas, 33720 Barsac, France',
+            phone: '+33 5 56 27 06 91',
+            hours: '10:00~12:00 / 14:00〜18:00',
+            email: 'contact@chateau-gravas.fr',
+            website: 'https://chateau-gravas.fr',
           },
           ],
         },
@@ -174,7 +231,7 @@
           map: '/src/townmap_base.png',
           size: { width: 800, height: 855 },
           locations: [{
-            id: 1,
+            id: 201,
             icon: '/src/icon1.png',
             image: '/src/T-1 Comptoir Cuisine.JPG',
             size: { width: 70, height: 50 },
@@ -186,7 +243,7 @@
             hours: '12:00~19:00',
             website: 'http://www.comptoircuisine.com',
           },{
-            id: 2,
+            id: 202,
             icon: '/src/icon2.png',
             image: '/src/T-2 Miles.JPG',
             size: { width: 70, height: 50 },
@@ -199,7 +256,7 @@
             email: 'info@restaurantmiles.com',
             website: 'http://restaurantmiles.com',
           },{
-            id: 3,
+            id: 203,
             icon: '/src/icon3.png',
             image: '/src/T-3 Aux 4 Coins du Vin.JPG',
             size: { width: 70, height: 50 },
@@ -211,7 +268,7 @@
             email: 'closben@aux4coinsduvin.com',
             website: 'http://aux4coinsduvin.com',
           },{
-            id: 4,
+            id: 204,
             icon: '/src/icon4.png',
             image: '/src/T-4 Le Petit Commerce.JPG',
             size: { width: 70, height: 50 },
@@ -222,7 +279,7 @@
             hours: '10:00〜25:00',
             phone: '+33 5 56 79 76 58',
           },{
-            id: 5,
+            id: 205,
             icon: '/src/icon5.png',
             image: '/src/T-5 Le Millesime.JPG',
             size: { width: 70, height: 50 },
@@ -234,7 +291,7 @@
             phone: '+33 5 56 30 05 38',
             website: 'http://le-millesime.net',
           },{
-            id: 6,
+            id: 206,
             icon: '/src/icon6.png',
             image: '/src/T-6 P\'tit Bahut.JPG',
             size: { width: 70, height: 50 },
@@ -247,7 +304,7 @@
             email: 'optitbahut@laposte.net',
             website: 'http://optitbahut.wixsite.com/optitbahut',
           },{
-            id: 7,
+            id: 207,
             icon: '/src/icon7.png',
             image: '/src/T-7 Le Wine Bar.JPG',
             size: { width: 70, height: 50 },
@@ -259,7 +316,7 @@
             email: 'lewinebar@yahoo.fr',
             website: 'http://www.lewinebar-bordeaux.com',
           },{
-            id: 8,
+            id: 208,
             icon: '/src/icon8.png',
             image: '/src/T-8 La Maison du Vin.JPG',
             size: { width: 70, height: 50 },
@@ -272,7 +329,7 @@
             email: 'baravin@vins-bordeaux.fr',
             website: 'http://www.bordeaux-tourism.co.uk/offre/fiche/le-bar-a-vin-du-civb/LOIAQU033FS000W7',
           },{
-            id: 9,
+            id: 209,
             icon: '/src/icon9.png',
             image: '/src/T-9 Brasserie L\'Orleans.JPG',
             size: { width: 70, height: 50 },
@@ -285,7 +342,7 @@
             email: 'brasserielorleans@orange.fr',
             website: 'http://www.bordeaux-tourisme.com/offre/fiche/brasserie-l-orleans/RESAQU033FS000WC',
           },{
-            id: 10,
+            id: 210,
             icon: '/src/icon10.png',
             image: '/src/T-10 Salle a Manger dez Chrtron.JPG',
             size: { width: 70, height: 50 },
@@ -298,7 +355,7 @@
             email: 'contact@salle-a-manger-bordeaux.fr',
             website: 'http://salle-a-manger-bordeaux.fr',
           },{
-            id: 11,
+            id: 211,
             icon: '/src/icon11.png',
             image: '/src/T-11 Grands Crus Classes en 1855.JPG',
             size: { width: 70, height: 50 },
@@ -306,7 +363,7 @@
             title: 'Grands Crus Classes en 1855 Diner de Gala',
             description: 'ボルドーワイン祭りと連動して開催される晩餐会には、1885年にナポレオン三世がグランクリュクラスと格付けしたワイナリーが一堂に会する。コース料理と共に、テーブルを囲むオーナー達のワインを楽しむ趣向だ。隣合わせたChateau CamensacのJean-Pierreさんはパリの出身で、奥さまがシャトーの跡継ぎだったそう。運ばれて来たワインをひと嗅ぎして、「もう少し冷やして」と指示する姿は、貫禄たっぷりだ。同じボルドーとはいえ、地区が違う生産者と交流する機会が多くはないそうで、テーブル越しに熱いワイン談義を交わす姿が印象的だった。次期大統領と噂されるアラン・ジュペ市長も挨拶に駆けつけ、終了後はブルス広場でプロジェクションマッピングを堪能した。',
           },{
-            id: 12,
+            id: 212,
             icon: '/src/icon12.png',
             image: '/src/T-12 Marche des Capucins.JPG',
             size: { width: 110, height: 120 },
@@ -316,7 +373,7 @@
             address: 'Place des Capucins, 33800 Bordeaux',
             hours: '火曜日〜金曜日　6:00〜13:00、土曜日と日曜日　5:30〜14:30',
           },{
-            id: 13,
+            id: 213,
             icon: '/src/icon13.png',
             image: '/src/T-13 La Cite du Vin.JPG',
             size: { width: 180, height: 200 },
@@ -328,7 +385,7 @@
             capacity: '大人20ユーロ',
             website: 'http://www.laciteduvin.com/en（英語）',
           },{
-            id: 14,
+            id: 214,
             icon: '/src/icon14.png',
             image: '/src/T-14 La Fete du Vin.JPG',
             size: { width: 70, height: 50 },
@@ -339,11 +396,112 @@
         }
         ];
 
+        panelContainer = d3.select('#popup');
+        detailPanel = panelContainer.append('div')
+          .attr('class', 'panel_off');
+        openLocation = 0;
         for (var i = 0; i < maps.length; ++i) {
           var mapInfo = maps[i];
-          console.log(mapInfo);
           setChart(mapInfo);
         }
+      }
+
+      // Add the popup div that initially is hidden.  We declare this 
+      // here so that each point is able to modify the state of the 
+      // panel when clicked.
+      function closeDetailPanel() {
+        openLocation = 0;
+        panelContainer.style('visibility', 'hidden');
+        detailPanel.attr('class', 'panel_off');
+      }
+
+      function updateDetailPanel(locationDetails, show) {
+        if (!show) {
+          closeDetailPanel();
+          return;
+        }
+
+        panelContainer.style('visibility', 'visible')
+          .style('top', document.body.scrollTop);
+        detailPanel.attr('class', 'panel_on');
+
+        detailPanel.selectAll('*').remove();
+
+        openLocation = locationDetails.id;
+
+        let detailContainer = detailPanel.append('div')
+          .attr('class', 'detail-container');
+
+        // Add the image.
+        detailContainer.append('div')
+          .attr('class', 'detail-img-container')
+          .append('img')
+          .attr('class', 'detail-img')
+          .attr('src', locationDetails.image);
+
+        let detailText = detailContainer.append('div')
+          .attr('class', 'detail-text');
+
+        // Add the title section.
+        detailText.append('div')
+          .attr('class', 'detail-title')
+          .text(locationDetails.title);
+
+        // Add the description.
+        detailText.append('div')
+          .attr('class', 'detail-desc')
+          .text(locationDetails.description);
+
+        let kvToAdd = [
+        { key: 'menu', keyText: 'Menu:' },
+        { key: 'hours', keyText: '営業時間:' },
+        { key: 'address', keyText: '住所:' },
+        { key: 'phone', keyText: '電話:' },
+        { key: 'fax', keyText: 'Fax:' },
+        ];
+
+        // Add all of the key value details.
+        for (var i = 0; i < kvToAdd.length; ++i) {
+          let kvEntry = kvToAdd[i];
+
+          if (locationDetails[kvEntry.key]) {
+            let kvContainer = detailText.append('div')
+              .attr('class', 'detail-kv');
+            kvContainer.append('span')
+              .attr('class', 'detail-key').text(kvEntry.keyText);
+            kvContainer.append('span')
+              .attr('class', 'detail-value')
+              .text(locationDetails[kvEntry.key]);
+          }
+        }
+
+        let emailContainer = detailText.append('div')
+          .attr('class', 'detail-kv');
+        emailContainer.append('span')
+          .attr('class', 'detail-key')
+          .text('email:');
+        emailContainer.append('a')
+          .attr('class', 'detail-value')
+          .attr('href', 'mailto:' + locationDetails.email)
+          .text(locationDetails.email);
+
+        let websiteContainer = detailText.append('div')
+          .attr('class', 'detail-kv');
+        websiteContainer.append('span')
+          .attr('class', 'detail-key')
+          .text('HP:');
+        websiteContainer.append('a')
+          .attr('class', 'detail-value')
+          .attr('href', locationDetails.website)
+          .text(locationDetails.website);
+
+
+        detailContainer.append('div')
+          .attr('class', 'detail-exit-container')
+          .append('div')
+          .attr('class', 'detail-exit-button')
+          .on('click', closeDetailPanel)
+          .text('X');
       }
 
       function setChart(mapInfo) {
@@ -362,102 +520,6 @@
             .attr('xlink:href', mapInfo.map)
             .attr('width', mapInfo.size.width)
             .attr('height', mapInfo.size.height);
-
-        // Add the popup div that initially is hidden.  We declare this 
-        // here so that each point is able to modify the state of the 
-        // panel when clicked.
-        var panelContainer = mapDivs.append('div')
-          .attr('class', 'panel-container');
-        var detailPanel = panelContainer.append('div')
-          .attr('class', 'panel_off');
-
-        function closeDetailPanel() {
-          openLocation = 0;
-          panelContainer.style('visibility', 'hidden');
-          detailPanel.attr('class', 'panel_off');
-        }
-
-        var openLocation = 0;
-        function updateDetailPanel(locationDetails, show) {
-          if (!show) {
-            closeDetailPanel();
-            return;
-          }
-
-          panelContainer.style('visibility', 'visible')
-            .style('top', locationDetails.location.y);
-          detailPanel.attr('class', 'panel_on');
-
-          detailPanel.selectAll('*').remove();
-
-          openLocation = locationDetails.id;
-
-          let detailContainer = detailPanel.append('div')
-            .attr('class', 'detail-container');
-
-
-          // Add the image.
-          detailContainer.append('div')
-            .attr('class', 'detail-img-container')
-            .append('img')
-            .attr('class', 'detail-img')
-            .attr('src', locationDetails.image);
-
-          let detailText = detailContainer.append('div')
-            .attr('class', 'detail-text');
-
-          // Add the title section.
-          detailText.append('div')
-            .attr('class', 'detail-title')
-            .text(locationDetails.title);
-
-          // Add the description.
-          detailText.append('div')
-            .attr('class', 'detail-desc')
-            .text(locationDetails.description);
-
-          let kvToAdd = [
-          { key: 'hours', keyText: '営業時間:' },
-          { key: 'address', keyText: '住所:' },
-          { key: 'phone', keyText: '電話:' },
-          { key: 'fax', keyText: 'Fax:' },
-          { key: 'email', keyText: 'email:' },
-          { key: 'website', keyText: 'HP:' },
-          ];
-
-          // Add all of the key value details.
-          for (var i = 0; i < kvToAdd.length; ++i) {
-            let kvEntry = kvToAdd[i];
-
-            if (locationDetails[kvEntry.key]) {
-              let kvContainer = detailText.append('div')
-                .attr('class', 'detail-kv');
-              kvContainer.append('span')
-                .attr('class', 'detail-key').text(kvEntry.keyText);
-              kvContainer.append('span')
-                .attr('class', 'detail-value')
-                .text(locationDetails[kvEntry.key]);
-            }
-          }
-
-          /*
-          let emailContainer = detailText.append('div')
-                .attr('class', 'detail-kv');
-              emailContainer .append('span')
-                .attr('class', 'detail-key').text(kvEntry.keyText);
-              kvContainer.append('span')
-                .attr('class', 'detail-value')
-                .text(locationDetails[kvEntry.key]);
-
-          */
-
-          detailContainer.append('div')
-            .attr('class', 'detail-exit-container')
-            .append('div')
-            .attr('class', 'detail-exit-button')
-            .on('click', closeDetailPanel)
-            .text('X');
-        }
 
         mapSvgs.selectAll('.points')
           .data(mapInfo.locations)
